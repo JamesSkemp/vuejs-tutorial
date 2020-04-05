@@ -6,6 +6,7 @@ export default class BaseStats {
 	public dodge: number;
 	public armor: number;
 	public speed: number;
+	// TODO drop? or is this unarmed? - no, should drop since it's not associated with melee/range
 	public damage: string;
 
 	public constructor(health: number, melee: number, range: number, magic: number, dodge: number, armor: number, speed: number, damage: string) {
