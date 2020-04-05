@@ -6,9 +6,10 @@
       check out the
       <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
     </p>
-	<button v-on:click="rollDice">Roll dice</button>
+	<button v-on:click="rollDice">Roll dice - {{ timesRun }}</button>
 	<div v-html="diceRoll"></div>
 	<div v-html="finalResults"></div>
+	<div v-html="finalResultsShort"></div>
   </div>
 </template>
 
@@ -19,22 +20,24 @@ import { DiceRoll, DiceRoller, Dice } from 'rpg-dice-roller';
 @Component
 export default class HelloWorld extends Vue {
   @Prop() private msg!: string;
+  timesRun = 0;
   diceRoll = "";
   finalResults: string[] = [];
+  finalResultsShort: string[] = [];
 
   rollDice(): void {
 	this.diceRoll = '';
 	const rpgDiceRoller = new DiceRoller();
 
 	const character1StartingStats = {
-		health: 20,
+		health: 30,
 		melee: 12,
 		range: 10,
 		magic: 0,
 		dodge: 6,
 		armor: 0,
 		damage: '1d6',
-		currentHealth: 20
+		currentHealth: 30
 	};
 	const character2StartingStats = {
 		health: 10,
@@ -42,7 +45,7 @@ export default class HelloWorld extends Vue {
 		range: 10,
 		magic: 0,
 		dodge: 6,
-		armor: 1,
+		armor: 0,
 		damage: '1d4',
 		currentHealth: 10
 	};
@@ -112,12 +115,15 @@ export default class HelloWorld extends Vue {
 	finalResult += ' Char 1: ' + character1StartingStats.currentHealth;
 	finalResult += ' Char 2: ' + character2StartingStats.currentHealth;
 
+	const finalResultShort = turns + ',' + (character1StartingStats.currentHealth > 0 ? 0 : 1);
+
 	this.diceRoll += '' + '<br />';
 	this.diceRoll += 'Total turns: ' + turns + '<br />';
 	this.diceRoll += 'Character 1 final health: ' + character1StartingStats.currentHealth + '<br />';
 	this.diceRoll += 'Character 2 final health: ' + character2StartingStats.currentHealth + '<br />';
 
 	this.finalResults.push(finalResult);
+	this.finalResultsShort.push(finalResultShort);
 
 	console.log('Character 1 ');
 	console.log(character1StartingStats);
@@ -143,6 +149,8 @@ export default class HelloWorld extends Vue {
 	this.diceRoll += ' |---| ' + roll3;
 	console.log(roll2);
 	console.log(roll3);
+
+	this.timesRun++;
   }
 }
 </script>
