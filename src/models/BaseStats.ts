@@ -1,22 +1,21 @@
+import BaseStat from './BaseStat';
+
 export default class BaseStats {
 	public health: number;
-	public melee: number;
-	public range: number;
-	public magic: number;
+	public melee: BaseStat;
+	public range: BaseStat;
+	public magic: BaseStat;
 	public dodge: number;
 	public armor: number;
 	public speed: number;
-	// TODO drop? or is this unarmed? - no, should drop since it's not associated with melee/range
-	public damage: string;
 
-	public constructor(health: number, melee: number, range: number, magic: number, dodge: number, armor: number, speed: number, damage: string) {
+	public constructor(health: number, melee: number, range: number, magic: number, dodge: number, armor: number, speed: number) {
 		this.health = health;
-		this.melee = melee;
-		this.range = range;
-		this.magic = magic;
+		this.melee = new BaseStat(melee);
+		this.range = new BaseStat(range);
+		this.magic = new BaseStat(magic);
 		this.dodge = dodge;
 		this.armor = armor;
 		this.speed = speed;
-		this.damage = damage;
 	}
 }
