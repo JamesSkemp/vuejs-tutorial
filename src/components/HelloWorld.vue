@@ -160,62 +160,137 @@ export default class HelloWorld extends Vue {
 
   rollDice2(): void {
 	this.diceRoll = '';
-	const rpgDiceRoller = new DiceRoller();
+	// Battle should always start at turn 0 and then increase until it hits a character's next turn. This allows characters to go first in some battles (surprise, skill).
+	let turns = 0;
 
+	// Determine characters that are participating in the battle.
 	const character1 = new Character();
+	// TODO handle party setting better
+	character1.party = 1;
+	// TODO remove temporary boosts - added for testing
 	character1.statMods.meleeModifications.push(new StatModification(2, 1));
 	character1.statMods.dodgeModifications.push(new StatModification(1, 4));
+	character1.statMods.speedModifications.push(new StatModification(-1, 1));
+	character1.setInitialTurn();
+	console.log(character1.nextAttack);
+	// TODO pass id and possibly override object?
 	const character2 = new Character();
+	character2.party = 2;
 	character2.baseStats.health = 10;
 	character2.currentHealth = 10;
 	character2.baseStats.melee.attacks[0].damage = '1d4';
+	character2.setInitialTurn();
+	console.log(character2.nextAttack);
+
+	const rpgDiceRoller = new DiceRoller();
 
 	let damageRoll: DiceRoll = null;
-	let currentCharacter = 0;
-	let nextCharacter = 1;
 	let damageTotal = 0;
-	let turns = 0;
-	const characters = [
+	// TODO sort by final stats
+	let characters = [
 		character1, character2
 	];
 
-	while (character1.currentHealth > 0 && character2.currentHealth > 0)
-	{
-		if (currentCharacter == 0) {
-			turns++;
-		}
-		this.diceRoll += '<strong>Character going: ' + currentCharacter + '</strong><br />';
-		if (characters[currentCharacter].checkMelee())
-		{
-			this.diceRoll += 'Character hit<br />';
-			damageRoll = rpgDiceRoller.roll(characters[currentCharacter].baseStats.melee.attacks[0].damage);
-			if (damageRoll.total > 0)
-			{
-				this.diceRoll += 'Damage of ' + damageRoll.total + '<br />';
-				damageTotal = damageRoll.total;
-				if (characters[nextCharacter].checkDodge()) {
-					damageTotal = Math.ceil(damageTotal / 2);
-					this.diceRoll += 'Damage halved to ' + damageTotal + '<br />';
-				}
-				else
-				{
-					this.diceRoll += 'Dodge failed.' + '<br />';
-				}
-				characters[nextCharacter].takeDamage(damageTotal);
-				this.diceRoll += 'Current health ' + characters[nextCharacter].currentHealth + '<br />';
+	console.log(JSON.stringify(characters));
+	characters = characters.sort((n1, n2) => {
+		// First order by their next attack.
+		let speedCheck = n2.nextAttack - n1.nextAttack;
+		if (speedCheck === 0) {
+			// If there's a tie we'll compare modified speed stats.
+			speedCheck = n2.getCurrentSpeed() - n1.getCurrentSpeed();
+			if (speedCheck === 0) {
+				// If those are the same compare base stats.
+				speedCheck = n2.baseStats.speed - n1.baseStats.speed;
 			}
 		}
-		else
-		{
-			this.diceRoll += 'Attack missed ' + '<br />';
+
+		return speedCheck;
+	});
+
+	console.log(JSON.stringify(characters));
+	// TODO start counting up
+
+	let continueBattle = true;
+	console.log('start battle');
+
+	// TODO should actually loop through characters by speed instead; those with smaller speed go first
+	while (continueBattle)
+	{
+		console.log('line 219 turns: ' + turns);
+		characters.forEach(c => {
+			console.log(c.nextAttack);
+			console.log(c.currentHealth);
+		})
+		console.log(JSON.stringify(characters.filter(c => c.currentHealth > 0 && c.nextAttack <= turns)));
+		const charactersActingThisTurn = characters.filter(c =>
+			c.currentHealth > 0 && c.nextAttack <= turns
+		).sort((n1, n2) => {
+			// First order by their next attack.
+			let speedCheck = n2.nextAttack - n1.nextAttack;
+			if (speedCheck === 0) {
+			// If there's a tie we'll compare modified speed stats.
+				speedCheck = n2.getCurrentSpeed() - n1.getCurrentSpeed();
+				if (speedCheck === 0) {
+					// If those are the same compare base stats.
+					speedCheck = n2.baseStats.speed - n1.baseStats.speed;
+				}
+			}
+			return speedCheck;
+		});
+
+		console.log(JSON.stringify(charactersActingThisTurn));
+
+		if (charactersActingThisTurn.length > 0) {
+			// TODO if a character is slowed the turn they are supposed to go, do they still go? I think the answer is yes since this is effectively them acting at the same time ... or maybe we need to do a check anyway ...
+			charactersActingThisTurn.forEach(character => {
+				// Verify that they should still be going.
+				if (character.nextAttack <= turns) {
+					this.diceRoll += '<strong>Character going: ' + character + '</strong><br />';
+					// TODO determine target
+					const opponent = characters.filter(c =>
+						c.party !== character.party && c.currentHealth > 0
+					)[0];
+
+					console.log(opponent);
+
+					if (character.checkMelee())
+					{
+						this.diceRoll += 'Character hit<br />';
+						damageRoll = rpgDiceRoller.roll(character.baseStats.melee.attacks[0].damage);
+						if (damageRoll.total > 0)
+						{
+							this.diceRoll += 'Damage of ' + damageRoll.total + '<br />';
+							damageTotal = damageRoll.total;
+							if (opponent.checkDodge()) {
+								damageTotal = Math.ceil(damageTotal / 2);
+								this.diceRoll += 'Damage halved to ' + damageTotal + '<br />';
+							}
+							else
+							{
+								this.diceRoll += 'Dodge failed.' + '<br />';
+							}
+							opponent.takeDamage(damageTotal);
+							this.diceRoll += 'Current health ' + opponent.currentHealth + '<br />';
+						}
+					}
+					else
+					{
+						this.diceRoll += 'Attack missed ' + '<br />';
+					}
+
+					character.processTurn(turns);
+
+				}
+			});
 		}
 
-		characters[currentCharacter].processTurn();
-
-		currentCharacter = nextCharacter;
-		nextCharacter = currentCharacter + 1;
-		if (nextCharacter > 1) {
-			nextCharacter = 0;
+		// TODO have this loop through all living characters and make sure only one party is represented
+		if (character1.currentHealth > 0 && character2.currentHealth > 0) {
+			turns++;
+			if (turns > 100) { break; }
+		} else {
+			continueBattle = false;
+			break;
 		}
 	}
 
@@ -252,6 +327,8 @@ export default class HelloWorld extends Vue {
 
 	this.timesRun2++;
   }
+
+
 }
 </script>
 

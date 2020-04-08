@@ -32,14 +32,44 @@ export default class Character {
 	// TODO functionality to get current stats based upon baseStats and statMods
 	// TODO roll melee, range, magic, dodge functions, with proper failure tracking
 
+	public getCurrentMelee(): number {
+		let melee = this.baseStats.melee.value;
+		this.statMods.meleeModifications.forEach(mod => {
+			melee += mod.amount;
+		});
+		return melee;
+	}
+
+	public getCurrentRange(): number {
+		let range = this.baseStats.range.value;
+		this.statMods.rangeModifications.forEach(mod => {
+			range += mod.amount;
+		});
+		return range;
+	}
+
+	public getCurrentMagic(): number {
+		let magic = this.baseStats.magic.value;
+		this.statMods.magicModifications.forEach(mod => {
+			magic += mod.amount;
+		});
+		return magic;
+	}
+
 	public getCurrentArmor(): number {
 		let armor = this.baseStats.armor;
 		this.statMods.armorModifications.forEach(mod => {
-			// TODO mods
-			console.log(mod);
+			armor += mod.amount;
 		});
-
 		return armor;
+	}
+
+	public getCurrentSpeed(): number {
+		let speed = this.baseStats.speed;
+		this.statMods.speedModifications.forEach(mod => {
+			speed += mod.amount;
+		});
+		return speed;
 	}
 
 	/**
@@ -116,7 +146,17 @@ export default class Character {
 		this.currentHealth -= damageTaken;
 	}
 
-	public processTurn(): void {
+	/**
+	 * Setup the character for their first turn of a battle.
+	 */
+	public setInitialTurn(): void {
+		this.lastAttack = -1;
+		this.nextAttack = this.getCurrentSpeed();
+	}
+
+	public processTurn(currentTurn: number): void {
 		this.statMods.processTurn();
+		this.lastAttack = currentTurn;
+		this.nextAttack += this.getCurrentSpeed();
 	}
 }
