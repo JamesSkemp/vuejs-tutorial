@@ -12,7 +12,7 @@ declare module 'rpg-dice-roller' {
 		 * @constructor
 		 * @param data
 		 */
-		constructor(data);
+		constructor(data?);
 	
 		/**
 		 * Returns the current roll log
@@ -136,5 +136,8 @@ declare module 'rpg-dice-roller' {
 		 * @returns {DiceRoll|DiceRoll[]}
 		 */
 		roll(notations: string[]): DiceRoll | DiceRoll[];
+	}
+
+	export class Dice {
 	}
 }
