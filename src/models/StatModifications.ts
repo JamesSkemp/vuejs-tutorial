@@ -42,7 +42,8 @@ export default class StatModifications {
 	 * @param index 
 	 * @param array 
 	 */
-	private filterExpiredStatModification(element: StatModification, index, array) {
+	private filterExpiredStatModification(element: StatModification) {
+		//console.log(arguments);
 		if (!element.newlyAdded) {
 			element.turns--;
 		} else {
@@ -50,5 +51,16 @@ export default class StatModifications {
 		}
 
 		return element.turns > 0;
+	}
+
+	public clearAllModifications() {
+		this.healthModifications = [];
+		this.meleeModifications = [];
+		this.rangeModifications = [];
+		this.magicModifications = [];
+		this.dodgeModifications = [];
+		this.armorModifications = [];
+		this.speedModifications = [];
+		this.damageModifications = [];
 	}
 }

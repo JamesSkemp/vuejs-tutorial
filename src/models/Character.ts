@@ -6,6 +6,10 @@ import { DiceRoll } from 'rpg-dice-roller';
 
 export default class Character {
 	/**
+	 * Unique id of the character, if a main character.
+	 */
+	public id: number = -1;
+	/**
 	 * Stores the character's base stats. Temporary changes to these stats should be handled by `statMods` or `currentHealth`.
 	 */
 	public baseStats: BaseStats;
@@ -149,14 +153,36 @@ export default class Character {
 	/**
 	 * Setup the character for their first turn of a battle.
 	 */
-	public setInitialTurn(): void {
+	public setInitialTurn(initialTurn: number = 0): void {
 		this.lastAttack = -1;
-		this.nextAttack = this.getCurrentSpeed();
+		this.nextAttack = initialTurn + this.getCurrentSpeed();
 	}
 
 	public processTurn(currentTurn: number): void {
 		this.statMods.processTurn();
 		this.lastAttack = currentTurn;
 		this.nextAttack += this.getCurrentSpeed();
+	}
+
+	/**
+	 * Revives a character with current health set to a percentage of their maximum health. Stat mods are not taken into effect.
+	 * @param healthPercentage Percentage of health to restore them to.
+	 */
+	public revive(healthPercentage: number = 100): void {
+		this.currentHealth = Math.round(this.baseStats.health * (healthPercentage / 100));
+	}
+
+	/**
+	 * Completely resets all combat stats for a character. Should generally only be done for non-player characters.
+	 */
+	public resetCombatStats() {
+		this.combatStats.meleeFailures = 0;
+		this.combatStats.rangeFailures = 0;
+		this.combatStats.magicFailures = 0;
+		this.combatStats.dodgeFailures = 0;
+	}
+
+	public getShortDetails(): string {
+		return `Party ${this.party}`;
 	}
 }
