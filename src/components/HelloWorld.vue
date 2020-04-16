@@ -1,11 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
+	<button v-on:click="startTimer">Start timer - {{ timer }}</button>
 	<button v-on:click="rollDice">Roll dice - {{ timesRun }}</button>
 	<button v-on:click="rollDice2">Roll dice 2 - {{ timesRun2 }}</button>
 	<br />
@@ -35,6 +31,22 @@ export default class HelloWorld extends Vue {
   diceRoll = "";
   finalResults: string[] = [];
   finalResultsShort: string[] = [];
+  timer = -1;
+
+  created() {
+	console.log('created');
+	console.log(this.$world);
+  }
+
+  beforeDestroy() {
+	clearInterval(this.timer);
+  }
+
+  startTimer() {
+	this.timer = setInterval(() => {
+		console.log('timer');
+	}, 1000);
+  }
 
   rollDice(): void {
 	this.diceRoll = '';
@@ -167,7 +179,7 @@ export default class HelloWorld extends Vue {
 
   rollDice2(): void {
 	// TODO this should persist
-	const world = new World();
+	const world: World = this.$world;
 	this.currentMoment = world.currentMoment;
 
 	console.log(world);
