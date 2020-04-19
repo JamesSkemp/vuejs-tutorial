@@ -21,6 +21,7 @@ export default class World {
 	 * Initializes and returns next character id.
 	 */
 	public generateNextChracterId(): number {
-		return this.nextCharacterId++;
+		this.nextCharacterId++;
+		return this.nextCharacterId;
 	}
 }

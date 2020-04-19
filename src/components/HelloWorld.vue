@@ -187,6 +187,7 @@ export default class HelloWorld extends Vue {
 	if (world.mainCharacters.length === 0) {
 		// Determine characters that are participating in the battle.
 		const character1 = new Character();
+		character1.id = world.generateNextChracterId();
 		// TODO handle party setting better
 		character1.party = 1;
 		// TODO remove temporary boosts - added for testing
@@ -194,7 +195,6 @@ export default class HelloWorld extends Vue {
 		character1.statMods.dodgeModifications.push(new StatModification(1, 4));
 		character1.statMods.speedModifications.push(new StatModification(-1, 1));
 		character1.setInitialTurn();
-		character1.id = world.generateNextChracterId();
 
 		world.mainCharacters.push(character1);
 
