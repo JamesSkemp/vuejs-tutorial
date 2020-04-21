@@ -44,7 +44,7 @@ import { DiceRoll, DiceRoller, Dice } from 'rpg-dice-roller';
 import World from '../models/World';
 import Character from '../models/Character';
 import StatModification from '../models/StatModification';
-import { checkMelee, checkDodge, getCurrentMelee, getCurrentRange, getCurrentMagic, getCurrentArmor, getCurrentSpeed, getShortBaseStats } from '../utilities/CharacterUtilities';
+import { checkMelee, checkDodge, getCurrentMelee, getCurrentRange, getCurrentMagic, getCurrentArmor, getCurrentSpeed, getShortBaseStats, sortBySpeed, attackOpponent } from '../utilities/CharacterUtilities';
 
 @Component
 export default class HelloWorld extends Vue {
@@ -59,9 +59,9 @@ export default class HelloWorld extends Vue {
   timer = -1;
   healthMin = 30;
   healthMax = 30;
-  attackMin = 8;
+  attackMin = 5;
   attackMax = 14;
-  dodgeMin = 3;
+  dodgeMin = 5;
   dodgeMax = 8;
   armorMin = 0;
   armorMax = 2;
@@ -72,6 +72,11 @@ export default class HelloWorld extends Vue {
   created() {
 	console.log('created');
 	console.log(this.$world);
+
+	this.attackMin = 12;
+	this.dodgeMin = 7;
+	this.armorMax = 1;
+	this.speedMin = 10;
   }
 
   beforeDestroy() {
@@ -290,7 +295,6 @@ export default class HelloWorld extends Vue {
 	const rpgDiceRoller = new DiceRoller();
 
 	let damageRoll: DiceRoll;
-	let damageTotal = 0;
 	// TODO sort by final stats
 	// TODO will need to create battle group with just the characters fighting
 	let characters: Character[] = [];
@@ -304,20 +308,7 @@ export default class HelloWorld extends Vue {
 	})
 
 	console.log(JSON.stringify(characters));
-	characters = characters.sort((n1, n2) => {
-		// First order by their next attack.
-		let speedCheck = n2.nextAttack - n1.nextAttack;
-		if (speedCheck === 0) {
-			// If there's a tie we'll compare modified speed stats.
-			speedCheck = getCurrentSpeed(n2) - getCurrentSpeed(n1);
-			if (speedCheck === 0) {
-				// If those are the same compare base stats.
-				speedCheck = n2.baseStats.speed - n1.baseStats.speed;
-			}
-		}
-
-		return speedCheck;
-	});
+	characters = sortBySpeed(characters);
 
 	console.log(JSON.stringify(characters));
 	// TODO start counting up
@@ -342,21 +333,9 @@ export default class HelloWorld extends Vue {
 			console.log(c.currentHealth);
 		});*/
 		console.log(JSON.stringify(characters.filter(c => c.currentHealth > 0 && c.nextAttack <= world.currentMoment)));
-		const charactersActingThisTurn = characters.filter(c =>
+		const charactersActingThisTurn = sortBySpeed(characters.filter(c =>
 			c.currentHealth > 0 && c.nextAttack <= world.currentMoment
-		).sort((n1, n2) => {
-			// First order by their next attack.
-			let speedCheck = n2.nextAttack - n1.nextAttack;
-			if (speedCheck === 0) {
-			// If there's a tie we'll compare modified speed stats.
-				speedCheck = getCurrentSpeed(n2) - getCurrentSpeed(n1);
-				if (speedCheck === 0) {
-					// If those are the same compare base stats.
-					speedCheck = n2.baseStats.speed - n1.baseStats.speed;
-				}
-			}
-			return speedCheck;
-		});
+		));
 
 		console.log(JSON.stringify(charactersActingThisTurn));
 
@@ -373,30 +352,7 @@ export default class HelloWorld extends Vue {
 
 					console.log(opponent);
 
-					if (checkMelee(character))
-					{
-						this.diceRoll += 'Character hit<br />';
-						damageRoll = rpgDiceRoller.roll(character.baseStats.melee.attacks[0].damage);
-						if (damageRoll.total > 0)
-						{
-							this.diceRoll += 'Damage of ' + damageRoll.total + '<br />';
-							damageTotal = damageRoll.total;
-							if (checkDodge(opponent)) {
-								damageTotal = Math.ceil(damageTotal / 2);
-								this.diceRoll += 'Damage halved to ' + damageTotal + '<br />';
-							}
-							else
-							{
-								this.diceRoll += 'Dodge failed.' + '<br />';
-							}
-							opponent.takeDamage(damageTotal);
-							this.diceRoll += 'Current health ' + opponent.currentHealth + '<br />';
-						}
-					}
-					else
-					{
-						this.diceRoll += 'Attack missed ' + '<br />';
-					}
+					this.diceRoll += JSON.stringify(attackOpponent(character, opponent)) + '<br />';
 
 					character.processTurn(world.currentMoment);
 

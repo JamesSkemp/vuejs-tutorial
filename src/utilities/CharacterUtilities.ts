@@ -1,6 +1,37 @@
 import Character from '@/models/Character';
 import { DiceRoll } from 'rpg-dice-roller';
 
+export function attackOpponent(character: Character, opponent: Character) : string[] {
+	// TODO different for each type of attack, or should this determine what the character will attack with? should it just be simplified to an attack value?
+	let messages: string[] = [];
+	if (checkMelee(character))
+	{
+		messages.push('Character hit');
+		let damageRoll = new DiceRoll(character.baseStats.melee.attacks[0].damage);
+		if (damageRoll.total > 0)
+		{
+			messages.push('Damage of ' + damageRoll.total);
+			let damageTotal = damageRoll.total;
+			if (checkDodge(opponent)) {
+				damageTotal = Math.ceil(damageTotal / 2);
+				messages.push('Damage halved to ' + damageTotal);
+			}
+			else
+			{
+				messages.push('Dodge failed.');
+			}
+			opponent.takeDamage(damageTotal);
+			messages.push('Current health ' + opponent.currentHealth);
+		}
+	}
+	else
+	{
+		messages.push('Attack missed.');
+	}
+
+	return messages;
+}
+
 /**
  * 
  * @param modifier Amount to change the check. Positive makes success more likely, negative makes the check more difficult.
@@ -159,4 +190,21 @@ export function getCurrentSpeed(character: Character): number {
 
 export function getShortBaseStats(character: Character): string {
 	return `Health ${character.baseStats.health}, Melee ${character.baseStats.melee.value}, Range ${character.baseStats.range.value}, Magic ${character.baseStats.magic.value}, Dodge ${character.baseStats.dodge}, Armor ${character.baseStats.armor}, Speed ${character.baseStats.speed}`;
+}
+
+export function sortBySpeed(characters: Character[]): Character[] {
+	return characters.sort((n1, n2) => {
+		// First order by their next attack.
+		let speedCheck = n2.nextAttack - n1.nextAttack;
+		if (speedCheck === 0) {
+			// If there's a tie we'll compare modified speed stats.
+			speedCheck = getCurrentSpeed(n2) - getCurrentSpeed(n1);
+			if (speedCheck === 0) {
+				// If those are the same compare base stats.
+				speedCheck = n2.baseStats.speed - n1.baseStats.speed;
+			}
+		}
+
+		return speedCheck;
+	});
 }
