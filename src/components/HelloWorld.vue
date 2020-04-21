@@ -11,6 +11,30 @@
 	<div v-html="diceRoll"></div>
 	<div v-html="finalResults"></div>
 	<div v-html="finalResultsShort"></div>
+	<div>
+		Health:
+		<input type="number" v-model="healthMin" value="" /> -
+		<input type="number" v-model="healthMax" value="" />
+		<br />
+		Attack:
+		<input type="number" v-model="attackMin" value="" /> -
+		<input type="number" v-model="attackMax" value="" />
+		<br />
+		Dodge:
+		<input type="number" v-model="dodgeMin" value="" /> -
+		<input type="number" v-model="dodgeMax" value="" />
+		<br />
+		Armor:
+		<input type="number" v-model="armorMin" value="" /> -
+		<input type="number" v-model="armorMax" value="" />
+		<br />
+		Speed:
+		<input type="number" v-model="speedMin" value="" /> -
+		<input type="number" v-model="speedMax" value="" />
+		<br />
+		<button v-on:click="test">Test cases</button>
+		<div v-html="testResults"></div>
+	</div>
   </div>
 </template>
 
@@ -20,6 +44,7 @@ import { DiceRoll, DiceRoller, Dice } from 'rpg-dice-roller';
 import World from '../models/World';
 import Character from '../models/Character';
 import StatModification from '../models/StatModification';
+import { checkMelee, checkDodge, getCurrentMelee, getCurrentRange, getCurrentMagic, getCurrentArmor, getCurrentSpeed, getShortBaseStats } from '../utilities/CharacterUtilities';
 
 @Component
 export default class HelloWorld extends Vue {
@@ -32,6 +57,17 @@ export default class HelloWorld extends Vue {
   finalResults: string[] = [];
   finalResultsShort: string[] = [];
   timer = -1;
+  healthMin = 30;
+  healthMax = 30;
+  attackMin = 8;
+  attackMax = 14;
+  dodgeMin = 3;
+  dodgeMax = 8;
+  armorMin = 0;
+  armorMax = 2;
+  speedMin = 8;
+  speedMax = 12;
+  testResults: string[] = [];
 
   created() {
 	console.log('created');
@@ -46,6 +82,41 @@ export default class HelloWorld extends Vue {
 	this.timer = setInterval(() => {
 		console.log('timer');
 	}, 1000);
+  }
+
+  test(): void {
+	const world: World = this.$world;
+	for (let health = this.healthMin; health <= this.healthMax; health++) {
+		//this.testResults.push(`Starting health ${health}`);
+		for (let attack = this.attackMin; attack <= this.attackMax; attack++) {
+			//this.testResults.push(`Starting attack ${attack}`);
+			for (let dodge = this.dodgeMin; dodge <= this.dodgeMax; dodge++) {
+				//this.testResults.push(`Starting dodge ${dodge}`);
+				for (let armor = this.armorMin; armor <= this.armorMax; armor++) {
+					//this.testResults.push(`Starting armor ${armor}`);
+					for (let speed = this.speedMin; speed <= this.speedMax; speed++) {
+						//this.testResults.push(`Starting speed ${speed}`);
+						// TODO loop x number of times
+						world.mainCharacters = [];
+
+						const testCharacter = new Character();
+						testCharacter.id = world.generateNextChracterId();
+						testCharacter.party = 1;
+						testCharacter.baseStats.health = health;
+						testCharacter.baseStats.melee.value = attack;
+						testCharacter.baseStats.dodge = dodge;
+						testCharacter.baseStats.armor = armor;
+						testCharacter.baseStats.speed = speed;
+						testCharacter.setInitialTurn();
+
+						world.mainCharacters.push(testCharacter);
+
+						this.testResults.push(`Character ${JSON.stringify(getShortBaseStats(testCharacter))}`);
+					}
+				}
+			}
+		}
+	}
   }
 
   rollDice(): void {
@@ -238,7 +309,7 @@ export default class HelloWorld extends Vue {
 		let speedCheck = n2.nextAttack - n1.nextAttack;
 		if (speedCheck === 0) {
 			// If there's a tie we'll compare modified speed stats.
-			speedCheck = n2.getCurrentSpeed() - n1.getCurrentSpeed();
+			speedCheck = getCurrentSpeed(n2) - getCurrentSpeed(n1);
 			if (speedCheck === 0) {
 				// If those are the same compare base stats.
 				speedCheck = n2.baseStats.speed - n1.baseStats.speed;
@@ -278,7 +349,7 @@ export default class HelloWorld extends Vue {
 			let speedCheck = n2.nextAttack - n1.nextAttack;
 			if (speedCheck === 0) {
 			// If there's a tie we'll compare modified speed stats.
-				speedCheck = n2.getCurrentSpeed() - n1.getCurrentSpeed();
+				speedCheck = getCurrentSpeed(n2) - getCurrentSpeed(n1);
 				if (speedCheck === 0) {
 					// If those are the same compare base stats.
 					speedCheck = n2.baseStats.speed - n1.baseStats.speed;
@@ -294,7 +365,7 @@ export default class HelloWorld extends Vue {
 			charactersActingThisTurn.forEach(character => {
 				// Verify that they should still be going.
 				if (character.nextAttack <= world.currentMoment) {
-					this.diceRoll += '<strong>Character going: ' + character + '</strong><br />';
+					this.diceRoll += '<strong>Character going: ' + character.getShortDetails() + '</strong><br />';
 					// TODO determine target - stop early if there's no one left alive?
 					const opponent = characters.filter(c =>
 						c.party !== character.party && c.currentHealth > 0
@@ -302,7 +373,7 @@ export default class HelloWorld extends Vue {
 
 					console.log(opponent);
 
-					if (character.checkMelee())
+					if (checkMelee(character))
 					{
 						this.diceRoll += 'Character hit<br />';
 						damageRoll = rpgDiceRoller.roll(character.baseStats.melee.attacks[0].damage);
@@ -310,7 +381,7 @@ export default class HelloWorld extends Vue {
 						{
 							this.diceRoll += 'Damage of ' + damageRoll.total + '<br />';
 							damageTotal = damageRoll.total;
-							if (opponent.checkDodge()) {
+							if (checkDodge(opponent)) {
 								damageTotal = Math.ceil(damageTotal / 2);
 								this.diceRoll += 'Damage halved to ' + damageTotal + '<br />';
 							}
