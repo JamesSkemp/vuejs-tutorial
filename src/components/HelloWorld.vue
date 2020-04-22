@@ -11,6 +11,7 @@
 	<div v-html="diceRoll"></div>
 	<div v-html="finalResults"></div>
 	<div v-html="finalResultsShort"></div>
+	<div>Final results short length: {{ finalResultShortLength }}</div>
 	<div>
 		Health:
 		<input type="number" v-model="healthMin" value="" /> -
@@ -77,6 +78,7 @@ export default class HelloWorld extends Vue {
    */
   testTimes = 10;
   testResults: string[] = [];
+  finalResultShortLength = 0;
 
   created() {
 	console.log('created');
@@ -100,7 +102,7 @@ export default class HelloWorld extends Vue {
 
   test(): void {
 	const world: World = this.$world;
-	for (let health = this.healthMin; health <= this.healthMax; health++) {
+	for (let health = this.healthMin; health <= this.healthMax; health += 5) {
 		//this.testResults.push(`Starting health ${health}`);
 		for (let attack = this.attackMin; attack <= this.attackMax; attack++) {
 			//this.testResults.push(`Starting attack ${attack}`);
@@ -143,7 +145,7 @@ export default class HelloWorld extends Vue {
 								if (whileLoopNumber > 500) {
 									console.log('more than 500 turns');
 									console.log(testWorld);
-									return;
+									break;
 								}
 
 								const partiesMoment = resolvePartyMoment(testWorld.parties[0], testWorld.currentMoment);
@@ -173,6 +175,7 @@ export default class HelloWorld extends Vue {
 			}
 		}
 	}
+	this.finalResultShortLength = this.finalResultsShort.length;
   }
 
   rollDice(): void {
