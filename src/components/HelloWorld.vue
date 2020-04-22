@@ -44,7 +44,9 @@ import { DiceRoll, DiceRoller, Dice } from 'rpg-dice-roller';
 import World from '../models/World';
 import Character from '../models/Character';
 import StatModification from '../models/StatModification';
-import { checkMelee, checkDodge, getCurrentMelee, getCurrentRange, getCurrentMagic, getCurrentArmor, getCurrentSpeed, getShortBaseStats, sortBySpeed, attackOpponent } from '../utilities/CharacterUtilities';
+import { checkMelee, checkDodge, getCurrentMelee, getCurrentRange, getCurrentMagic, getCurrentArmor, getCurrentSpeed, getShortBaseStats, sortBySpeed, attackOpponent, getSuperShortBaseStats } from '../utilities/CharacterUtilities';
+import { createNewTestWorldForSingleBattle } from '../utilities/WorldUtilities';
+import { resolvePartyMoment, partyHasOngoingBattle, partyHasLivingMainCharacters } from '../utilities/PartyUtilities';
 
 @Component
 export default class HelloWorld extends Vue {
@@ -100,13 +102,11 @@ export default class HelloWorld extends Vue {
 				for (let armor = this.armorMin; armor <= this.armorMax; armor++) {
 					//this.testResults.push(`Starting armor ${armor}`);
 					for (let speed = this.speedMin; speed <= this.speedMax; speed++) {
-						//this.testResults.push(`Starting speed ${speed}`);
 						// TODO loop x number of times
-						world.mainCharacters = [];
 
 						const testCharacter = new Character();
 						testCharacter.id = world.generateNextChracterId();
-						testCharacter.party = 1;
+						testCharacter.side = 1;
 						testCharacter.baseStats.health = health;
 						testCharacter.baseStats.melee.value = attack;
 						testCharacter.baseStats.dodge = dodge;
@@ -114,9 +114,51 @@ export default class HelloWorld extends Vue {
 						testCharacter.baseStats.speed = speed;
 						testCharacter.setInitialTurn();
 
-						world.mainCharacters.push(testCharacter);
+						const testOpponent = new Character();
+						testOpponent.side = 2;
+						testOpponent.baseStats.health = 10;
+						testOpponent.currentHealth = 10;
+						testOpponent.baseStats.melee.attacks[0].damage = '1d4';
+						testOpponent.setInitialTurn();
+
+						const testWorld = createNewTestWorldForSingleBattle(testCharacter, testOpponent);
+
+						let continueBattle = true;
+						let turns = 0;
+						console.log('start battle');
+
+						// TODO should actually loop through characters by speed instead; those with smaller speed go first
+						let whileLoopNumber = 0;
+						while (continueBattle)
+						{
+							whileLoopNumber++;
+							if (whileLoopNumber > 500) {
+								console.log('more than 500 turns');
+								console.log(testWorld);
+								return;
+							}
+
+							const partiesMoment = resolvePartyMoment(testWorld.parties[0], testWorld.currentMoment);
+
+							if (partiesMoment.length > 0) {
+								this.testResults.push(partiesMoment);
+								turns++;
+							}
+
+							// TODO have this loop through all living characters and make sure only one party is represented
+							if (partyHasOngoingBattle(testWorld.parties[0])) {
+								testWorld.startNextMoment();
+							} else {
+								continueBattle = false;
+								break;
+							}
+						}
 
 						this.testResults.push(`Character ${JSON.stringify(getShortBaseStats(testCharacter))}`);
+
+						this.finalResultsShort.push(`Character ${getSuperShortBaseStats(testCharacter)}, Turns ${turns}, Heroes won ${partyHasLivingMainCharacters(testWorld.parties[0])}`);
+
+						//this.testResults.push(JSON.stringify(testWorld));
 					}
 				}
 			}
@@ -265,7 +307,7 @@ export default class HelloWorld extends Vue {
 		const character1 = new Character();
 		character1.id = world.generateNextChracterId();
 		// TODO handle party setting better
-		character1.party = 1;
+		character1.side = 1;
 		// TODO remove temporary boosts - added for testing
 		character1.statMods.meleeModifications.push(new StatModification(2, 1));
 		character1.statMods.dodgeModifications.push(new StatModification(1, 4));
@@ -285,7 +327,7 @@ export default class HelloWorld extends Vue {
 
 	// TODO pass id and possibly override object?
 	const character2 = new Character();
-	character2.party = 2;
+	character2.side = 2;
 	character2.baseStats.health = 10;
 	character2.currentHealth = 10;
 	character2.baseStats.melee.attacks[0].damage = '1d4';
@@ -321,6 +363,7 @@ export default class HelloWorld extends Vue {
 	while (continueBattle)
 	{
 		whileLoopNumber++;
+		this.diceRoll += `While loop number ${whileLoopNumber}<br />`;
 		if (whileLoopNumber > 100) {
 			console.log('more than 100 turns');
 			console.log(world);
@@ -347,7 +390,7 @@ export default class HelloWorld extends Vue {
 					this.diceRoll += '<strong>Character going: ' + character.getShortDetails() + '</strong><br />';
 					// TODO determine target - stop early if there's no one left alive?
 					const opponent = characters.filter(c =>
-						c.party !== character.party && c.currentHealth > 0
+						c.side !== character.side && c.currentHealth > 0
 					)[0];
 
 					console.log(opponent);

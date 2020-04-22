@@ -188,6 +188,10 @@ export function getCurrentSpeed(character: Character): number {
 	return speed;
 }
 
+export function getSuperShortBaseStats(character: Character): string {
+	return `${character.baseStats.health}-${character.baseStats.melee.value}-${character.baseStats.range.value}-${character.baseStats.magic.value}-${character.baseStats.dodge}-${character.baseStats.armor}-${character.baseStats.speed}`;
+}
+
 export function getShortBaseStats(character: Character): string {
 	return `Health ${character.baseStats.health}, Melee ${character.baseStats.melee.value}, Range ${character.baseStats.range.value}, Magic ${character.baseStats.magic.value}, Dodge ${character.baseStats.dodge}, Armor ${character.baseStats.armor}, Speed ${character.baseStats.speed}`;
 }

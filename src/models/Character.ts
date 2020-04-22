@@ -21,7 +21,7 @@ export default class Character {
 	public currentHealth: number;
 	public lastAttack: number = -1;
 	public nextAttack: number = -1;
-	public party: number = -1;
+	public side: number = -1;
 	// TODO store additional attacks the character has access to, outside default one
 
 	public constructor() {
@@ -76,7 +76,7 @@ export default class Character {
 	}
 
 	public getShortDetails(): string {
-		return `Character ${this.id} | Party ${this.party}`;
+		return `Character ${this.id} | Party ${this.side}`;
 	}
 
 	/**
