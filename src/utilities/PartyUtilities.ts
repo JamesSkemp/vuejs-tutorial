@@ -27,7 +27,9 @@ export function resolvePartyMoment(party: Party, currentMoment: number): string[
 				c.currentHealth > 0 && c.nextAttack <= currentMoment
 			));
 	
-			console.log(JSON.stringify(charactersActingThisTurn));
+			if (charactersActingThisTurn.length > 0) {
+				console.log(JSON.stringify(charactersActingThisTurn));
+			}
 	
 			if (charactersActingThisTurn.length > 0) {
 				// TODO if a character is slowed the turn they are supposed to go, do they still go? I think the answer is yes since this is effectively them acting at the same time ... or maybe we need to do a check anyway ...

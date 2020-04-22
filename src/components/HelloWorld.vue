@@ -32,6 +32,9 @@
 		<input type="number" v-model="speedMin" value="" /> -
 		<input type="number" v-model="speedMax" value="" />
 		<br />
+		Times to test:
+		<input type="number" v-model="testTimes" value="" />
+		<br />
 		<button v-on:click="test">Test cases</button>
 		<div v-html="testResults"></div>
 	</div>
@@ -40,11 +43,11 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { DiceRoll, DiceRoller, Dice } from 'rpg-dice-roller';
+import { DiceRoll, DiceRoller } from 'rpg-dice-roller';
 import World from '../models/World';
 import Character from '../models/Character';
 import StatModification from '../models/StatModification';
-import { checkMelee, checkDodge, getCurrentMelee, getCurrentRange, getCurrentMagic, getCurrentArmor, getCurrentSpeed, getShortBaseStats, sortBySpeed, attackOpponent, getSuperShortBaseStats } from '../utilities/CharacterUtilities';
+import { getShortBaseStats, sortBySpeed, attackOpponent, getSuperShortBaseStats } from '../utilities/CharacterUtilities';
 import { createNewTestWorldForSingleBattle } from '../utilities/WorldUtilities';
 import { resolvePartyMoment, partyHasOngoingBattle, partyHasLivingMainCharacters } from '../utilities/PartyUtilities';
 
@@ -69,6 +72,10 @@ export default class HelloWorld extends Vue {
   armorMax = 2;
   speedMin = 8;
   speedMax = 12;
+  /**
+   * Number of times to test each stat option.
+   */
+  testTimes = 10;
   testResults: string[] = [];
 
   created() {
@@ -102,63 +109,65 @@ export default class HelloWorld extends Vue {
 				for (let armor = this.armorMin; armor <= this.armorMax; armor++) {
 					//this.testResults.push(`Starting armor ${armor}`);
 					for (let speed = this.speedMin; speed <= this.speedMax; speed++) {
-						// TODO loop x number of times
+						// Loop through x number of times.
+						for (let runTime = 0; runTime < this.testTimes; runTime++) {
 
-						const testCharacter = new Character();
-						testCharacter.id = world.generateNextChracterId();
-						testCharacter.side = 1;
-						testCharacter.baseStats.health = health;
-						testCharacter.baseStats.melee.value = attack;
-						testCharacter.baseStats.dodge = dodge;
-						testCharacter.baseStats.armor = armor;
-						testCharacter.baseStats.speed = speed;
-						testCharacter.setInitialTurn();
+							const testCharacter = new Character();
+							testCharacter.id = world.generateNextChracterId();
+							testCharacter.side = 1;
+							testCharacter.baseStats.health = health;
+							testCharacter.baseStats.melee.value = attack;
+							testCharacter.baseStats.dodge = dodge;
+							testCharacter.baseStats.armor = armor;
+							testCharacter.baseStats.speed = speed;
+							testCharacter.setInitialTurn();
 
-						const testOpponent = new Character();
-						testOpponent.side = 2;
-						testOpponent.baseStats.health = 10;
-						testOpponent.currentHealth = 10;
-						testOpponent.baseStats.melee.attacks[0].damage = '1d4';
-						testOpponent.setInitialTurn();
+							const testOpponent = new Character();
+							testOpponent.side = 2;
+							testOpponent.baseStats.health = 10;
+							testOpponent.currentHealth = 10;
+							testOpponent.baseStats.melee.attacks[0].damage = '1d4';
+							testOpponent.setInitialTurn();
 
-						const testWorld = createNewTestWorldForSingleBattle(testCharacter, testOpponent);
+							const testWorld = createNewTestWorldForSingleBattle(testCharacter, testOpponent);
 
-						let continueBattle = true;
-						let turns = 0;
-						console.log('start battle');
+							let continueBattle = true;
+							let turns = 0;
+							console.log('start battle');
 
-						// TODO should actually loop through characters by speed instead; those with smaller speed go first
-						let whileLoopNumber = 0;
-						while (continueBattle)
-						{
-							whileLoopNumber++;
-							if (whileLoopNumber > 500) {
-								console.log('more than 500 turns');
-								console.log(testWorld);
-								return;
+							// TODO should actually loop through characters by speed instead; those with smaller speed go first
+							let whileLoopNumber = 0;
+							while (continueBattle)
+							{
+								whileLoopNumber++;
+								if (whileLoopNumber > 500) {
+									console.log('more than 500 turns');
+									console.log(testWorld);
+									return;
+								}
+
+								const partiesMoment = resolvePartyMoment(testWorld.parties[0], testWorld.currentMoment);
+
+								if (partiesMoment.length > 0) {
+									this.testResults.push(partiesMoment);
+									turns++;
+								}
+
+								// TODO have this loop through all living characters and make sure only one party is represented
+								if (partyHasOngoingBattle(testWorld.parties[0])) {
+									testWorld.startNextMoment();
+								} else {
+									continueBattle = false;
+									break;
+								}
 							}
 
-							const partiesMoment = resolvePartyMoment(testWorld.parties[0], testWorld.currentMoment);
+							this.testResults.push(`Character ${JSON.stringify(getShortBaseStats(testCharacter))}`);
 
-							if (partiesMoment.length > 0) {
-								this.testResults.push(partiesMoment);
-								turns++;
-							}
+							this.finalResultsShort.push(`Character ${getSuperShortBaseStats(testCharacter)}, Time ${runTime}, Turns ${turns}, Heroes won ${partyHasLivingMainCharacters(testWorld.parties[0])}`);
 
-							// TODO have this loop through all living characters and make sure only one party is represented
-							if (partyHasOngoingBattle(testWorld.parties[0])) {
-								testWorld.startNextMoment();
-							} else {
-								continueBattle = false;
-								break;
-							}
+							//this.testResults.push(JSON.stringify(testWorld));
 						}
-
-						this.testResults.push(`Character ${JSON.stringify(getShortBaseStats(testCharacter))}`);
-
-						this.finalResultsShort.push(`Character ${getSuperShortBaseStats(testCharacter)}, Turns ${turns}, Heroes won ${partyHasLivingMainCharacters(testWorld.parties[0])}`);
-
-						//this.testResults.push(JSON.stringify(testWorld));
 					}
 				}
 			}
