@@ -1,6 +1,6 @@
 import Character from '@/models/Character';
 import { DiceRoll } from 'rpg-dice-roller';
-import { sortByHealth } from './CharacterSortingUtilities';
+import { sortByHealth } from './CharacterSortUtilities';
 
 export function attackOpponent(character: Character, opponent: Character) : string[] {
 	// TODO different for each type of attack, or should this determine what the character will attack with? should it just be simplified to an attack value?

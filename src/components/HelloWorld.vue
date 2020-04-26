@@ -103,7 +103,7 @@ import { attackOpponent, getSuperShortBaseStats, getCharacterWithMostHealth, get
 import { createNewTestWorldForSingleBattle } from '../utilities/WorldUtilities';
 import { resolvePartyMoment, partyHasOngoingBattle, partyHasLivingMainCharacters } from '../utilities/PartyUtilities';
 import Party from '../models/Party';
-import { sortBySpeed, sortByHealth, sortByDodge, sortByArmor } from '../utilities/CharacterSortingUtilities';
+import { sortBySpeed, sortByHealth, sortByDodge, sortByArmor } from '../utilities/CharacterSortUtilities';
 
 @Component
 export default class HelloWorld extends Vue {

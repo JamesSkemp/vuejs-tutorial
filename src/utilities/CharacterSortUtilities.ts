@@ -15,6 +15,10 @@ export function sortByHealth(characters: Character[]): Character[] {
 	});
 }
 
+/**
+ * Sorts characters by dodge, with those with the highest dodge being returned first.
+ * @param characters Characters to sort.
+ */
 export function sortByDodge(characters: Character[]): Character[] {
 	return characters.sort((n1, n2) => {
 		let dodgeCheck = getCurrentDodge(n2) - getCurrentDodge(n1);
@@ -25,6 +29,10 @@ export function sortByDodge(characters: Character[]): Character[] {
 	});
 }
 
+/**
+ * Sorts characters by armor, with those with the highest armor being returned first.
+ * @param characters Characters to sort.
+ */
 export function sortByArmor(characters: Character[]): Character[] {
 	return characters.sort((n1, n2) => {
 		let armorCheck = getCurrentArmor(n2) - getCurrentArmor(n1);
