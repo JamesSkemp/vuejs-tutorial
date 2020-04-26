@@ -1,5 +1,5 @@
 import Character from '@/models/Character';
-import { getCurrentDodge, getCurrentArmor, getCurrentSpeed } from './CharacterUtilities';
+import { getCurrentDodge, getCurrentArmor, getCurrentSpeed, getCurrentMelee, getCurrentRange, getCurrentMagic } from './CharacterUtilities';
 
 /**
  * Sorts characters by health, with those with the highest health being returned first.
@@ -13,6 +13,51 @@ export function sortByHealth(characters: Character[]): Character[] {
 		}
 		return healthCheck;
 	});
+}
+
+/**
+ * Sorts characters by melee, with those with the highest value being returned first.
+ * @param characters Characters to sort.
+ */
+export function sortByMelee(characters: Character[]): Character[] {
+	return characters.sort((n1, n2) => {
+		let check = getCurrentMelee(n2) - getCurrentMelee(n1);
+		if (check === 0) {
+			check = n2.baseStats.melee.value - n1.baseStats.melee.value;
+			// TODO account for attack preference?
+		}
+		return check;
+	})
+}
+
+/**
+ * Sorts characters by range, with those with the highest value being returned first.
+ * @param characters Characters to sort.
+ */
+export function sortByRange(characters: Character[]): Character[] {
+	return characters.sort((n1, n2) => {
+		let check = getCurrentRange(n2) - getCurrentRange(n1);
+		if (check === 0) {
+			check = n2.baseStats.range.value - n1.baseStats.range.value;
+			// TODO account for attack preference?
+		}
+		return check;
+	})
+}
+
+/**
+ * Sorts characters by magic, with those with the highest value being returned first.
+ * @param characters Characters to sort.
+ */
+export function sortByMagic(characters: Character[]): Character[] {
+	return characters.sort((n1, n2) => {
+		let check = getCurrentMagic(n2) - getCurrentMagic(n1);
+		if (check === 0) {
+			check = n2.baseStats.magic.value - n1.baseStats.magic.value;
+			// TODO account for attack preference?
+		}
+		return check;
+	})
 }
 
 /**

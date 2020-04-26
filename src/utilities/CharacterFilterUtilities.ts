@@ -1,5 +1,6 @@
 import Character from '@/models/Character';
-import { sortByHealth, sortBySpeed, sortByDodge, sortByArmor } from './CharacterSortUtilities';
+import { sortByHealth, sortBySpeed, sortByDodge, sortByArmor, sortByMelee, sortByRange, sortByMagic } from './CharacterSortUtilities';
+import { getCurrentMagic } from './CharacterUtilities';
 
 /**
  * Return the character with the most health, or null if there are no (living) characters.
@@ -23,6 +24,84 @@ export function getCharacterWithLowestHealth(characters: Character[]): Character
 
 	if (leastHealth.length > 0) {
 		return leastHealth[0];
+	}
+	return null;
+}
+
+/**
+ * Return the character with the highest melee, or null if there are no (living) characters.
+ * @param characters Characters to search.
+ */
+export function getCharacterWithHighestMelee(characters: Character[]): Character | null {
+	let most = sortByMelee(characters.filter(c => c.currentHealth > 0));
+
+	if (most.length > 0) {
+		return most[0];
+	}
+	return null;
+}
+
+/**
+ * Return the character with the lowest melee, or null if there are no (living) characters.
+ * @param characters Characters to search.
+ */
+export function getCharacterWithLowestMelee(characters: Character[]): Character | null {
+	let least = sortByMelee(characters.filter(c => c.currentHealth > 0));
+
+	if (least.length > 0) {
+		return least[0];
+	}
+	return null;
+}
+
+/**
+ * Return the character with the highest range, or null if there are no (living) characters.
+ * @param characters Characters to search.
+ */
+export function getCharacterWithHighestRange(characters: Character[]): Character | null {
+	let most = sortByRange(characters.filter(c => c.currentHealth > 0));
+
+	if (most.length > 0) {
+		return most[0];
+	}
+	return null;
+}
+
+/**
+ * Return the character with the lowest range, or null if there are no (living) characters.
+ * @param characters Characters to search.
+ */
+export function getCharacterWithLowestRange(characters: Character[]): Character | null {
+	let least = sortByRange(characters.filter(c => c.currentHealth > 0));
+
+	if (least.length > 0) {
+		return least[0];
+	}
+	return null;
+}
+
+/**
+ * Return the character with the highest magic, or null if there are no (living) characters.
+ * @param characters Characters to search.
+ */
+export function getCharacterWithHighestMagic(characters: Character[]): Character | null {
+	let most = sortByMagic(characters.filter(c => c.currentHealth > 0 && getCurrentMagic(c) > 0));
+
+	if (most.length > 0) {
+		return most[0];
+	}
+	return null;
+}
+
+/**
+ * Return the character with the lowest magic, or null if there are no (living or able) characters.
+ * @param characters Characters to search.
+ */
+export function getCharacterWithLowestMagic(characters: Character[]): Character | null {
+	let least = sortByMagic(characters.filter(c => c.currentHealth > 0 && getCurrentMagic(c) > 0));
+
+	if (least.length > 0) {
+		return least[0];
 	}
 	return null;
 }

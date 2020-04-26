@@ -103,7 +103,7 @@ import { attackOpponent, getSuperShortBaseStats } from '../utilities/CharacterUt
 import { createNewTestWorldForSingleBattle } from '../utilities/WorldUtilities';
 import { resolvePartyMoment, partyHasOngoingBattle, partyHasLivingMainCharacters } from '../utilities/PartyUtilities';
 import Party from '../models/Party';
-import { getCharacterWithHighestHealth, getCharacterWithLowestHealth } from '../utilities/CharacterFilterUtilities';
+import { getCharacterWithHighestHealth, getCharacterWithLowestHealth, getCharacterWithHighestMagic } from '../utilities/CharacterFilterUtilities';
 import { sortBySpeed, sortByHealth, sortByDodge, sortByArmor } from '../utilities/CharacterSortUtilities';
 
 @Component
@@ -616,6 +616,9 @@ export default class HelloWorld extends Vue {
 		console.log(JSON.stringify(getCharacterWithHighestHealth(testWorld.parties[0].mainCharacters)));
 		console.log('getcharacterwithleasthealth'); // should be 3
 		console.log(JSON.stringify(getCharacterWithLowestHealth(testWorld.parties[0].mainCharacters)));
+		console.log('highestMagic'); // should be null
+		console.log(JSON.stringify(getCharacterWithHighestMagic(testWorld.parties[0].mainCharacters)));
+		// TODO add additional item checks above and below
 		console.log('sortbydodge'); // should be 4, 2, 1, 3
 		console.log(JSON.stringify(sortByDodge(testWorld.parties[0].mainCharacters)));
 		console.log('sortbyarmor'); // should be 2, 4, 1, 3 (only 2 first matters)
