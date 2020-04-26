@@ -4,6 +4,7 @@ import World from './models/World';
 
 Vue.config.productionTip = false
 Vue.prototype.$world = new World();
+Vue.prototype.$testWorld = new World();
 
 new Vue({
   render: h => h(App)

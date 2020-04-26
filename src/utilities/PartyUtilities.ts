@@ -1,5 +1,5 @@
 import Party from '@/models/Party';
-import { sortBySpeed, attackOpponent } from './CharacterUtilities';
+import { sortBySpeed, attackOpponent, sortByHealth } from './CharacterUtilities';
 import Character from '@/models/Character';
 
 export function partyHasLivingMainCharacters(party: Party): boolean {
@@ -12,6 +12,11 @@ export function partyHasLivingOpponents(party: Party): boolean {
 
 export function partyHasOngoingBattle(party: Party) {
 	return partyHasLivingMainCharacters(party) && partyHasLivingOpponents(party);
+}
+
+export function getLivingPartyCharacters(characters: Character[]): Character[] {
+	let livingCharacters = characters.filter(c => c.currentHealth > 0);
+	return livingCharacters;
 }
 
 export function resolvePartyMoment(party: Party, currentMoment: number): string[] {
@@ -28,7 +33,7 @@ export function resolvePartyMoment(party: Party, currentMoment: number): string[
 			));
 	
 			if (charactersActingThisTurn.length > 0) {
-				console.log(JSON.stringify(charactersActingThisTurn));
+				//console.log(JSON.stringify(charactersActingThisTurn));
 			}
 	
 			if (charactersActingThisTurn.length > 0) {
@@ -42,7 +47,7 @@ export function resolvePartyMoment(party: Party, currentMoment: number): string[
 							c.side !== character.side && c.currentHealth > 0
 						)[0];
 	
-						console.log(opponent);
+						//console.log(opponent);
 	
 						messages.push(JSON.stringify(attackOpponent(character, opponent)));
 	

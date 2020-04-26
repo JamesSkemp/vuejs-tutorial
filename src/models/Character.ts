@@ -22,6 +22,9 @@ export default class Character {
 	public lastAttack: number = -1;
 	public nextAttack: number = -1;
 	public side: number = -1;
+	public isInBattle: boolean = false;
+	public isResting: boolean = false;
+	public testString: string = "";
 	// TODO store additional attacks the character has access to, outside default one
 
 	public constructor() {

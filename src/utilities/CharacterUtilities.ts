@@ -196,19 +196,64 @@ export function getShortBaseStats(character: Character): string {
 	return `Health ${character.baseStats.health}, Melee ${character.baseStats.melee.value}, Range ${character.baseStats.range.value}, Magic ${character.baseStats.magic.value}, Dodge ${character.baseStats.dodge}, Armor ${character.baseStats.armor}, Speed ${character.baseStats.speed}`;
 }
 
-export function sortBySpeed(characters: Character[]): Character[] {
+/**
+ * Return the character with the most health, or null if there are no (living) characters.
+ * @param characters Characters to search.
+ */
+export function getCharacterWithMostHealth(characters: Character[]): Character | null {
+	let mostHealth = sortByHealth(characters.filter(c => c.currentHealth > 0));
+
+	if (mostHealth.length > 0) {
+		return mostHealth[0];
+	}
+	return null;
+}
+
+/**
+ * Return the character with the least health, or null if there are no (living) characters.
+ * @param characters Characters to search.
+ */
+export function getCharacterWithLeastHealth(characters: Character[]): Character | null {
+	let leastHealth = sortByHealth(characters.filter(c => c.currentHealth > 0)).reverse();
+
+	if (leastHealth.length > 0) {
+		return leastHealth[0];
+	}
+	return null;
+}
+
+/**
+ * Sorts characters by health, with those with the highest health being returned first.
+ * @param characters Characters to sort.
+ */
+export function sortByHealth(characters: Character[]): Character[] {
 	return characters.sort((n1, n2) => {
-		// First order by their next attack.
-		let speedCheck = n2.nextAttack - n1.nextAttack;
-		if (speedCheck === 0) {
-			// If there's a tie we'll compare modified speed stats.
-			speedCheck = getCurrentSpeed(n2) - getCurrentSpeed(n1);
-			if (speedCheck === 0) {
-				// If those are the same compare base stats.
-				speedCheck = n2.baseStats.speed - n1.baseStats.speed;
-			}
+		let healthCheck = n2.currentHealth - n1.currentHealth;
+		if (healthCheck === 0) {
+			healthCheck = n2.baseStats.health - n1.baseStats.health;
 		}
 
+		return healthCheck;
+	});
+}
+
+/**
+ * Sorts characters by speed, with the quickest (lowest number) being before slower characters (higher number).
+ * @param characters Characters to sort.
+ */
+export function sortBySpeed(characters: Character[]): Character[] {
+	// For all checks we want the lower number to go first.
+	return characters.sort((n1, n2) => {
+		// First order by their next attack.
+		let speedCheck = n1.nextAttack - n2.nextAttack;
+		if (speedCheck === 0) {
+			// If there's a tie we'll compare modified speed stats.
+			speedCheck = getCurrentSpeed(n1) - getCurrentSpeed(n2);
+			if (speedCheck === 0) {
+				// If those are the same compare base stats.
+				speedCheck = n1.baseStats.speed - n2.baseStats.speed;
+			}
+		}
 		return speedCheck;
 	});
 }

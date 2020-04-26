@@ -33,11 +33,60 @@
 		<input type="number" v-model="speedMin" value="" /> -
 		<input type="number" v-model="speedMax" value="" />
 		<br />
+		Opponent health:
+		<input type="number" v-model="opponentHealth" value="" />
+		<br />
+		Opponent attack:
+		<input type="number" v-model="opponentAttack" value="" />
+		<br />
+		Opponent damage:
+		<input type="text" v-model="opponentDamage" value="" />
+		<br />
+		Opponent dodge:
+		<input type="number" v-model="opponentDodge" value="" />
+		<br />
+		Opponent armor:
+		<input type="number" v-model="opponentArmor" value="" />
+		<br />
+		Opponent speed:
+		<input type="number" v-model="opponentSpeed" value="" />
+		<br />
 		Times to test:
 		<input type="number" v-model="testTimes" value="" />
 		<br />
 		<button v-on:click="test">Test cases</button>
+		<button v-on:click="clearTestResults">Clear test results</button>
 		<div v-html="testResults"></div>
+	</div>
+	<div>
+		<h2>Console World Testing</h2>
+		Test character max health:
+		<input type="number" v-model="testCharacterMaxHealth" value="" />
+		<br />
+		Test character current health:
+		<input type="number" v-model="testCharacterCurrentHealth" value="" />
+		<br />
+		Test character melee:
+		<input type="number" v-model="testCharacterMelee" value="" />
+		<br />
+		Test character range:
+		<input type="number" v-model="testCharacterRange" value="" />
+		<br />
+		Test character magic:
+		<input type="number" v-model="testCharacterMagic" value="" />
+		<br />
+		Test character dodge:
+		<input type="number" v-model="testCharacterDodge" value="" />
+		<br />
+		Test character armor:
+		<input type="number" v-model="testCharacterArmor" value="" />
+		<br />
+		Test character speed:
+		<input type="number" v-model="testCharacterSpeed" value="" />
+		<br />
+		<button v-on:click="addTestCharacter">Add test character</button>
+		<br />
+		<button v-on:click="populateTestWorld">Populate test world</button>
 	</div>
   </div>
 </template>
@@ -48,9 +97,10 @@ import { DiceRoll, DiceRoller } from 'rpg-dice-roller';
 import World from '../models/World';
 import Character from '../models/Character';
 import StatModification from '../models/StatModification';
-import { getShortBaseStats, sortBySpeed, attackOpponent, getSuperShortBaseStats } from '../utilities/CharacterUtilities';
+import { getShortBaseStats, sortBySpeed, attackOpponent, getSuperShortBaseStats, sortByHealth, getCharacterWithMostHealth, getCharacterWithLeastHealth } from '../utilities/CharacterUtilities';
 import { createNewTestWorldForSingleBattle } from '../utilities/WorldUtilities';
 import { resolvePartyMoment, partyHasOngoingBattle, partyHasLivingMainCharacters } from '../utilities/PartyUtilities';
+import Party from '../models/Party';
 
 @Component
 export default class HelloWorld extends Vue {
@@ -63,8 +113,8 @@ export default class HelloWorld extends Vue {
   finalResults: string[] = [];
   finalResultsShort: string[] = [];
   timer = -1;
-  healthMin = 30;
-  healthMax = 30;
+  healthMin = 24;
+  healthMax = 36;
   attackMin = 5;
   attackMax = 14;
   dodgeMin = 5;
@@ -73,21 +123,35 @@ export default class HelloWorld extends Vue {
   armorMax = 2;
   speedMin = 8;
   speedMax = 12;
+  opponentHealth = 10;
+  opponentAttack = 12;
+  opponentDamage = '1d4';
+  opponentDodge = 6;
+  opponentArmor = 0;
+  opponentSpeed = 10;
   /**
    * Number of times to test each stat option.
    */
   testTimes = 10;
   testResults: string[] = [];
   finalResultShortLength = 0;
+  testCharacterMaxHealth = 30;
+  testCharacterCurrentHealth = 30;
+  testCharacterMelee = 12;
+  testCharacterRange = 10;
+  testCharacterMagic = 0;
+  testCharacterDodge = 6;
+  testCharacterArmor = 0;
+  testCharacterSpeed = 10;
 
   created() {
 	console.log('created');
-	console.log(this.$world);
+	//console.log(this.$world);
 
-	this.attackMin = 12;
+	/*this.attackMin = 12;
 	this.dodgeMin = 7;
 	this.armorMax = 1;
-	this.speedMin = 10;
+	this.speedMin = 10;*/
   }
 
   beforeDestroy() {
@@ -100,11 +164,20 @@ export default class HelloWorld extends Vue {
 	}, 1000);
   }
 
+  clearTestResults(): void {
+	this.finalResultsShort = [];
+  }
+
   test(): void {
 	const world: World = this.$world;
-	for (let health = this.healthMin; health <= this.healthMax; health += 5) {
+	for (let health = this.healthMin; health <= this.healthMax; health++) {
+		if (health % 3 !== 0) {
+			continue;
+		}
+		console.log(health);
 		//this.testResults.push(`Starting health ${health}`);
 		for (let attack = this.attackMin; attack <= this.attackMax; attack++) {
+			console.log(attack);
 			//this.testResults.push(`Starting attack ${attack}`);
 			for (let dodge = this.dodgeMin; dodge <= this.dodgeMax; dodge++) {
 				//this.testResults.push(`Starting dodge ${dodge}`);
@@ -126,9 +199,13 @@ export default class HelloWorld extends Vue {
 
 							const testOpponent = new Character();
 							testOpponent.side = 2;
-							testOpponent.baseStats.health = 10;
-							testOpponent.currentHealth = 10;
-							testOpponent.baseStats.melee.attacks[0].damage = '1d4';
+							testOpponent.baseStats.health = this.opponentHealth;
+							testOpponent.currentHealth = this.opponentHealth;
+							testOpponent.baseStats.melee.value = this.opponentAttack
+							testOpponent.baseStats.melee.attacks[0].damage = this.opponentDamage;
+							testOpponent.baseStats.dodge = this.opponentDodge;
+							testOpponent.baseStats.armor = this.opponentArmor;
+							testOpponent.baseStats.speed = this.opponentSpeed;
 							testOpponent.setInitialTurn();
 
 							const testWorld = createNewTestWorldForSingleBattle(testCharacter, testOpponent);
@@ -144,14 +221,15 @@ export default class HelloWorld extends Vue {
 								whileLoopNumber++;
 								if (whileLoopNumber > 500) {
 									console.log('more than 500 turns');
-									console.log(testWorld);
+									this.finalResultsShort.push(`[ENDED EARLY] Character ${getSuperShortBaseStats(testCharacter)}, Time ${runTime}, Turns ${turns}, Hero health ${testWorld.parties[0].mainCharacters[0].currentHealth}, Opponent health ${testWorld.parties[0].opponents[0].currentHealth}`);
+									//console.log(testWorld);
 									break;
 								}
 
 								const partiesMoment = resolvePartyMoment(testWorld.parties[0], testWorld.currentMoment);
 
 								if (partiesMoment.length > 0) {
-									this.testResults.push(partiesMoment);
+									//this.testResults.push(partiesMoment);
 									turns++;
 								}
 
@@ -164,9 +242,10 @@ export default class HelloWorld extends Vue {
 								}
 							}
 
-							this.testResults.push(`Character ${JSON.stringify(getShortBaseStats(testCharacter))}`);
-
-							this.finalResultsShort.push(`Character ${getSuperShortBaseStats(testCharacter)}, Time ${runTime}, Turns ${turns}, Heroes won ${partyHasLivingMainCharacters(testWorld.parties[0])}`);
+							//this.testResults.push(`Character ${JSON.stringify(getShortBaseStats(testCharacter))}`);
+							if (!partyHasLivingMainCharacters(testWorld.parties[0])) {
+								this.finalResultsShort.push(`Character ${getSuperShortBaseStats(testCharacter)}, Time ${runTime}, Turns ${turns}, Heroes won ${partyHasLivingMainCharacters(testWorld.parties[0])}`);
+							}
 
 							//this.testResults.push(JSON.stringify(testWorld));
 						}
@@ -457,8 +536,90 @@ export default class HelloWorld extends Vue {
 	// Remove health for damage.
 
 	this.timesRun2++;
+	// TODO change to have the character rest, using turns as needed
+	world.mainCharacters.forEach(character => {
+		character.revive();
+		character.isInBattle = false;
+	});
   }
 
+
+	addTestCharacter(): void {
+		const testWorld: World = this.$testWorld;
+
+		const newCharacter = new Character();
+		newCharacter.baseStats.health = this.testCharacterMaxHealth;
+		newCharacter.currentHealth = this.testCharacterCurrentHealth;
+		newCharacter.baseStats.melee.value = this.testCharacterMelee;
+		newCharacter.baseStats.range.value = this.testCharacterRange;
+		newCharacter.baseStats.magic.value = this.testCharacterMagic;
+		newCharacter.baseStats.dodge = this.testCharacterDodge;
+		newCharacter.baseStats.armor = this.testCharacterArmor;
+		newCharacter.baseStats.speed = this.testCharacterSpeed;
+
+		testWorld.mainCharacters.push(newCharacter);
+
+		console.log('sortbyhealth');
+		console.log(JSON.stringify(sortByHealth(testWorld.mainCharacters)));
+		console.log('getcharacterwithmosthealth');
+		console.log(JSON.stringify(getCharacterWithMostHealth(testWorld.mainCharacters)));
+		console.log('sortbyspeed');
+		console.log(JSON.stringify(sortBySpeed(testWorld.mainCharacters)));
+
+		/*
+		console.log('');
+		console.log(JSON.stringify());
+		*/
+
+		console.log(testWorld);
+	}
+
+	populateTestWorld(): void {
+		const testWorld: World = this.$testWorld;
+		testWorld.parties = [];
+		const testParty= new Party(0);
+
+		const testCharacter1 = new Character();
+		testCharacter1.id = 1;
+		testParty.mainCharacters.push(testCharacter1);
+
+		const testCharacter2 = new Character();
+		testCharacter2.id = 2;
+		testCharacter2.currentHealth = 26;
+		testCharacter2.statMods.speedModifications.push(new StatModification(-2, 1));
+		testParty.mainCharacters.push(testCharacter2);
+
+		const testCharacter3 = new Character();
+		testCharacter3.id = 3;
+		testCharacter3.baseStats.health = 27;
+		testCharacter3.currentHealth = 26;
+		testCharacter3.baseStats.speed = 8;
+		testParty.mainCharacters.push(testCharacter3);
+
+		const testCharacter4 = new Character();
+		testCharacter4.id = 4;
+		testCharacter4.currentHealth = 0;
+		testCharacter4.baseStats.speed = 9;
+		testParty.mainCharacters.push(testCharacter4);
+
+		testWorld.parties.push(testParty);
+
+		console.log('sortbyhealth'); // should be 1, 2, 3, 4
+		console.log(JSON.stringify(sortByHealth(testWorld.parties[0].mainCharacters)));
+		console.log('getcharacterwithmosthealth'); // should be 1
+		console.log(JSON.stringify(getCharacterWithMostHealth(testWorld.parties[0].mainCharacters)));
+		console.log('getcharacterwithleasthealth'); // should be 3
+		console.log(JSON.stringify(getCharacterWithLeastHealth(testWorld.parties[0].mainCharacters)));
+		console.log('sortbyspeed'); // should be 3, 2, 4, 1
+		console.log(JSON.stringify(sortBySpeed(testWorld.parties[0].mainCharacters)));
+
+		/*
+		console.log('');
+		console.log(JSON.stringify());
+		*/
+
+		console.log(testWorld);
+	}
 
 }
 </script>
