@@ -1,6 +1,10 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+	<div>
+		<button v-on:click="populateTestWorld">Populate test world</button>
+		<br /><br />
+	</div>
 	<button v-on:click="startTimer">Start timer - {{ timer }}</button>
 	<button v-on:click="rollDice">Roll dice - {{ timesRun }}</button>
 	<button v-on:click="rollDice2">Roll dice 2 - {{ timesRun2 }}</button>
@@ -85,8 +89,6 @@
 		<input type="number" v-model="testCharacterSpeed" value="" />
 		<br />
 		<button v-on:click="addTestCharacter">Add test character</button>
-		<br />
-		<button v-on:click="populateTestWorld">Populate test world</button>
 	</div>
   </div>
 </template>
@@ -97,7 +99,7 @@ import { DiceRoll, DiceRoller } from 'rpg-dice-roller';
 import World from '../models/World';
 import Character from '../models/Character';
 import StatModification from '../models/StatModification';
-import { getShortBaseStats, sortBySpeed, attackOpponent, getSuperShortBaseStats, sortByHealth, getCharacterWithMostHealth, getCharacterWithLeastHealth } from '../utilities/CharacterUtilities';
+import { getShortBaseStats, sortBySpeed, attackOpponent, getSuperShortBaseStats, sortByHealth, getCharacterWithMostHealth, getCharacterWithLeastHealth, sortByDodge, sortByArmor } from '../utilities/CharacterUtilities';
 import { createNewTestWorldForSingleBattle } from '../utilities/WorldUtilities';
 import { resolvePartyMoment, partyHasOngoingBattle, partyHasLivingMainCharacters } from '../utilities/PartyUtilities';
 import Party from '../models/Party';
@@ -587,6 +589,8 @@ export default class HelloWorld extends Vue {
 		testCharacter2.id = 2;
 		testCharacter2.currentHealth = 26;
 		testCharacter2.statMods.speedModifications.push(new StatModification(-2, 1));
+		testCharacter2.statMods.dodgeModifications.push(new StatModification(2, 1));
+		testCharacter2.baseStats.armor = 1;
 		testParty.mainCharacters.push(testCharacter2);
 
 		const testCharacter3 = new Character();
@@ -600,6 +604,7 @@ export default class HelloWorld extends Vue {
 		testCharacter4.id = 4;
 		testCharacter4.currentHealth = 0;
 		testCharacter4.baseStats.speed = 9;
+		testCharacter4.baseStats.dodge = 8;
 		testParty.mainCharacters.push(testCharacter4);
 
 		testWorld.parties.push(testParty);
@@ -610,6 +615,10 @@ export default class HelloWorld extends Vue {
 		console.log(JSON.stringify(getCharacterWithMostHealth(testWorld.parties[0].mainCharacters)));
 		console.log('getcharacterwithleasthealth'); // should be 3
 		console.log(JSON.stringify(getCharacterWithLeastHealth(testWorld.parties[0].mainCharacters)));
+		console.log('sortbydodge'); // should be 4, 2, 1, 3
+		console.log(JSON.stringify(sortByDodge(testWorld.parties[0].mainCharacters)));
+		console.log('sortbyarmor'); // should be 2, 4, 1, 3 (only 2 first matters)
+		console.log(JSON.stringify(sortByArmor(testWorld.parties[0].mainCharacters)));
 		console.log('sortbyspeed'); // should be 3, 2, 4, 1
 		console.log(JSON.stringify(sortBySpeed(testWorld.parties[0].mainCharacters)));
 

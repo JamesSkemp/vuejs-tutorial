@@ -172,6 +172,14 @@ export function getCurrentMagic(character: Character): number {
 	return magic;
 }
 
+export function getCurrentDodge(character: Character): number {
+	let dodge = character.baseStats.dodge;
+	character.statMods.dodgeModifications.forEach(mod => {
+		dodge += mod.amount;
+	});
+	return dodge;
+}
+
 export function getCurrentArmor(character: Character): number {
 	let armor = character.baseStats.armor;
 	character.statMods.armorModifications.forEach(mod => {
@@ -232,8 +240,27 @@ export function sortByHealth(characters: Character[]): Character[] {
 		if (healthCheck === 0) {
 			healthCheck = n2.baseStats.health - n1.baseStats.health;
 		}
-
 		return healthCheck;
+	});
+}
+
+export function sortByDodge(characters: Character[]): Character[] {
+	return characters.sort((n1, n2) => {
+		let dodgeCheck = getCurrentDodge(n2) - getCurrentDodge(n1);
+		if (dodgeCheck === 0) {
+			dodgeCheck = n2.baseStats.dodge - n1.baseStats.dodge;
+		}
+		return dodgeCheck;
+	});
+}
+
+export function sortByArmor(characters: Character[]): Character[] {
+	return characters.sort((n1, n2) => {
+		let armorCheck = getCurrentArmor(n2) - getCurrentArmor(n1);
+		if (armorCheck === 0) {
+			armorCheck = n2.baseStats.armor - n1.baseStats.armor;
+		}
+		return armorCheck;
 	});
 }
 
