@@ -3,12 +3,17 @@ import StatModifications from './StatModifications';
 import CombatStats from './CombatStats';
 import Attack from './Attack';
 import { getCurrentArmor, getCurrentSpeed } from '@/utilities/CharacterUtilities';
+import { AttackPreference } from '@/utilities/Enums';
 
 export default class Character {
 	/**
 	 * Unique id of the character, if a main character.
 	 */
 	public id: number = -1;
+	/**
+	 * How the character prefers to attack.
+	 */
+	public preferredAttack: AttackPreference;
 	/**
 	 * Stores the character's base stats. Temporary changes to these stats should be handled by `statMods` or `currentHealth`.
 	 */
@@ -29,6 +34,7 @@ export default class Character {
 
 	public constructor() {
 		// TODO accept id of some sort to change initial values
+		this.preferredAttack = AttackPreference.Melee;
 		this.baseStats = new BaseStats(30, 12, 10, 0, 6, 0, 10);
 		this.baseStats.melee.attacks.push(new Attack('Basic', '1d6'));
 		this.currentHealth = this.baseStats.health;
