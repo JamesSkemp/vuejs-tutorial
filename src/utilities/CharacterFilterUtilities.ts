@@ -183,3 +183,8 @@ export function getCharacterWithLowestSpeed(characters: Character[]): Character 
 	}
 	return null;
 }
+
+export function getLivingCharacters(characters: Character[]): Character[] {
+	let livingCharacters = characters.filter(c => c.currentHealth > 0);
+	return livingCharacters;
+}

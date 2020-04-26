@@ -27,7 +27,7 @@ export function sortByMelee(characters: Character[]): Character[] {
 			// TODO account for attack preference?
 		}
 		return check;
-	})
+	});
 }
 
 /**
@@ -42,7 +42,7 @@ export function sortByRange(characters: Character[]): Character[] {
 			// TODO account for attack preference?
 		}
 		return check;
-	})
+	});
 }
 
 /**
@@ -57,7 +57,7 @@ export function sortByMagic(characters: Character[]): Character[] {
 			// TODO account for attack preference?
 		}
 		return check;
-	})
+	});
 }
 
 /**
