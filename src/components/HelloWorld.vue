@@ -99,10 +99,11 @@ import { DiceRoll, DiceRoller } from 'rpg-dice-roller';
 import World from '../models/World';
 import Character from '../models/Character';
 import StatModification from '../models/StatModification';
-import { attackOpponent, getSuperShortBaseStats, getCharacterWithMostHealth, getCharacterWithLeastHealth } from '../utilities/CharacterUtilities';
+import { attackOpponent, getSuperShortBaseStats } from '../utilities/CharacterUtilities';
 import { createNewTestWorldForSingleBattle } from '../utilities/WorldUtilities';
 import { resolvePartyMoment, partyHasOngoingBattle, partyHasLivingMainCharacters } from '../utilities/PartyUtilities';
 import Party from '../models/Party';
+import { getCharacterWithHighestHealth, getCharacterWithLowestHealth } from '../utilities/CharacterFilterUtilities';
 import { sortBySpeed, sortByHealth, sortByDodge, sortByArmor } from '../utilities/CharacterSortUtilities';
 
 @Component
@@ -564,7 +565,7 @@ export default class HelloWorld extends Vue {
 		console.log('sortbyhealth');
 		console.log(JSON.stringify(sortByHealth(testWorld.mainCharacters)));
 		console.log('getcharacterwithmosthealth');
-		console.log(JSON.stringify(getCharacterWithMostHealth(testWorld.mainCharacters)));
+		console.log(JSON.stringify(getCharacterWithHighestHealth(testWorld.mainCharacters)));
 		console.log('sortbyspeed');
 		console.log(JSON.stringify(sortBySpeed(testWorld.mainCharacters)));
 
@@ -612,9 +613,9 @@ export default class HelloWorld extends Vue {
 		console.log('sortbyhealth'); // should be 1, 2, 3, 4
 		console.log(JSON.stringify(sortByHealth(testWorld.parties[0].mainCharacters)));
 		console.log('getcharacterwithmosthealth'); // should be 1
-		console.log(JSON.stringify(getCharacterWithMostHealth(testWorld.parties[0].mainCharacters)));
+		console.log(JSON.stringify(getCharacterWithHighestHealth(testWorld.parties[0].mainCharacters)));
 		console.log('getcharacterwithleasthealth'); // should be 3
-		console.log(JSON.stringify(getCharacterWithLeastHealth(testWorld.parties[0].mainCharacters)));
+		console.log(JSON.stringify(getCharacterWithLowestHealth(testWorld.parties[0].mainCharacters)));
 		console.log('sortbydodge'); // should be 4, 2, 1, 3
 		console.log(JSON.stringify(sortByDodge(testWorld.parties[0].mainCharacters)));
 		console.log('sortbyarmor'); // should be 2, 4, 1, 3 (only 2 first matters)

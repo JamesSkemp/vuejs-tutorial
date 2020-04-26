@@ -204,29 +204,3 @@ export function getSuperShortBaseStats(character: Character): string {
 export function getShortBaseStats(character: Character): string {
 	return `Health ${character.baseStats.health}, Melee ${character.baseStats.melee.value}, Range ${character.baseStats.range.value}, Magic ${character.baseStats.magic.value}, Dodge ${character.baseStats.dodge}, Armor ${character.baseStats.armor}, Speed ${character.baseStats.speed}`;
 }
-
-/**
- * Return the character with the most health, or null if there are no (living) characters.
- * @param characters Characters to search.
- */
-export function getCharacterWithMostHealth(characters: Character[]): Character | null {
-	let mostHealth = sortByHealth(characters.filter(c => c.currentHealth > 0));
-
-	if (mostHealth.length > 0) {
-		return mostHealth[0];
-	}
-	return null;
-}
-
-/**
- * Return the character with the least health, or null if there are no (living) characters.
- * @param characters Characters to search.
- */
-export function getCharacterWithLeastHealth(characters: Character[]): Character | null {
-	let leastHealth = sortByHealth(characters.filter(c => c.currentHealth > 0)).reverse();
-
-	if (leastHealth.length > 0) {
-		return leastHealth[0];
-	}
-	return null;
-}
