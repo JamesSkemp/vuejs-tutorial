@@ -99,10 +99,11 @@ import { DiceRoll, DiceRoller } from 'rpg-dice-roller';
 import World from '../models/World';
 import Character from '../models/Character';
 import StatModification from '../models/StatModification';
-import { getShortBaseStats, sortBySpeed, attackOpponent, getSuperShortBaseStats, sortByHealth, getCharacterWithMostHealth, getCharacterWithLeastHealth, sortByDodge, sortByArmor } from '../utilities/CharacterUtilities';
+import { attackOpponent, getSuperShortBaseStats, getCharacterWithMostHealth, getCharacterWithLeastHealth } from '../utilities/CharacterUtilities';
 import { createNewTestWorldForSingleBattle } from '../utilities/WorldUtilities';
 import { resolvePartyMoment, partyHasOngoingBattle, partyHasLivingMainCharacters } from '../utilities/PartyUtilities';
 import Party from '../models/Party';
+import { sortBySpeed, sortByHealth, sortByDodge, sortByArmor } from '../utilities/CharacterSortingUtilities';
 
 @Component
 export default class HelloWorld extends Vue {
@@ -429,7 +430,6 @@ export default class HelloWorld extends Vue {
 
 	const rpgDiceRoller = new DiceRoller();
 
-	let damageRoll: DiceRoll;
 	// TODO sort by final stats
 	// TODO will need to create battle group with just the characters fighting
 	let characters: Character[] = [];
