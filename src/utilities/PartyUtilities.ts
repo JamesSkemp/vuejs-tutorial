@@ -1,6 +1,7 @@
 import Party from '@/models/Party';
 import { attackOpponent } from './CharacterUtilities';
 import Character from '@/models/Character';
+import { sortBySpeed } from './CharacterSortUtilities';
 
 export function partyHasLivingMainCharacters(party: Party): boolean {
 	return party.mainCharacters.filter(c => c.currentHealth > 0).length > 0;

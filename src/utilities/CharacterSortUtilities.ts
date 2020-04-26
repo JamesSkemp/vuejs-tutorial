@@ -2,6 +2,17 @@ import Character from '@/models/Character';
 import { getCurrentDodge, getCurrentArmor, getCurrentSpeed, getCurrentMelee, getCurrentRange, getCurrentMagic } from './CharacterUtilities';
 
 /**
+ * Sorts characters by id, with those created first being returned first.
+ * @param characters Characters to sort.
+ */
+export function sortByCharacterId(characters: Character[]): Character[] {
+	return characters.sort((n1, n2) => {
+		let check = n1.id - n2.id;
+		return check;
+	});
+}
+
+/**
  * Sorts characters by health, with those with the highest health being returned first.
  * @param characters Characters to sort.
  */

@@ -100,7 +100,7 @@ import World from '../models/World';
 import Character from '../models/Character';
 import StatModification from '../models/StatModification';
 import { attackOpponent, getSuperShortBaseStats } from '../utilities/CharacterUtilities';
-import { createNewTestWorldForSingleBattle } from '../utilities/WorldUtilities';
+import { createNewTestWorldForSingleBattle, getUnusedPartyId, addPartyToWorld, disbandParty } from '../utilities/WorldUtilities';
 import { resolvePartyMoment, partyHasOngoingBattle, partyHasLivingMainCharacters } from '../utilities/PartyUtilities';
 import Party from '../models/Party';
 import { getCharacterWithHighestHealth, getCharacterWithLowestHealth, getCharacterWithHighestMagic } from '../utilities/CharacterFilterUtilities';
@@ -608,7 +608,11 @@ export default class HelloWorld extends Vue {
 		testCharacter4.baseStats.dodge = 8;
 		testParty.mainCharacters.push(testCharacter4);
 
-		testWorld.parties.push(testParty);
+		addPartyToWorld(testWorld, testParty);
+		addPartyToWorld(testWorld);
+		// Skip party id 2.
+		addPartyToWorld(testWorld, new Party(4));
+		addPartyToWorld(testWorld, new Party(3));
 
 		console.log('sortbyhealth'); // should be 1, 2, 3, 4
 		console.log(JSON.stringify(sortByHealth(testWorld.parties[0].mainCharacters)));
@@ -625,6 +629,14 @@ export default class HelloWorld extends Vue {
 		console.log(JSON.stringify(sortByArmor(testWorld.parties[0].mainCharacters)));
 		console.log('sortbyspeed'); // should be 3, 2, 4, 1
 		console.log(JSON.stringify(sortBySpeed(testWorld.parties[0].mainCharacters)));
+
+		console.log('getUnusedPartyId'); // should be 2
+		console.log(getUnusedPartyId(testWorld));
+
+		console.log('disband party');
+		console.log(JSON.stringify(testWorld));
+		console.log(disbandParty(testWorld, testWorld.parties[0]));
+		console.log(JSON.stringify(testWorld));
 
 		/*
 		console.log('');
