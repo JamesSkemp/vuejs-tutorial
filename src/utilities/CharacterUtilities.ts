@@ -21,7 +21,7 @@ export function attackOpponent(character: Character, opponent: Character) : stri
 			{
 				messages.push('Dodge failed.');
 			}
-			opponent.takeDamage(damageTotal);
+			takeDamage(opponent, damageTotal);
 			messages.push('Current health ' + opponent.currentHealth);
 		}
 	}
@@ -31,6 +31,23 @@ export function attackOpponent(character: Character, opponent: Character) : stri
 	}
 
 	return messages;
+}
+
+/**
+ * Damage to deal to the character, not including damage reduction like armor.
+ * @param character Character to take damage.
+ * @param damage Damage dealt to the character, before armor.
+ * @param minimumDamage Minimum damage to deal to the character.
+ */
+export function takeDamage(character: Character, damage: number, minimumDamage: number = 0) {
+	let damageTaken = damage;
+	damageTaken -= getCurrentArmor(character);
+
+	if (damageTaken < minimumDamage) {
+		damageTaken = minimumDamage;
+	}
+	// TODO some skills may negate this minimum damage
+	character.currentHealth -= damageTaken;
 }
 
 /**
@@ -195,6 +212,44 @@ export function getCurrentSpeed(character: Character): number {
 		speed += mod.amount;
 	});
 	return speed;
+}
+
+/**
+ * Setup a character for their first turn of a battle.
+ */
+export function setInitialTurn(character: Character, initialTurn: number = 0): void {
+	character.lastAttack = -1;
+	character.nextAttack = initialTurn + getCurrentSpeed(character);
+	character.isInBattle = true;
+}
+
+export function processTurn(character: Character, currentTurn: number): void {
+	character.statMods.processTurn();
+	character.lastAttack = currentTurn;
+	character.nextAttack += getCurrentSpeed(character);
+}
+
+/**
+ * Revives a character with current health set to a percentage of their maximum health. Stat mods are not taken into effect.
+ * @param character Character to revive.
+ * @param healthPercentage Percentage of health to restore them to.
+ */
+export function revive(character: Character, healthPercentage: number = 100): void {
+	character.currentHealth = Math.round(character.baseStats.health * (healthPercentage / 100));
+}
+
+export function getShortDetails(character: Character): string {
+	return `Character ${character.id} | Party ${character.side}`;
+}
+
+/**
+ * Completely resets all combat stats for a character. Should generally only be done for non-player characters.
+ */
+export function resetCombatStats(character: Character) {
+	character.combatStats.meleeFailures = 0;
+	character.combatStats.rangeFailures = 0;
+	character.combatStats.magicFailures = 0;
+	character.combatStats.dodgeFailures = 0;
 }
 
 export function getSuperShortBaseStats(character: Character): string {

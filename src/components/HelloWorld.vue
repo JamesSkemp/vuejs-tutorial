@@ -99,7 +99,7 @@ import { DiceRoll, DiceRoller } from 'rpg-dice-roller';
 import World from '../models/World';
 import Character from '../models/Character';
 import StatModification from '../models/StatModification';
-import { attackOpponent, getSuperShortBaseStats } from '../utilities/CharacterUtilities';
+import { attackOpponent, getSuperShortBaseStats, revive, processTurn, getShortDetails, setInitialTurn } from '../utilities/CharacterUtilities';
 import { createNewTestWorldForSingleBattle, getUnusedPartyId, addPartyToWorld, disbandParty } from '../utilities/WorldUtilities';
 import { resolvePartyMoment, partyHasOngoingBattle, partyHasLivingMainCharacters } from '../utilities/PartyUtilities';
 import Party from '../models/Party';
@@ -199,7 +199,7 @@ export default class HelloWorld extends Vue {
 							testCharacter.baseStats.dodge = dodge;
 							testCharacter.baseStats.armor = armor;
 							testCharacter.baseStats.speed = speed;
-							testCharacter.setInitialTurn();
+							setInitialTurn(testCharacter);
 
 							const testOpponent = new Character();
 							testOpponent.side = 2;
@@ -210,7 +210,7 @@ export default class HelloWorld extends Vue {
 							testOpponent.baseStats.dodge = this.opponentDodge;
 							testOpponent.baseStats.armor = this.opponentArmor;
 							testOpponent.baseStats.speed = this.opponentSpeed;
-							testOpponent.setInitialTurn();
+							setInitialTurn(testOpponent);
 
 							const testWorld = createNewTestWorldForSingleBattle(testCharacter, testOpponent);
 
@@ -407,7 +407,7 @@ export default class HelloWorld extends Vue {
 		character1.statMods.meleeModifications.push(new StatModification(2, 1));
 		character1.statMods.dodgeModifications.push(new StatModification(1, 4));
 		character1.statMods.speedModifications.push(new StatModification(-1, 1));
-		character1.setInitialTurn();
+		setInitialTurn(character1);
 
 		world.mainCharacters.push(character1);
 
@@ -426,7 +426,7 @@ export default class HelloWorld extends Vue {
 	character2.baseStats.health = 10;
 	character2.currentHealth = 10;
 	character2.baseStats.melee.attacks[0].damage = '1d4';
-	character2.setInitialTurn();
+	setInitialTurn(character2);
 	console.log(character2.nextAttack);
 
 	const rpgDiceRoller = new DiceRoller();
@@ -440,7 +440,7 @@ export default class HelloWorld extends Vue {
 	console.log(JSON.stringify(characters));
 	// Set the initial turn on all characters in the battle to the current moment.
 	characters.forEach(character => {
-		character.setInitialTurn(world.currentMoment);
+		setInitialTurn(character, world.currentMoment);
 	})
 
 	console.log(JSON.stringify(characters));
@@ -481,7 +481,7 @@ export default class HelloWorld extends Vue {
 			charactersActingThisTurn.forEach(character => {
 				// Verify that they should still be going.
 				if (character.nextAttack <= world.currentMoment) {
-					this.diceRoll += '<strong>Character going: ' + character.getShortDetails() + '</strong><br />';
+					this.diceRoll += '<strong>Character going: ' + getShortDetails(character) + '</strong><br />';
 					// TODO determine target - stop early if there's no one left alive?
 					const opponent = characters.filter(c =>
 						c.side !== character.side && c.currentHealth > 0
@@ -491,7 +491,7 @@ export default class HelloWorld extends Vue {
 
 					this.diceRoll += JSON.stringify(attackOpponent(character, opponent)) + '<br />';
 
-					character.processTurn(world.currentMoment);
+					processTurn(character, world.currentMoment);
 
 				}
 			});
@@ -541,7 +541,7 @@ export default class HelloWorld extends Vue {
 	this.timesRun2++;
 	// TODO change to have the character rest, using turns as needed
 	world.mainCharacters.forEach(character => {
-		character.revive();
+		revive(character);
 		character.isInBattle = false;
 	});
   }

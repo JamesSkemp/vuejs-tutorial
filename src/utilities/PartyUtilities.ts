@@ -1,5 +1,5 @@
 import Party from '@/models/Party';
-import { attackOpponent } from './CharacterUtilities';
+import { attackOpponent, processTurn, getShortDetails } from './CharacterUtilities';
 import Character from '@/models/Character';
 import { sortBySpeed } from './CharacterSortUtilities';
 
@@ -37,7 +37,7 @@ export function resolvePartyMoment(party: Party, currentMoment: number): string[
 				charactersActingThisTurn.forEach(character => {
 					// Verify that they should still be going.
 					if (character.nextAttack <= currentMoment) {
-						messages.push('<strong>Character going: ' + character.getShortDetails() + '</strong>');
+						messages.push('<strong>Character going: ' + getShortDetails(character) + '</strong>');
 						// TODO determine target - stop early if there's no one left alive?
 						const opponent = characters.filter(c =>
 							c.side !== character.side && c.currentHealth > 0
@@ -47,7 +47,7 @@ export function resolvePartyMoment(party: Party, currentMoment: number): string[
 	
 						messages.push(JSON.stringify(attackOpponent(character, opponent)));
 	
-						character.processTurn(currentMoment);
+						processTurn(character, currentMoment);
 					}
 				});
 			}
