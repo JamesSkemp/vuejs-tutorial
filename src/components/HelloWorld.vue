@@ -149,7 +149,7 @@ export default class HelloWorld extends Vue {
   testCharacterSpeed = 10;
 
   created() {
-	console.log('created');
+	console.log('component created');
 	//console.log(this.$world);
 
 	/*this.attackMin = 12;

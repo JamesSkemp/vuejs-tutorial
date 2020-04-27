@@ -33,7 +33,7 @@ export default class Character {
 	// TODO store additional attacks the character has access to, outside default one
 
 	public constructor() {
-		// TODO accept id of some sort to change initial values
+		// TODO accept id of some sort to change initial values, or should this be a utility?
 		this.preferredAttack = AttackPreference.Melee;
 		this.baseStats = new BaseStats(30, 12, 10, 0, 6, 0, 10);
 		this.baseStats.melee.attacks.push(new Attack('Basic', '1d6'));
@@ -42,6 +42,5 @@ export default class Character {
 		this.combatStats = new CombatStats();
 	}
 
-	// TODO functionality to get current stats based upon baseStats and statMods
 	// TODO roll melee, range, magic, dodge functions, with proper failure tracking
 }
