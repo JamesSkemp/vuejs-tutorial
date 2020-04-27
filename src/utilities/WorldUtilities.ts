@@ -5,6 +5,23 @@ import { sortPartiesById } from './WorldSortUtilities';
 import { PartyState } from './Enums';
 import { sortByCharacterId } from './CharacterSortUtilities';
 
+export function startNextMoment(world: World): void {
+	/*this.parties.forEach(party => {
+		console.log(party);
+	});*/
+	// TODO handle isPaused
+	// TODO this should probably do something with combat as well?
+	world.currentMoment++;
+}
+
+/**
+ * Initializes and returns next character id.
+ */
+export function generateNextCharacterId(world: World): number {
+	world.nextCharacterId++;
+	return world.nextCharacterId;
+}
+
 /**
  * Adds a party to a world. Returns the party id of the added party.
  * @param world World to add the party to.

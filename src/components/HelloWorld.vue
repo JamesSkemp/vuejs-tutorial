@@ -100,7 +100,7 @@ import World from '../models/World';
 import Character from '../models/Character';
 import StatModification from '../models/StatModification';
 import { attackOpponent, getSuperShortBaseStats, revive, processTurn, getShortDetails, setInitialTurn } from '../utilities/CharacterUtilities';
-import { createNewTestWorldForSingleBattle, getUnusedPartyId, addPartyToWorld, disbandParty } from '../utilities/WorldUtilities';
+import { createNewTestWorldForSingleBattle, getUnusedPartyId, addPartyToWorld, disbandParty, startNextMoment, generateNextChracterId } from '../utilities/WorldUtilities';
 import { resolvePartyMoment, partyHasOngoingBattle, partyHasLivingMainCharacters } from '../utilities/PartyUtilities';
 import Party from '../models/Party';
 import { getCharacterWithHighestHealth, getCharacterWithLowestHealth, getCharacterWithHighestMagic } from '../utilities/CharacterFilterUtilities';
@@ -192,7 +192,7 @@ export default class HelloWorld extends Vue {
 						for (let runTime = 0; runTime < this.testTimes; runTime++) {
 
 							const testCharacter = new Character();
-							testCharacter.id = world.generateNextChracterId();
+							testCharacter.id = generateNextCharacterId(world);
 							testCharacter.side = 1;
 							testCharacter.baseStats.health = health;
 							testCharacter.baseStats.melee.value = attack;
@@ -239,7 +239,7 @@ export default class HelloWorld extends Vue {
 
 								// TODO have this loop through all living characters and make sure only one party is represented
 								if (partyHasOngoingBattle(testWorld.parties[0])) {
-									testWorld.startNextMoment();
+									startNextMoment(testWorld);
 								} else {
 									continueBattle = false;
 									break;
@@ -400,7 +400,7 @@ export default class HelloWorld extends Vue {
 	if (world.mainCharacters.length === 0) {
 		// Determine characters that are participating in the battle.
 		const character1 = new Character();
-		character1.id = world.generateNextChracterId();
+		character1.id = generateNextChracterId(world);
 		// TODO handle party setting better
 		character1.side = 1;
 		// TODO remove temporary boosts - added for testing
@@ -500,7 +500,7 @@ export default class HelloWorld extends Vue {
 
 		// TODO have this loop through all living characters and make sure only one party is represented
 		if (world.mainCharacters[0].currentHealth > 0 && character2.currentHealth > 0) {
-			world.startNextMoment();
+			startNextMoment(world);
 		} else {
 			continueBattle = false;
 			break;

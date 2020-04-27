@@ -1,6 +1,7 @@
 import Character from '@/models/Character';
 import { DiceRoll } from 'rpg-dice-roller';
 import { sortByHealth } from './CharacterSortUtilities';
+import { processStatModificationTurn } from './StatModificationUtilities';
 
 export function attackOpponent(character: Character, opponent: Character) : string[] {
 	// TODO different for each type of attack, or should this determine what the character will attack with? should it just be simplified to an attack value?
@@ -224,7 +225,7 @@ export function setInitialTurn(character: Character, initialTurn: number = 0): v
 }
 
 export function processTurn(character: Character, currentTurn: number): void {
-	character.statMods.processTurn();
+	processStatModificationTurn(character.statMods);
 	character.lastAttack = currentTurn;
 	character.nextAttack += getCurrentSpeed(character);
 }
