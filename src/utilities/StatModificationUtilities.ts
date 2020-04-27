@@ -1,6 +1,46 @@
 import StatModifications from '@/models/StatModifications';
 import StatModification from '@/models/StatModification';
 
+export function addHealthModification(statMods: StatModifications, statMod: StatModification) {
+	// TODO what if a modification already exists? does it extend or replace?
+	statMods.healthModifications.push(statMod);
+}
+
+export function addMeleeModification(statMods: StatModifications, statMod: StatModification) {
+	// TODO what if a modification already exists? does it extend or replace?
+	statMods.meleeModifications.push(statMod);
+}
+
+export function addRangeModification(statMods: StatModifications, statMod: StatModification) {
+	// TODO what if a modification already exists? does it extend or replace?
+	statMods.rangeModifications.push(statMod);
+}
+
+export function addMagicModification(statMods: StatModifications, statMod: StatModification) {
+	// TODO what if a modification already exists? does it extend or replace?
+	statMods.magicModifications.push(statMod);
+}
+
+export function addDodgeModification(statMods: StatModifications, statMod: StatModification) {
+	// TODO what if a modification already exists? does it extend or replace?
+	statMods.dodgeModifications.push(statMod);
+}
+
+export function addArmorModification(statMods: StatModifications, statMod: StatModification) {
+	// TODO what if a modification already exists? does it extend or replace?
+	statMods.armorModifications.push(statMod);
+}
+
+export function addSpeedModification(statMods: StatModifications, statMod: StatModification) {
+	// TODO what if a modification already exists? does it extend or replace?
+	statMods.speedModifications.push(statMod);
+}
+
+export function addDamageModification(statMods: StatModifications, statMod: StatModification) {
+	// TODO what if a modification already exists? does it extend or replace?
+	statMods.damageModifications.push(statMod);
+}
+
 /**
  * Process a turn on all modifications, decreasing turn counts and dropping any that are no longer valid.
  * @param statMods StatModifications to process.

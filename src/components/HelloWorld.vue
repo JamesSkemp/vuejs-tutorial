@@ -100,11 +100,12 @@ import World from '../models/World';
 import Character from '../models/Character';
 import StatModification from '../models/StatModification';
 import { attackOpponent, getSuperShortBaseStats, revive, processTurn, getShortDetails, setInitialTurn } from '../utilities/CharacterUtilities';
-import { createNewTestWorldForSingleBattle, getUnusedPartyId, addPartyToWorld, disbandParty, startNextMoment, generateNextChracterId } from '../utilities/WorldUtilities';
+import { createNewTestWorldForSingleBattle, getUnusedPartyId, addPartyToWorld, disbandParty, startNextMoment, generateNextChracterId, generateNextCharacterId } from '../utilities/WorldUtilities';
 import { resolvePartyMoment, partyHasOngoingBattle, partyHasLivingMainCharacters } from '../utilities/PartyUtilities';
 import Party from '../models/Party';
 import { getCharacterWithHighestHealth, getCharacterWithLowestHealth, getCharacterWithHighestMagic } from '../utilities/CharacterFilterUtilities';
 import { sortBySpeed, sortByHealth, sortByDodge, sortByArmor } from '../utilities/CharacterSortUtilities';
+import { addMeleeModification, addDodgeModification, addSpeedModification } from '../utilities/StatModificationUtilities';
 
 @Component
 export default class HelloWorld extends Vue {
@@ -404,9 +405,9 @@ export default class HelloWorld extends Vue {
 		// TODO handle party setting better
 		character1.side = 1;
 		// TODO remove temporary boosts - added for testing
-		character1.statMods.meleeModifications.push(new StatModification(2, 1));
-		character1.statMods.dodgeModifications.push(new StatModification(1, 4));
-		character1.statMods.speedModifications.push(new StatModification(-1, 1));
+		addMeleeModification(character1.statMods, new StatModification(2, 1));
+		addDodgeModification(character1, new StatModification(1, 4));
+		addSpeedModification(character1, new StatModification(-1, 1));
 		setInitialTurn(character1);
 
 		world.mainCharacters.push(character1);
