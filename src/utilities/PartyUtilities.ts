@@ -2,6 +2,29 @@ import Party from '@/models/Party';
 import { attackOpponent, processTurn, getShortDetails } from './CharacterUtilities';
 import Character from '@/models/Character';
 import { sortBySpeed } from './CharacterSortUtilities';
+import { sortByPartyId } from './PartySortUtilities';
+
+/**
+ * Combine multiple parties together. Returns true if parties are combined.
+ * @param parties Parties to combine together.
+ */
+export function combineParties(parties: Party[]): boolean {
+	// Filter the parties to just those with characters in them.
+	parties = sortByPartyId(parties.filter(p => p.mainCharacters.length > 0));
+	if (parties.length > 1) {
+		for (let i = 1; i < parties.length; i++) {
+			while (parties[i].mainCharacters.length > 0) {
+				const partyMember = parties[i].mainCharacters[0];
+				console.log(partyMember);
+				parties[i].mainCharacters.splice(0, 1);
+
+				parties[0].mainCharacters.push(partyMember);
+			}
+		}
+		return true;
+	}
+	return false;
+}
 
 export function partyHasLivingMainCharacters(party: Party): boolean {
 	return party.mainCharacters.filter(c => c.currentHealth > 0).length > 0;

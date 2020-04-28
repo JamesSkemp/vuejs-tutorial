@@ -83,3 +83,5 @@ function filterExpiredStatModification(element: StatModification): boolean {
 	return element.turns > 0;
 }
 
+// TODO add functionality to prematurely remove or decrement a modification
+// TODO add functionality to see if a particular modification has been added (for example, paralysis, poison) - it should check all stats since it's possible for one effect to impact multiple stats

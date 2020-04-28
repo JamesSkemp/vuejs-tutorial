@@ -100,8 +100,8 @@ import World from '../models/World';
 import Character from '../models/Character';
 import StatModification from '../models/StatModification';
 import { attackOpponent, getSuperShortBaseStats, revive, processTurn, getShortDetails, setInitialTurn } from '../utilities/CharacterUtilities';
-import { createNewTestWorldForSingleBattle, getUnusedPartyId, addPartyToWorld, disbandParty, startNextMoment, generateNextChracterId, generateNextCharacterId } from '../utilities/WorldUtilities';
-import { resolvePartyMoment, partyHasOngoingBattle, partyHasLivingMainCharacters } from '../utilities/PartyUtilities';
+import { createNewTestWorldForSingleBattle, getUnusedPartyId, addPartyToWorld, disbandParty, startNextMoment, generateNextCharacterId } from '../utilities/WorldUtilities';
+import { resolvePartyMoment, partyHasOngoingBattle, partyHasLivingMainCharacters, combineParties } from '../utilities/PartyUtilities';
 import Party from '../models/Party';
 import { getCharacterWithHighestHealth, getCharacterWithLowestHealth, getCharacterWithHighestMagic } from '../utilities/CharacterFilterUtilities';
 import { sortBySpeed, sortByHealth, sortByDodge, sortByArmor } from '../utilities/CharacterSortUtilities';
@@ -406,8 +406,8 @@ export default class HelloWorld extends Vue {
 		character1.side = 1;
 		// TODO remove temporary boosts - added for testing
 		addMeleeModification(character1.statMods, new StatModification(2, 1));
-		addDodgeModification(character1, new StatModification(1, 4));
-		addSpeedModification(character1, new StatModification(-1, 1));
+		addDodgeModification(character1.statMods, new StatModification(1, 4));
+		addSpeedModification(character1.statMods, new StatModification(-1, 1));
 		setInitialTurn(character1);
 
 		world.mainCharacters.push(character1);
@@ -638,6 +638,11 @@ export default class HelloWorld extends Vue {
 		console.log(JSON.stringify(testWorld));
 		console.log(disbandParty(testWorld, testWorld.parties[0]));
 		console.log(JSON.stringify(testWorld));
+
+		console.log('combine parties');
+		console.log(JSON.stringify(testWorld.parties));
+		console.log(combineParties([testWorld.parties[0], testWorld.parties[1], testWorld.parties[2], testWorld.parties[6]]));
+		console.log(JSON.stringify(testWorld.parties));
 
 		/*
 		console.log('');

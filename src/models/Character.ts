@@ -2,7 +2,6 @@ import BaseStats from './BaseStats';
 import StatModifications from './StatModifications';
 import CombatStats from './CombatStats';
 import Attack from './Attack';
-import { getCurrentArmor, getCurrentSpeed } from '@/utilities/CharacterUtilities';
 import { AttackPreference } from '@/utilities/Enums';
 
 export default class Character {
@@ -30,7 +29,6 @@ export default class Character {
 	public isInBattle: boolean = false;
 	public isResting: boolean = false;
 	public testString: string = "";
-	// TODO store additional attacks the character has access to, outside default one
 
 	public constructor() {
 		// TODO accept id of some sort to change initial values, or should this be a utility?
@@ -41,6 +39,4 @@ export default class Character {
 		this.statMods = new StatModifications();
 		this.combatStats = new CombatStats();
 	}
-
-	// TODO roll melee, range, magic, dodge functions, with proper failure tracking
 }

@@ -238,10 +238,6 @@ export function revive(character: Character, healthPercentage: number = 100): vo
 	character.currentHealth = Math.round(character.baseStats.health * (healthPercentage / 100));
 }
 
-export function getShortDetails(character: Character): string {
-	return `Character ${character.id} | Party ${character.side}`;
-}
-
 /**
  * Completely resets all combat stats for a character. Should generally only be done for non-player characters.
  */
@@ -250,6 +246,10 @@ export function resetCombatStats(character: Character) {
 	character.combatStats.rangeFailures = 0;
 	character.combatStats.magicFailures = 0;
 	character.combatStats.dodgeFailures = 0;
+}
+
+export function getShortDetails(character: Character): string {
+	return `Character ${character.id} | Party ${character.side}`;
 }
 
 export function getSuperShortBaseStats(character: Character): string {

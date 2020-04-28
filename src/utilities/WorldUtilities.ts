@@ -101,5 +101,5 @@ export function createNewTestWorldForSingleBattle(character: Character, opponent
 	return newWorld;
 }
 
-// TODO function to switch character from one party to another
-// TODO combine parties
+// TODO function to switch character from one party to another - sort of done - workflow is disband party, then combine parties
+// TODO functionality to remove empty parties
