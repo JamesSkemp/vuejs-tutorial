@@ -35,7 +35,7 @@ export function addPartyToWorld(world: World, party?: Party): number {
 		world.parties.push(party);
 		return party.id;
 	} else {
-		let newParty = new Party(getUnusedPartyId(world));
+		const newParty = new Party(getUnusedPartyId(world));
 		world.parties.push(newParty);
 		return newParty.id;
 	}
@@ -45,13 +45,13 @@ export function getUnusedPartyId(world: World): number {
 	if (world.parties.length === 0) {
 		return 0;
 	}
-	let sortedParties = sortPartiesById(world);
-	let minId = sortedParties[0].id;
+	const sortedParties = sortPartiesById(world);
+	const minId = sortedParties[0].id;
 	if (minId > 0) {
 		return 0;
 	}
 	let unusedId = 1;
-	for (let party of sortedParties) {
+	for (const party of sortedParties) {
 		if (party.id > unusedId) {
 			break;
 		} else if (party.id === unusedId) {
@@ -75,10 +75,10 @@ export function disbandParty(world: World, party: Party): boolean {
 			sortByCharacterId(party.mainCharacters);
 
 			while (party.mainCharacters.length > 1) {
-				let partyMember = party.mainCharacters[1];
+				const partyMember = party.mainCharacters[1];
 				party.mainCharacters.splice(1, 1);
 
-				let newParty = new Party(-1);
+				const newParty = new Party(-1);
 				newParty.mainCharacters.push(partyMember);
 
 				addPartyToWorld(world, newParty);
@@ -90,9 +90,9 @@ export function disbandParty(world: World, party: Party): boolean {
 }
 
 export function createNewTestWorldForSingleBattle(character: Character, opponent: Character): World {
-	let newWorld: World = new World();
+	const newWorld: World = new World();
 
-	let newParty = new Party(0);
+	const newParty = new Party(0);
 	newParty.mainCharacters.push(character);
 	newParty.opponents.push(opponent);
 
@@ -102,6 +102,4 @@ export function createNewTestWorldForSingleBattle(character: Character, opponent
 }
 
 // TODO function to switch character from one party to another
-// TODO disband party
 // TODO combine parties
-// TODO fix sort order of parties so they're by id?

@@ -16,7 +16,7 @@ export function partyHasOngoingBattle(party: Party) {
 }
 
 export function resolvePartyMoment(party: Party, currentMoment: number): string[] {
-	let messages: string[] = [];
+	const messages: string[] = [];
 	if (party.mainCharacters.length > 0) {
 		if (party.opponents.length > 0) {
 			let characters: Character[] = [];

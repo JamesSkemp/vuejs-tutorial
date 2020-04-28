@@ -7,7 +7,7 @@ import { getCurrentDodge, getCurrentArmor, getCurrentSpeed, getCurrentMelee, get
  */
 export function sortByCharacterId(characters: Character[]): Character[] {
 	return characters.sort((n1, n2) => {
-		let check = n1.id - n2.id;
+		const check = n1.id - n2.id;
 		return check;
 	});
 }

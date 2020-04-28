@@ -1,15 +1,14 @@
 import Character from '@/models/Character';
 import { DiceRoll } from 'rpg-dice-roller';
-import { sortByHealth } from './CharacterSortUtilities';
 import { processStatModificationTurn } from './StatModificationUtilities';
 
-export function attackOpponent(character: Character, opponent: Character) : string[] {
+export function attackOpponent(character: Character, opponent: Character): string[] {
 	// TODO different for each type of attack, or should this determine what the character will attack with? should it just be simplified to an attack value?
-	let messages: string[] = [];
+	const messages: string[] = [];
 	if (checkMelee(character))
 	{
 		messages.push('Character hit');
-		let damageRoll = new DiceRoll(character.baseStats.melee.attacks[0].damage);
+		const damageRoll = new DiceRoll(character.baseStats.melee.attacks[0].damage);
 		if (damageRoll.total > 0)
 		{
 			messages.push('Damage of ' + damageRoll.total);
