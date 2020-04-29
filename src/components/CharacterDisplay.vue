@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<h4>Character {{ character.id }}</h4>
-		<p>Health: {{ character.currentHealth }} of {{ character.baseStats.health }}<br />
+		<p>{{ this.healthText }}<br />
 		</p>
 		<p style="overflow-wrap: break-word;">{{ JSON.stringify(character) }}</p>
 	</div>
@@ -13,6 +13,11 @@ import Character from '../models/Character';
 @Component
 export default class CharacterDisplay extends Vue {
 	@Prop() character!: Character;
+	healthText: string;
+
+	created() {
+		this.healthText = `Health: ${this.character.currentHealth} of ${this.character.baseStats.health}`;
+	}
 }
 </script>
 

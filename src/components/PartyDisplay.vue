@@ -1,6 +1,6 @@
 <template>
 	<div class="partyBlock">
-		<h2>Party {{ party.id }}</h2>
+		<h2>{{ partyHeading }}</h2>
 		<div>
 			State: {{ stateText }}
 			<div v-if="party.mainCharacters.length > 0">
@@ -32,9 +32,11 @@ import { partyStateToText } from '../utilities/Enums'
 
 export default class PartyDisplay extends Vue {
 	@Prop() private party!: Party;
+	partyHeading: string;
 	stateText: string;
 
 	created() {
+		this.partyHeading = `Party ${this.party.id}`;
 		this.stateText = partyStateToText(this.party.state);
 	}
 }
