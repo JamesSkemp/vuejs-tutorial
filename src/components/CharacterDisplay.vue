@@ -13,7 +13,7 @@ import Character from '../models/Character';
 @Component
 export default class CharacterDisplay extends Vue {
 	@Prop() character!: Character;
-	healthText: string;
+	healthText = '';
 
 	created() {
 		this.healthText = `Health: ${this.character.currentHealth} of ${this.character.baseStats.health}`;

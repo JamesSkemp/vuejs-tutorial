@@ -99,7 +99,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import PartyDisplay from './PartyDisplay';
+import PartyDisplay from './PartyDisplay.vue';
 import { DiceRoll, DiceRoller } from 'rpg-dice-roller';
 import World from '../models/World';
 import Character from '../models/Character';
@@ -297,9 +297,9 @@ export default class HelloWorld extends Vue {
 		currentHealth: 10
 	};
 
-	let roll: DiceRoll | DiceRoll[];
-	let damageRoll: DiceRoll | DiceRoll[];
-	let dodgeRoll: DiceRoll | DiceRoll[];
+	let roll: DiceRoll;
+	let damageRoll: DiceRoll;
+	let dodgeRoll: DiceRoll;
 	let currentCharacter = 0;
 	let nextCharacter = 1;
 	let damageTotal = 0;

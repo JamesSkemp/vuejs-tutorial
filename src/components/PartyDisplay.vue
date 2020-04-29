@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import CharacterDisplay from './CharacterDisplay';
+import CharacterDisplay from './CharacterDisplay.vue';
 import Party from '../models/Party';
 import { partyStateToText } from '../utilities/Enums'
 @Component({
@@ -32,7 +32,7 @@ import { partyStateToText } from '../utilities/Enums'
 
 export default class PartyDisplay extends Vue {
 	@Prop() private party!: Party;
-	partyHeading: string;
+	partyHeading ='';
 	stateText = '';
 
 	created() {
