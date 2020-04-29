@@ -5,6 +5,10 @@
 		<button v-on:click="populateTestWorld">Populate test world</button>
 		<br /><br />
 	</div>
+	<div style="text-align:left;" v-if="$testWorld && $testWorld.parties.length > 0">
+		<PartyDisplay v-for="party in this.$testWorld.parties" :party="party" :key="party.id" />
+	</div>
+
 	<button v-on:click="startTimer">Start timer - {{ timer }}</button>
 	<button v-on:click="rollDice">Roll dice - {{ timesRun }}</button>
 	<button v-on:click="rollDice2">Roll dice 2 - {{ timesRun2 }}</button>
@@ -95,6 +99,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import PartyDisplay from './PartyDisplay';
 import { DiceRoll, DiceRoller } from 'rpg-dice-roller';
 import World from '../models/World';
 import Character from '../models/Character';
@@ -107,7 +112,12 @@ import { getCharacterWithHighestHealth, getCharacterWithLowestHealth, getCharact
 import { sortBySpeed, sortByHealth, sortByDodge, sortByArmor } from '../utilities/CharacterSortUtilities';
 import { addMeleeModification, addDodgeModification, addSpeedModification } from '../utilities/StatModificationUtilities';
 
-@Component
+@Component({
+	components: {
+		PartyDisplay
+	}
+})
+
 export default class HelloWorld extends Vue {
   @Prop() private msg!: string;
   currentMoment = 0;
@@ -401,7 +411,7 @@ export default class HelloWorld extends Vue {
 	if (world.mainCharacters.length === 0) {
 		// Determine characters that are participating in the battle.
 		const character1 = new Character();
-		character1.id = generateNextChracterId(world);
+		character1.id = generateNextCharacterId(world);
 		// TODO handle party setting better
 		character1.side = 1;
 		// TODO remove temporary boosts - added for testing
@@ -650,6 +660,9 @@ export default class HelloWorld extends Vue {
 		*/
 
 		console.log(testWorld);
+
+		// Since we're using a global, force vue to update.
+		this.$forceUpdate();
 	}
 
 }
