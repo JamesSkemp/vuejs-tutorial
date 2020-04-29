@@ -33,7 +33,7 @@ import { partyStateToText } from '../utilities/Enums'
 export default class PartyDisplay extends Vue {
 	@Prop() private party!: Party;
 	partyHeading: string;
-	stateText: string;
+	stateText = '';
 
 	created() {
 		this.partyHeading = `Party ${this.party.id}`;
