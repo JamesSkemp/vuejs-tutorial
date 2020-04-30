@@ -38,7 +38,7 @@ export default class WorldDisplay extends Vue {
 
 	created() {
 		console.log('WorldDisplay created');
-		this.worldText = this.world.currentMoment;
+		this.worldText = `Current moment: ${this.world.currentMoment}`;
 	}
 
 	populateTestWorld(): void {

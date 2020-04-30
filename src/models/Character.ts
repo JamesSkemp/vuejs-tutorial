@@ -3,12 +3,17 @@ import StatModifications from './StatModifications';
 import CombatStats from './CombatStats';
 import Attack from './Attack';
 import { AttackPreference } from '@/utilities/Enums';
+import NameGenerator from '@/utilities/NameGenerator';
 
 export default class Character {
 	/**
 	 * Unique id of the character, if a main character.
 	 */
 	public id: number = -1;
+	/**
+	 * Character's name. May be generic for opponents.
+	 */
+	public name: string;
 	/**
 	 * How the character prefers to attack.
 	 */
@@ -32,6 +37,7 @@ export default class Character {
 
 	public constructor() {
 		// TODO accept id of some sort to change initial values, or should this be a utility?
+		this.name = `${NameGenerator.randomName(2, 5)} ${NameGenerator.randomName(2, 5)}`;
 		this.preferredAttack = AttackPreference.Melee;
 		this.baseStats = new BaseStats(30, 12, 10, 0, 6, 0, 10);
 		this.baseStats.melee.attacks.push(new Attack('Basic', '1d6'));
