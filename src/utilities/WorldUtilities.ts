@@ -101,5 +101,35 @@ export function createNewTestWorldForSingleBattle(character: Character, opponent
 	return newWorld;
 }
 
+/**
+ * Loop through all parties and remove those that are empty of characters. This also loops through and fixes the party ids so that they contain no gaps in numbering.
+ * @param world World to update.
+ */
+export function removeEmptyParties(world: World) {
+	if (world.parties.length > 0) {
+		for (let i = 0; i < world.parties.length; i++) {
+			while (world.parties[i] && world.parties[i].mainCharacters.length === 0) {
+				world.parties.splice(i, 1);
+				console.log(`party ${i} removed`);
+			}
+		}
+		fixPartyIds(world);
+	}
+}
+
+/**
+ * Fix all party ids in a world so they include no gaps.
+ * @param world World to update.
+ */
+export function fixPartyIds(world: World) {
+	if (world.parties.length > 0) {
+		for (let i = 0; i < world.parties.length; i++) {
+			if (world.parties[i].id !== i) {
+				world.parties[i].id = i;
+			}
+		}
+	}
+}
+
 // TODO function to switch character from one party to another - sort of done - workflow is disband party, then combine parties
 // TODO functionality to remove empty parties

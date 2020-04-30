@@ -10,7 +10,7 @@ import { sortByPartyId } from './PartySortUtilities';
  */
 export function combineParties(parties: Party[]): boolean {
 	// Filter the parties to just those with characters in them.
-	parties = sortByPartyId(parties.filter(p => p.mainCharacters.length > 0));
+	parties = sortByPartyId(parties.filter(p => p && p.mainCharacters && p.mainCharacters.length > 0));
 	if (parties.length > 1) {
 		for (let i = 1; i < parties.length; i++) {
 			while (parties[i].mainCharacters.length > 0) {

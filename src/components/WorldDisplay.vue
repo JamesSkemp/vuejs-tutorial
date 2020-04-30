@@ -8,9 +8,16 @@
 		<template v-if="world">
 			<p>{{ worldText }}</p>
 			<div v-if="$testWorld && $testWorld.parties.length > 0">
-				<PartyDisplay v-for="party in this.$testWorld.parties" :party="party" :key="party.id" />
+				<PartyDisplay v-for="party in this.$testWorld.parties" :world="world" :party="party" :key="party.id" />
 			</div>
 		</template>
+		<button v-on:click="refreshDisplay">Refresh display</button>
+		<button v-on:click="cleanParties">Remove empty parties</button>
+		<br />
+		<button v-on:click="displaySortByHealth">Sort by health</button>
+		<button v-on:click="displaySortByDodge">Sort by dodge</button>
+		<button v-on:click="displaySortByArmor">Sort by armor</button>
+		<button v-on:click="displaySortBySpeed">Sort by speed</button>
 	</div>
 </template>
 
@@ -18,7 +25,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import PartyDisplay from './PartyDisplay.vue';
 import World from '../models/World';
-import { getUnusedPartyId, addPartyToWorld, disbandParty } from '../utilities/WorldUtilities';
+import { getUnusedPartyId, addPartyToWorld, disbandParty, removeEmptyParties } from '../utilities/WorldUtilities';
 import { combineParties } from '../utilities/PartyUtilities';
 import Party from '../models/Party';
 import { getCharacterWithHighestHealth, getCharacterWithLowestHealth, getCharacterWithHighestMagic } from '../utilities/CharacterFilterUtilities';
@@ -42,8 +49,7 @@ export default class WorldDisplay extends Vue {
 	}
 
 	populateTestWorld(): void {
-		const testWorld: World = this.$testWorld;
-		testWorld.parties = [];
+		this.world.parties = [];
 		const testParty= new Party(0);
 
 		const testCharacter1 = new Character();
@@ -72,49 +78,74 @@ export default class WorldDisplay extends Vue {
 		testCharacter4.baseStats.dodge = 8;
 		testParty.mainCharacters.push(testCharacter4);
 
-		addPartyToWorld(testWorld, testParty);
-		addPartyToWorld(testWorld);
+		addPartyToWorld(this.world, testParty);
+		addPartyToWorld(this.world);
 		// Skip party id 2.
-		addPartyToWorld(testWorld, new Party(4));
-		addPartyToWorld(testWorld, new Party(3));
+		addPartyToWorld(this.world, new Party(4));
+		addPartyToWorld(this.world, new Party(3));
 
-		console.log('sortbyhealth'); // should be 1, 2, 3, 4
-		console.log(JSON.stringify(sortByHealth(testWorld.parties[0].mainCharacters)));
 		console.log('getcharacterwithmosthealth'); // should be 1
-		console.log(JSON.stringify(getCharacterWithHighestHealth(testWorld.parties[0].mainCharacters)));
+		console.log(JSON.stringify(getCharacterWithHighestHealth(this.world.parties[0].mainCharacters)));
 		console.log('getcharacterwithleasthealth'); // should be 3
-		console.log(JSON.stringify(getCharacterWithLowestHealth(testWorld.parties[0].mainCharacters)));
+		console.log(JSON.stringify(getCharacterWithLowestHealth(this.world.parties[0].mainCharacters)));
 		console.log('highestMagic'); // should be null
-		console.log(JSON.stringify(getCharacterWithHighestMagic(testWorld.parties[0].mainCharacters)));
+		console.log(JSON.stringify(getCharacterWithHighestMagic(this.world.parties[0].mainCharacters)));
 		// TODO add additional item checks above and below
-		console.log('sortbydodge'); // should be 4, 2, 1, 3
-		console.log(JSON.stringify(sortByDodge(testWorld.parties[0].mainCharacters)));
-		console.log('sortbyarmor'); // should be 2, 4, 1, 3 (only 2 first matters)
-		console.log(JSON.stringify(sortByArmor(testWorld.parties[0].mainCharacters)));
-		console.log('sortbyspeed'); // should be 3, 2, 4, 1
-		console.log(JSON.stringify(sortBySpeed(testWorld.parties[0].mainCharacters)));
 
 		console.log('getUnusedPartyId'); // should be 2
-		console.log(getUnusedPartyId(testWorld));
-
-		console.log('disband party');
-		console.log(JSON.stringify(testWorld));
-		console.log(disbandParty(testWorld, testWorld.parties[0]));
-		console.log(JSON.stringify(testWorld));
+		console.log(getUnusedPartyId(this.world));
 
 		console.log('combine parties');
-		console.log(JSON.stringify(testWorld.parties));
-		console.log(combineParties([testWorld.parties[0], testWorld.parties[1], testWorld.parties[2], testWorld.parties[6]]));
-		console.log(JSON.stringify(testWorld.parties));
+		console.log(JSON.stringify(this.world.parties));
+		console.log(combineParties([this.world.parties[0], this.world.parties[1], this.world.parties[2], this.world.parties[6]]));
+		console.log(JSON.stringify(this.world.parties));
 
 		/*
 		console.log('');
 		console.log(JSON.stringify());
 		*/
 
-		console.log(testWorld);
+		console.log(this.world);
+
+		this.$testWorld = this.world;
+
+		console.log(JSON.stringify(this.$testWorld));
 
 		// Since we're using a global, force vue to update.
+		this.$forceUpdate();
+	}
+
+	refreshDisplay(): void {
+		this.$forceUpdate();
+	}
+
+	cleanParties(): void {
+		removeEmptyParties(this.world);
+		console.log('cleanParties');
+		this.$forceUpdate();
+	}
+
+	displaySortByHealth(): void {
+		sortByHealth(this.world.parties[0].mainCharacters);
+		console.log('sort by health');
+		this.$forceUpdate();
+	}
+
+	displaySortByDodge(): void {
+		sortByDodge(this.world.parties[0].mainCharacters);
+		console.log('sort by dodge');
+		this.$forceUpdate();
+	}
+
+	displaySortByArmor(): void {
+		sortByArmor(this.world.parties[0].mainCharacters);
+		console.log('sort by armor');
+		this.$forceUpdate();
+	}
+
+	displaySortBySpeed(): void {
+		sortBySpeed(this.world.parties[0].mainCharacters);
+		console.log('sort by speed');
 		this.$forceUpdate();
 	}
 }
