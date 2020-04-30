@@ -53,6 +53,7 @@ export default class PartyDisplay extends Vue {
 	displayDisbandParty(): void {
 		disbandParty(this.world, this.party);
 		this.$forceUpdate();
+		this.$emit('party-disbanded', this.party.id);
 	}
 
 	displaySortHealth(): void {

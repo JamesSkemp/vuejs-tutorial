@@ -259,3 +259,7 @@ export function getSuperShortBaseStats(character: Character): string {
 export function getShortBaseStats(character: Character): string {
 	return `Health ${character.baseStats.health}, Melee ${character.baseStats.melee.value}, Range ${character.baseStats.range.value}, Magic ${character.baseStats.magic.value}, Dodge ${character.baseStats.dodge}, Armor ${character.baseStats.armor}, Speed ${character.baseStats.speed}`;
 }
+
+export function getCurrentStats(character: Character): string {
+	return `Health ${character.currentHealth}, Melee ${getCurrentMelee(character)}, Range ${getCurrentRange(character)}, Magic ${getCurrentMagic(character)}, Dodge ${getCurrentDodge(character)}, Armor ${getCurrentArmor(character)}, Speed ${getCurrentSpeed(character)}`;
+}
