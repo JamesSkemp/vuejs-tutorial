@@ -41,6 +41,20 @@ export function addDamageModification(statMods: StatModifications, statMod: Stat
 	statMods.damageModifications.push(statMod);
 }
 
+export function totalStatModifications(statMods: StatModification[]) {
+	let turns = 0;
+	let total = 0;
+	if (statMods.length > 0) {
+		statMods.forEach(statMod => {
+			if (statMod.turns > turns) {
+				turns = statMod.turns;
+			}
+			total += statMod.amount;
+		});
+	}
+	return {turns, total};
+}
+
 /**
  * Process a turn on all modifications, decreasing turn counts and dropping any that are no longer valid.
  * @param statMods StatModifications to process.

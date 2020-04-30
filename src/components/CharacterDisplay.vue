@@ -4,6 +4,7 @@
 		<p>
 			{{ this.healthText }}<br />
 			Base Stats: {{ baseStats }}<br />
+			<span v-html="statModifications"></span>
 			Current Stats: {{ currentStats }}<br />
 		</p>
 		<p v-html="getMeleeText()"></p>
@@ -32,18 +33,23 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Character from '../models/Character';
 import { getAttackText } from '../utilities/AttackUtilities';
-import { getShortBaseStats, getCurrentStats } from '../utilities/CharacterUtilities';
+import { getShortBaseStats, getCurrentStats, getStatModifications } from '../utilities/CharacterUtilities';
 import Attack from '../models/Attack';
 @Component
 export default class CharacterDisplay extends Vue {
 	@Prop() character!: Character;
 	healthText = '';
 	baseStats = '';
+	statModifications = '';
 	currentStats = '';
 
 	created() {
 		this.healthText = `Health: ${this.character.currentHealth} of ${this.character.baseStats.health}`;
 		this.baseStats = getShortBaseStats(this.character);
+		this.statModifications = getStatModifications(this.character).trim();
+		if (this.statModifications !== '') {
+			this.statModifications = 'Modifications: ' + this.statModifications + '<br />';
+		}
 		this.currentStats = getCurrentStats(this.character);
 	}
 

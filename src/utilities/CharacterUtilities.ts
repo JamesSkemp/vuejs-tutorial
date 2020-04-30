@@ -1,6 +1,6 @@
 import Character from '@/models/Character';
 import { DiceRoll } from 'rpg-dice-roller';
-import { processStatModificationTurn } from './StatModificationUtilities';
+import { processStatModificationTurn, totalStatModifications } from './StatModificationUtilities';
 
 export function attackOpponent(character: Character, opponent: Character): string[] {
 	// TODO different for each type of attack, or should this determine what the character will attack with? should it just be simplified to an attack value?
@@ -262,4 +262,51 @@ export function getShortBaseStats(character: Character): string {
 
 export function getCurrentStats(character: Character): string {
 	return `Health ${character.currentHealth}, Melee ${getCurrentMelee(character)}, Range ${getCurrentRange(character)}, Magic ${getCurrentMagic(character)}, Dodge ${getCurrentDodge(character)}, Armor ${getCurrentArmor(character)}, Speed ${getCurrentSpeed(character)}`;
+}
+
+export function getStatModifications(character: Character): string {
+	let healthMods = '';
+	let damageMods = '';
+	let meleeMods = '';
+	let rangeMods = '';
+	let magicMods = '';
+	let dodgeMods = '';
+	let armorMods = '';
+	let speedMods = '';
+
+	if (character.statMods.healthModifications.length > 0) {
+		let totals = totalStatModifications(character.statMods.healthModifications);
+		healthMods = `Health ${totals.total} for ${totals.turns} turns`;
+	}
+	if (character.statMods.damageModifications.length > 0) {
+		let totals = totalStatModifications(character.statMods.damageModifications);
+		damageMods = `Damage ${totals.total} for ${totals.turns} turns`;
+	}
+	if (character.statMods.meleeModifications.length > 0) {
+		let totals = totalStatModifications(character.statMods.meleeModifications);
+		meleeMods = `Melee ${totals.total} for ${totals.turns} turns`;
+	}
+	if (character.statMods.rangeModifications.length > 0) {
+		let totals = totalStatModifications(character.statMods.rangeModifications);
+		rangeMods = `Range ${totals.total} for ${totals.turns} turns`;
+	}
+	if (character.statMods.magicModifications.length > 0) {
+		let totals = totalStatModifications(character.statMods.magicModifications);
+		magicMods = `Magic ${totals.total} for ${totals.turns} turns`;
+	}
+	if (character.statMods.dodgeModifications.length > 0) {
+		let totals = totalStatModifications(character.statMods.dodgeModifications);
+		dodgeMods = `Dodge ${totals.total} for ${totals.turns} turns`;
+	}
+	if (character.statMods.armorModifications.length > 0) {
+		let totals = totalStatModifications(character.statMods.armorModifications);
+		armorMods = `Armor ${totals.total} for ${totals.turns} turns`;
+	}
+	if (character.statMods.speedModifications.length > 0) {
+		let totals = totalStatModifications(character.statMods.speedModifications);
+		speedMods = `Speed ${totals.total} for ${totals.turns} turns`;
+	}
+
+	let results = [healthMods, damageMods, meleeMods, rangeMods, magicMods, dodgeMods, armorMods,speedMods];
+	return results.filter(m => m.length > 0).join(', ');
 }
