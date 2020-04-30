@@ -40,7 +40,7 @@ export default class Character {
 		this.name = `${NameGenerator.randomName(2, 5)} ${NameGenerator.randomName(2, 5)}`;
 		this.preferredAttack = AttackPreference.Melee;
 		this.baseStats = new BaseStats(30, 12, 10, 0, 6, 0, 10);
-		this.baseStats.melee.attacks.push(new Attack('Basic', '1d6'));
+		this.baseStats.melee.attacks.push(new Attack(0, 'Basic', '1d6'));
 		this.currentHealth = this.baseStats.health;
 		this.statMods = new StatModifications();
 		this.combatStats = new CombatStats();
