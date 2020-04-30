@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h4>Character {{ character.id }}</h4>
+		<h5>Character {{ character.id }}</h5>
 		<p>{{ this.healthText }}<br />
 		</p>
 		<p style="overflow-wrap: break-word;">{{ JSON.stringify(character) }}</p>

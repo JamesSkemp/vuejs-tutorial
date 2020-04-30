@@ -1,13 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-	<div>
-		<button v-on:click="populateTestWorld">Populate test world</button>
-		<br /><br />
-	</div>
-	<div style="text-align:left;" v-if="$testWorld && $testWorld.parties.length > 0">
-		<PartyDisplay v-for="party in this.$testWorld.parties" :party="party" :key="party.id" />
-	</div>
+	<WorldDisplay :world="$testWorld" />
 
 	<button v-on:click="startTimer">Start timer - {{ timer }}</button>
 	<button v-on:click="rollDice">Roll dice - {{ timesRun }}</button>
@@ -99,7 +93,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import PartyDisplay from './PartyDisplay.vue';
+import WorldDisplay from './WorldDisplay.vue';
 import { DiceRoll, DiceRoller } from 'rpg-dice-roller';
 import World from '../models/World';
 import Character from '../models/Character';
@@ -114,7 +108,7 @@ import { addMeleeModification, addDodgeModification, addSpeedModification } from
 
 @Component({
 	components: {
-		PartyDisplay
+		WorldDisplay
 	}
 })
 
@@ -587,84 +581,6 @@ export default class HelloWorld extends Vue {
 
 		console.log(testWorld);
 	}
-
-	populateTestWorld(): void {
-		const testWorld: World = this.$testWorld;
-		testWorld.parties = [];
-		const testParty= new Party(0);
-
-		const testCharacter1 = new Character();
-		testCharacter1.id = 1;
-		testParty.mainCharacters.push(testCharacter1);
-
-		const testCharacter2 = new Character();
-		testCharacter2.id = 2;
-		testCharacter2.currentHealth = 26;
-		testCharacter2.statMods.speedModifications.push(new StatModification(-2, 1));
-		testCharacter2.statMods.dodgeModifications.push(new StatModification(2, 1));
-		testCharacter2.baseStats.armor = 1;
-		testParty.mainCharacters.push(testCharacter2);
-
-		const testCharacter3 = new Character();
-		testCharacter3.id = 3;
-		testCharacter3.baseStats.health = 27;
-		testCharacter3.currentHealth = 26;
-		testCharacter3.baseStats.speed = 8;
-		testParty.mainCharacters.push(testCharacter3);
-
-		const testCharacter4 = new Character();
-		testCharacter4.id = 4;
-		testCharacter4.currentHealth = 0;
-		testCharacter4.baseStats.speed = 9;
-		testCharacter4.baseStats.dodge = 8;
-		testParty.mainCharacters.push(testCharacter4);
-
-		addPartyToWorld(testWorld, testParty);
-		addPartyToWorld(testWorld);
-		// Skip party id 2.
-		addPartyToWorld(testWorld, new Party(4));
-		addPartyToWorld(testWorld, new Party(3));
-
-		console.log('sortbyhealth'); // should be 1, 2, 3, 4
-		console.log(JSON.stringify(sortByHealth(testWorld.parties[0].mainCharacters)));
-		console.log('getcharacterwithmosthealth'); // should be 1
-		console.log(JSON.stringify(getCharacterWithHighestHealth(testWorld.parties[0].mainCharacters)));
-		console.log('getcharacterwithleasthealth'); // should be 3
-		console.log(JSON.stringify(getCharacterWithLowestHealth(testWorld.parties[0].mainCharacters)));
-		console.log('highestMagic'); // should be null
-		console.log(JSON.stringify(getCharacterWithHighestMagic(testWorld.parties[0].mainCharacters)));
-		// TODO add additional item checks above and below
-		console.log('sortbydodge'); // should be 4, 2, 1, 3
-		console.log(JSON.stringify(sortByDodge(testWorld.parties[0].mainCharacters)));
-		console.log('sortbyarmor'); // should be 2, 4, 1, 3 (only 2 first matters)
-		console.log(JSON.stringify(sortByArmor(testWorld.parties[0].mainCharacters)));
-		console.log('sortbyspeed'); // should be 3, 2, 4, 1
-		console.log(JSON.stringify(sortBySpeed(testWorld.parties[0].mainCharacters)));
-
-		console.log('getUnusedPartyId'); // should be 2
-		console.log(getUnusedPartyId(testWorld));
-
-		console.log('disband party');
-		console.log(JSON.stringify(testWorld));
-		console.log(disbandParty(testWorld, testWorld.parties[0]));
-		console.log(JSON.stringify(testWorld));
-
-		console.log('combine parties');
-		console.log(JSON.stringify(testWorld.parties));
-		console.log(combineParties([testWorld.parties[0], testWorld.parties[1], testWorld.parties[2], testWorld.parties[6]]));
-		console.log(JSON.stringify(testWorld.parties));
-
-		/*
-		console.log('');
-		console.log(JSON.stringify());
-		*/
-
-		console.log(testWorld);
-
-		// Since we're using a global, force vue to update.
-		this.$forceUpdate();
-	}
-
 }
 </script>
 

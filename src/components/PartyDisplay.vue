@@ -1,10 +1,10 @@
 <template>
 	<div class="partyBlock">
-		<h2>{{ partyHeading }}</h2>
+		<h3>{{ partyHeading }}</h3>
 		<div>
 			State: {{ stateText }}
 			<div v-if="party.mainCharacters.length > 0">
-				<h3>Main characters ({{ party.mainCharacters.length }})</h3>
+				<h4>Main characters ({{ party.mainCharacters.length }})</h4>
 				<div>
 					<CharacterDisplay v-for="character in party.mainCharacters" :character="character" :key="character.id" />
 				</div>
@@ -13,7 +13,7 @@
 				<p>There are no characters in this party.</p>
 			</div>
 			<div v-if="party.opponents.length > 0">
-				<h3>Opponents</h3>
+				<h4>Opponents</h4>
 			</div>
 		</div>
 	</div>
