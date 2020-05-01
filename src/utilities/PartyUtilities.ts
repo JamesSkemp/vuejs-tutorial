@@ -88,3 +88,10 @@ export function addMainCharacter(party: Party, character: Character) {
 	character.side = 1;
 	party.mainCharacters.push(character);
 }
+
+export function addOpponent(party: Party, opponent: Character) {
+	opponent.side = 2;
+	party.opponents.push(opponent);
+}
+
+// TODO start battle - populate opponents (?) and set initial turns - see resolvePartyMoment

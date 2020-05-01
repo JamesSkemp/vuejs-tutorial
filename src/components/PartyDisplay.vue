@@ -3,6 +3,8 @@
 		<h3>{{ partyHeading }}</h3>
 		<button v-on:click="displayDisbandParty">Disband party</button>
 		<br />
+		<button v-on:click="addOpponent">Add an opponent</button>
+		<br />
 		<button v-on:click="displaySortHealth">Sort by health</button>
 		<button v-on:click="displaySortDodge">Sort by dodge</button>
 		<button v-on:click="displaySortArmor">Sort by armor</button>
@@ -20,6 +22,9 @@
 			</div>
 			<div v-if="party.opponents.length > 0">
 				<h4>Opponents</h4>
+				<div>
+					<CharacterDisplay v-for="opponent in party.opponents" :character="opponent" :key="opponent.id" />
+				</div>
 			</div>
 		</div>
 	</div>
@@ -33,6 +38,8 @@ import { partyStateToText } from '../utilities/Enums'
 import { disbandParty } from '../utilities/WorldUtilities';
 import World from '../models/World';
 import { sortBySpeed, sortByHealth, sortByDodge, sortByArmor } from '../utilities/CharacterSortUtilities';
+import { addOpponent } from '../utilities/PartyUtilities';
+import Character from '../models/Character';
 @Component({
 	components: {
 		CharacterDisplay
@@ -73,6 +80,16 @@ export default class PartyDisplay extends Vue {
 
 	displaySortSpeed(): void {
 		sortBySpeed(this.party.mainCharacters);
+		this.$forceUpdate();
+	}
+
+	addOpponent(): void {
+		const opponent = new Character();
+		opponent.baseStats.health = 10;
+		opponent.currentHealth = 10;
+		opponent.baseStats.melee.attacks[0].damage = '1d4';
+
+		addOpponent(this.party, opponent);
 		this.$forceUpdate();
 	}
 }
