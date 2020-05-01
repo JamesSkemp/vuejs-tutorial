@@ -37,3 +37,6 @@ export default class Attack {
 		}
 	}
 }
+
+// TODO how does any of the stat mods work?
+// TODO how is cooldown tracked?

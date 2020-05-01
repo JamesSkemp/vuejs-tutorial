@@ -4,6 +4,7 @@ import Character from '@/models/Character';
 import { sortPartiesById } from './WorldSortUtilities';
 import { PartyState } from './Enums';
 import { sortByCharacterId } from './CharacterSortUtilities';
+import { addMainCharacter } from './PartyUtilities';
 
 export function startNextMoment(world: World): void {
 	/*this.parties.forEach(party => {
@@ -79,7 +80,7 @@ export function disbandParty(world: World, party: Party): boolean {
 				party.mainCharacters.splice(1, 1);
 
 				const newParty = new Party(-1);
-				newParty.mainCharacters.push(partyMember);
+				addMainCharacter(newParty, partyMember);
 
 				addPartyToWorld(world, newParty);
 			}
@@ -93,7 +94,7 @@ export function createNewTestWorldForSingleBattle(character: Character, opponent
 	const newWorld: World = new World();
 
 	const newParty = new Party(0);
-	newParty.mainCharacters.push(character);
+	addMainCharacter(newParty, character);
 	newParty.opponents.push(opponent);
 
 	newWorld.parties.push(newParty);

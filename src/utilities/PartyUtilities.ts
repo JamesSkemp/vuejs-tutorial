@@ -17,8 +17,7 @@ export function combineParties(parties: Party[]): boolean {
 				const partyMember = parties[i].mainCharacters[0];
 				console.log(partyMember);
 				parties[i].mainCharacters.splice(0, 1);
-
-				parties[0].mainCharacters.push(partyMember);
+				addMainCharacter(parties[0], partyMember);
 			}
 		}
 		return true;
@@ -79,4 +78,13 @@ export function resolvePartyMoment(party: Party, currentMoment: number): string[
 	return messages;
 }
 
-// TODO function to add Character to party (and set side accordingly)
+/**
+ * Adds a character to a party, setting the individuals side as needed.
+ * @param party Party to add the main character to.
+ * @param character Character to add.
+ */
+export function addMainCharacter(party: Party, character: Character) {
+	// TODO may also want to resort party so melee > range > magic for order?
+	character.side = 1;
+	party.mainCharacters.push(character);
+}
