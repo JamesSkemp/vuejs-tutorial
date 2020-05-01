@@ -1,27 +1,61 @@
 <template>
-	<div style="text-align:left;">
-		<div>
-			<button v-on:click="populateTestWorld">Populate test world</button>
-			<br /><br />
-			<div v-html="worldMessages"></div>
-		</div>
-		<h2>World</h2>
-		<template v-if="world">
-			<p>Current moment: {{ worldMoment }}</p>
-			<button v-on:click="increaseTime">Increase time</button>
-			<button v-on:click="startBattle">Start a battle</button>
-			<div v-if="world && world.parties.length > 0">
-				<PartyDisplay v-for="party in world.parties" :world="world" :party="party" :key="party.id" v-on:party-disbanded="refreshDisplay" />
+	<b-container>
+		<b-row>
+			<b-col>
+				<h2>World</h2>
+			</b-col>
+		</b-row>
+		<b-row>
+			<b-col>
+				<button v-on:click="populateTestWorld">Populate test world</button>
+			</b-col>
+			<b-col>
+				<button v-on:click="loadWorld">Load world (test-only)</button>
+			</b-col>
+		</b-row>
+		<b-row v-if="world && world.parties.length > 0">
+			<b-col>
+				<button v-if="world && world.parties.length > 0" v-on:click="saveWorld">Save world</button>
+			</b-col>
+			<b-col>
+				<button v-on:click="cleanParties">Remove empty parties</button>
+			</b-col>
+			<b-col>
+				Sorting options:<br />
+				<button v-on:click="displaySortByHealth">Sort by health</button>
+				<button v-on:click="displaySortByDodge">Sort by dodge</button>
+				<button v-on:click="displaySortByArmor">Sort by armor</button>
+				<button v-on:click="displaySortBySpeed">Sort by speed</button>
+			</b-col>
+		</b-row>
+		<b-row>
+			<b-col>
+			</b-col>
+			<b-col>
+			</b-col>
+			<b-col>
+			</b-col>
+		</b-row>
+		<b-row>
+			<div style="text-align:left;">
+				<div>
+					<br /><br />
+					<div v-html="worldMessages"></div>
+				</div>
+				<template v-if="world && world.parties.length > 0">
+					<p>Total parties: {{world.parties.length}}</p>
+					<p>Current moment: {{ worldMoment }}</p>
+					<button v-on:click="increaseTime">Increase time</button>
+					<button v-on:click="startBattle">Start a battle</button>
+					<div v-if="world && world.parties.length > 0">
+						<PartyDisplay v-for="party in world.parties" :world="world" :party="party" :key="party.id" v-on:party-disbanded="refreshDisplay" />
+					</div>
+				</template>
+				<button v-on:click="refreshDisplay">Refresh display</button>
+				<br />
 			</div>
-		</template>
-		<button v-on:click="refreshDisplay">Refresh display</button>
-		<button v-on:click="cleanParties">Remove empty parties</button>
-		<br />
-		<button v-on:click="displaySortByHealth">Sort by health</button>
-		<button v-on:click="displaySortByDodge">Sort by dodge</button>
-		<button v-on:click="displaySortByArmor">Sort by armor</button>
-		<button v-on:click="displaySortBySpeed">Sort by speed</button>
-	</div>
+		</b-row>
+	</b-container>
 </template>
 
 <script lang="ts">
@@ -155,8 +189,50 @@ export default class WorldDisplay extends Vue {
 		//this.$forceUpdate();
 	}
 
+	saveWorld(): boolean {
+		localStorage.setItem('mainWorld', JSON.stringify(this.world));
+		console.log(localStorage.getItem('mainWorld'));
+	}
+
+	loadWorld(): boolean {
+		const savedWorld: World = JSON.parse(localStorage.getItem('mainWorld'));
+
+		console.log(this.isEquivalent(this.world, savedWorld));
+		// TODO actually load world - world may need to be manually added, but remaining items just assigned over?
+	}
+
 	startBattle(): void {
 		// TODO start battle
+	}
+
+	isEquivalent(a, b) {
+		// Create arrays of property names
+		const aProps = Object.getOwnPropertyNames(a);
+		const bProps = Object.getOwnPropertyNames(b);
+
+		let equivalent = true;
+		const differences: string[] = [];
+
+		// If number of properties is different,
+		// objects are not equivalent
+		if (aProps.length != bProps.length) {
+			equivalent = false;
+		}
+
+		for (let i = 0; i < aProps.length; i++) {
+			const propName = aProps[i];
+
+			// If values of same property are not equal,
+			// objects are not equivalent
+			if (a[propName] !== b[propName]) {
+				differences.push(propName);
+				equivalent = false;
+			}
+		}
+
+		// If we made it this far, objects
+		// are considered equivalent
+		return { equivalent, differences };
 	}
 }
 </script>

@@ -52,6 +52,7 @@ export function resolvePartyMoment(party: Party, currentMoment: number): string[
 			characters = characters.concat(party.mainCharacters);
 			characters = characters.concat(party.opponents);
 
+			//console.log(JSON.stringify(characters));
 			//console.log(JSON.stringify(characters.filter(c => c.currentHealth > 0 && c.nextAttack <= currentMoment)));
 			const charactersActingThisTurn = sortBySpeed(characters.filter(c =>
 				c.currentHealth > 0 && c.nextAttack <= currentMoment

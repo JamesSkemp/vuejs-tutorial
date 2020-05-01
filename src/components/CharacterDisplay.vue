@@ -1,34 +1,59 @@
 <template>
-	<div>
-		<h5>Character {{ character.id }}, {{ character.name }}</h5>
-		<p>
-			Health: {{ character.currentHealth }} of {{ character.baseStats.health }}<br />
-			Base Stats: {{ baseStats }}<br />
-			<span v-html="statModifications"></span>
-			Current Stats: {{ currentStats }}<br />
-		</p>
-		<div v-if="character.lastAttack >= 0">Last attack: {{ character.lastAttack }}</div>
-		<div v-if="character.nextAttack >= 0">Next attack: {{ character.nextAttack }}</div>
-		<p v-html="getMeleeText()"></p>
-		<ul v-if="character.baseStats.melee.attacks.length > 0">
-			<li v-for="attack in character.baseStats.melee.attacks" :key="attack.name">
-				{{ displayAttackText(attack) }}
-			</li>
-		</ul>
-		<p v-html="getRangeText()"></p>
-		<ul v-if="character.baseStats.range.attacks.length > 0">
-			<li v-for="attack in character.baseStats.range.attacks" :key="attack.name">
-				{{ displayAttackText(attack) }}
-			</li>
-		</ul>
-		<p v-html="getMagicText()"></p>
-		<ul v-if="character.baseStats.magic.attacks.length > 0">
-			<li v-for="attack in character.baseStats.magic.attacks" :key="attack.name">
-				{{ displayAttackText(attack) }}
-			</li>
-		</ul>
-		<p style="overflow-wrap: break-word;">{{ JSON.stringify(character) }}</p>
-	</div>
+	<b-container>
+		<b-row>
+			<b-col>
+				<h5>Character {{ character.id }}, {{ character.name }}</h5>
+			</b-col>
+		</b-row>
+		<b-row align-v="start">
+			<b-col>
+				<strong>Current Stats</strong><br />
+				<span v-for="stat in currentStats()" :key="stat">
+					{{stat}}<br />
+				</span>
+			</b-col>
+			<b-col>
+				<strong>Stat Mods:</strong><br />
+				<span v-for="statMod in statMods()" :key="statMod">{{statMod}}<br /></span>
+			</b-col>
+			<b-col>
+				<strong>Base Stats</strong><br />
+				Health {{character.baseStats.health}}<br />
+				Melee {{character.baseStats.melee.value}}<br />
+				Range {{character.baseStats.range.value}}<br />
+				Magic {{character.baseStats.magic.value}}<br />
+				Dodge {{character.baseStats.dodge}}<br />
+				Armor {{character.baseStats.armor}}<br />
+				Speed {{character.baseStats.speed}}
+			</b-col>
+		</b-row>
+		<b-row>
+			<p>
+				Health: {{ character.currentHealth }} of {{ character.baseStats.health }}<br />
+			</p>
+			<div v-if="character.lastAttack >= 0">Last attack: {{ character.lastAttack }}</div>
+			<div v-if="character.nextAttack >= 0">Next attack: {{ character.nextAttack }}</div>
+			<p v-html="getMeleeText()"></p>
+			<ul v-if="character.baseStats.melee.attacks.length > 0">
+				<li v-for="attack in character.baseStats.melee.attacks" :key="attack.name">
+					{{ displayAttackText(attack) }}
+				</li>
+			</ul>
+			<p v-html="getRangeText()"></p>
+			<ul v-if="character.baseStats.range.attacks.length > 0">
+				<li v-for="attack in character.baseStats.range.attacks" :key="attack.name">
+					{{ displayAttackText(attack) }}
+				</li>
+			</ul>
+			<p v-html="getMagicText()"></p>
+			<ul v-if="character.baseStats.magic.attacks.length > 0">
+				<li v-for="attack in character.baseStats.magic.attacks" :key="attack.name">
+					{{ displayAttackText(attack) }}
+				</li>
+			</ul>
+			<p style="overflow-wrap: break-word;">{{ JSON.stringify(character) }}</p>
+		</b-row>
+	</b-container>
 </template>
 
 <script lang="ts">
@@ -42,10 +67,17 @@ export default class CharacterDisplay extends Vue {
 	@Prop() character!: Character;
 	baseStats = '';
 	statModifications = '';
-	currentStats = '';
 
 	created() {
 		this.refreshData();
+	}
+
+	currentStats() {
+		return getCurrentStats(this.character);
+	}
+
+	statMods() {
+		return getStatModifications(this.character);
 	}
 
 	displayAttackText(attack: Attack) {
@@ -69,11 +101,6 @@ export default class CharacterDisplay extends Vue {
 
 	refreshData() {
 		this.baseStats = getShortBaseStats(this.character);
-		this.statModifications = getStatModifications(this.character).trim();
-		if (this.statModifications !== '') {
-			this.statModifications = 'Modifications: ' + this.statModifications + '<br />';
-		}
-		this.currentStats = getCurrentStats(this.character);
 	}
 }
 </script>

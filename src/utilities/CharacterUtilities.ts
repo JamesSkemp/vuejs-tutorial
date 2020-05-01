@@ -260,11 +260,11 @@ export function getShortBaseStats(character: Character): string {
 	return `Health ${character.baseStats.health}, Melee ${character.baseStats.melee.value}, Range ${character.baseStats.range.value}, Magic ${character.baseStats.magic.value}, Dodge ${character.baseStats.dodge}, Armor ${character.baseStats.armor}, Speed ${character.baseStats.speed}`;
 }
 
-export function getCurrentStats(character: Character): string {
-	return `Health ${character.currentHealth}, Melee ${getCurrentMelee(character)}, Range ${getCurrentRange(character)}, Magic ${getCurrentMagic(character)}, Dodge ${getCurrentDodge(character)}, Armor ${getCurrentArmor(character)}, Speed ${getCurrentSpeed(character)}`;
+export function getCurrentStats(character: Character): string[] {
+	return [`Health ${character.currentHealth}`, `Melee ${getCurrentMelee(character)}`, `Range ${getCurrentRange(character)}`, `Magic ${getCurrentMagic(character)}`, `Dodge ${getCurrentDodge(character)}`, `Armor ${getCurrentArmor(character)}`, `Speed ${getCurrentSpeed(character)}`];
 }
 
-export function getStatModifications(character: Character): string {
+export function getStatModifications(character: Character, emptyMessage: string = 'None'): string[] {
 	let healthMods = '';
 	let damageMods = '';
 	let meleeMods = '';
@@ -308,5 +308,9 @@ export function getStatModifications(character: Character): string {
 	}
 
 	let results = [healthMods, damageMods, meleeMods, rangeMods, magicMods, dodgeMods, armorMods,speedMods];
-	return results.filter(m => m.length > 0).join(', ');
+	results = results.filter(m => m.length > 0);
+	if (results.length === 0 && emptyMessage !== '') {
+		results.push(emptyMessage);
+	}
+	return results;
 }
