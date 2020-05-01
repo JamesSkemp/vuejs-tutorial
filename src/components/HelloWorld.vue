@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-	<WorldDisplay :world="$testWorld" />
+	<WorldDisplay />
 
 	<button v-on:click="startTimer">Start timer - {{ timer }}</button>
 	<button v-on:click="rollDice">Roll dice - {{ timesRun }}</button>

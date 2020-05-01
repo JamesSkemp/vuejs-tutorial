@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import PartyDisplay from './PartyDisplay.vue';
 import World from '../models/World';
 import { getUnusedPartyId, addPartyToWorld, disbandParty, removeEmptyParties } from '../utilities/WorldUtilities';
@@ -40,7 +40,8 @@ import StatModification from '../models/StatModification';
 })
 
 export default class WorldDisplay extends Vue {
-	@Prop() world!: World;
+	// TODO save and load this
+	world: World = new World();
 	worldText = '';
 
 	created() {
@@ -147,6 +148,7 @@ export default class WorldDisplay extends Vue {
 	displaySortBySpeed(): void {
 		sortBySpeed(this.world.parties[0].mainCharacters);
 		console.log('sort by speed');
+		// TODO all of the forceUpdate calls need to be removed
 		this.$forceUpdate();
 	}
 }
