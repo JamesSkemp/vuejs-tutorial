@@ -195,10 +195,15 @@ export default class WorldDisplay extends Vue {
 	}
 
 	loadWorld(): boolean {
-		const savedWorld: World = JSON.parse(localStorage.getItem('mainWorld'));
+		const savedData = localStorage.getItem('mainWorld');
+		if (savedData) {
+			const savedWorld: World = JSON.parse(localStorage.getItem('mainWorld'));
 
-		console.log(this.isEquivalent(this.world, savedWorld));
-		// TODO actually load world - world may need to be manually added, but remaining items just assigned over?
+			console.log(this.isEquivalent(this.world, savedWorld));
+			// TODO actually load world - world may need to be manually added, but remaining items just assigned over?
+		}
+
+		return false;
 	}
 
 	startBattle(): void {
