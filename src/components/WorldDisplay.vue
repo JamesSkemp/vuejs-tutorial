@@ -192,12 +192,13 @@ export default class WorldDisplay extends Vue {
 	saveWorld(): boolean {
 		localStorage.setItem('mainWorld', JSON.stringify(this.world));
 		console.log(localStorage.getItem('mainWorld'));
+		return true;
 	}
 
 	loadWorld(): boolean {
 		const savedData = localStorage.getItem('mainWorld');
 		if (savedData) {
-			const savedWorld: World = JSON.parse(localStorage.getItem('mainWorld'));
+			const savedWorld = JSON.parse(savedData.toString());
 
 			console.log(this.isEquivalent(this.world, savedWorld));
 			// TODO actually load world - world may need to be manually added, but remaining items just assigned over?
