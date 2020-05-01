@@ -7,8 +7,8 @@
 		<h2>World</h2>
 		<template v-if="world">
 			<p>{{ worldText }}</p>
-			<div v-if="$testWorld && $testWorld.parties.length > 0">
-				<PartyDisplay v-for="party in this.$testWorld.parties" :world="world" :party="party" :key="party.id" v-on:party-disbanded="refreshDisplay" />
+			<div v-if="world && world.parties.length > 0">
+				<PartyDisplay v-for="party in world.parties" :world="world" :party="party" :key="party.id" v-on:party-disbanded="refreshDisplay" />
 			</div>
 		</template>
 		<button v-on:click="refreshDisplay">Refresh display</button>
