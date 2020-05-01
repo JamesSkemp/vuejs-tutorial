@@ -7,6 +7,8 @@
 			<span v-html="statModifications"></span>
 			Current Stats: {{ currentStats }}<br />
 		</p>
+		<div v-if="character.lastAttack >= 0">Last attack: {{ character.lastAttack }}</div>
+		<div v-if="character.nextAttack >= 0">Next attack: {{ character.nextAttack }}</div>
 		<p v-html="getMeleeText()"></p>
 		<ul v-if="character.baseStats.melee.attacks.length > 0">
 			<li v-for="attack in character.baseStats.melee.attacks" :key="attack.name">

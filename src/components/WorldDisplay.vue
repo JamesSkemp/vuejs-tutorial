@@ -108,13 +108,6 @@ export default class WorldDisplay extends Vue {
 		*/
 
 		console.log(this.world);
-
-		this.$testWorld = this.world;
-
-		console.log(JSON.stringify(this.$testWorld));
-
-		// Since we're using a global, force vue to update.
-		this.$forceUpdate();
 	}
 
 	refreshDisplay(): void {
