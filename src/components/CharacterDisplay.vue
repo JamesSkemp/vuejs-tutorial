@@ -2,7 +2,7 @@
 	<div>
 		<h5>Character {{ character.id }}, {{ character.name }}</h5>
 		<p>
-			{{ this.healthText }}<br />
+			Health: {{ character.currentHealth }} of {{ character.baseStats.health }}<br />
 			Base Stats: {{ baseStats }}<br />
 			<span v-html="statModifications"></span>
 			Current Stats: {{ currentStats }}<br />
@@ -40,19 +40,12 @@ import Attack from '../models/Attack';
 @Component
 export default class CharacterDisplay extends Vue {
 	@Prop() character!: Character;
-	healthText = '';
 	baseStats = '';
 	statModifications = '';
 	currentStats = '';
 
 	created() {
-		this.healthText = `Health: ${this.character.currentHealth} of ${this.character.baseStats.health}`;
-		this.baseStats = getShortBaseStats(this.character);
-		this.statModifications = getStatModifications(this.character).trim();
-		if (this.statModifications !== '') {
-			this.statModifications = 'Modifications: ' + this.statModifications + '<br />';
-		}
-		this.currentStats = getCurrentStats(this.character);
+		this.refreshData();
 	}
 
 	displayAttackText(attack: Attack) {
@@ -72,6 +65,15 @@ export default class CharacterDisplay extends Vue {
 	getMagicText() {
 		return `Magic: ${this.character.baseStats.magic.value}<br />
 		${JSON.stringify(this.character.baseStats.magic.attacks)}`;
+	}
+
+	refreshData() {
+		this.baseStats = getShortBaseStats(this.character);
+		this.statModifications = getStatModifications(this.character).trim();
+		if (this.statModifications !== '') {
+			this.statModifications = 'Modifications: ' + this.statModifications + '<br />';
+		}
+		this.currentStats = getCurrentStats(this.character);
 	}
 }
 </script>
