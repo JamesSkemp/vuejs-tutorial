@@ -3,10 +3,13 @@
 		<div>
 			<button v-on:click="populateTestWorld">Populate test world</button>
 			<br /><br />
+			<div v-html="worldMessages"></div>
 		</div>
 		<h2>World</h2>
 		<template v-if="world">
-			<p>{{ worldText }}</p>
+			<p>Current moment: {{ worldMoment }}</p>
+			<button v-on:click="increaseTime">Increase time</button>
+			<button v-on:click="startBattle">Start a battle</button>
 			<div v-if="world && world.parties.length > 0">
 				<PartyDisplay v-for="party in world.parties" :world="world" :party="party" :key="party.id" v-on:party-disbanded="refreshDisplay" />
 			</div>
@@ -25,8 +28,8 @@
 import { Component, Vue } from 'vue-property-decorator';
 import PartyDisplay from './PartyDisplay.vue';
 import World from '../models/World';
-import { getUnusedPartyId, addPartyToWorld, disbandParty, removeEmptyParties } from '../utilities/WorldUtilities';
-import { combineParties, addMainCharacter } from '../utilities/PartyUtilities';
+import { getUnusedPartyId, addPartyToWorld, removeEmptyParties, startNextMoment } from '../utilities/WorldUtilities';
+import { addMainCharacter } from '../utilities/PartyUtilities';
 import Party from '../models/Party';
 import { getCharacterWithHighestHealth, getCharacterWithLowestHealth, getCharacterWithHighestMagic } from '../utilities/CharacterFilterUtilities';
 import { sortBySpeed, sortByHealth, sortByDodge, sortByArmor } from '../utilities/CharacterSortUtilities';
@@ -42,11 +45,12 @@ import StatModification from '../models/StatModification';
 export default class WorldDisplay extends Vue {
 	// TODO save and load this
 	world: World = new World();
-	worldText = '';
+	worldMoment = -1;
+	worldMessages = '';
 
 	created() {
 		console.log('WorldDisplay created');
-		this.worldText = `Current moment: ${this.world.currentMoment}`;
+		this.worldMoment = this.world.currentMoment;
 	}
 
 	populateTestWorld(): void {
@@ -143,6 +147,16 @@ export default class WorldDisplay extends Vue {
 		console.log('sort by speed');
 		// TODO all of the forceUpdate calls need to be removed
 		this.$forceUpdate();
+	}
+
+	increaseTime(): void {
+		this.worldMessages = JSON.stringify(startNextMoment(this.world));
+		this.worldMoment = this.world.currentMoment;
+		//this.$forceUpdate();
+	}
+
+	startBattle(): void {
+		// TODO start battle
 	}
 }
 </script>

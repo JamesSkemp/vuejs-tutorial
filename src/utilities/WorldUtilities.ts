@@ -4,15 +4,18 @@ import Character from '@/models/Character';
 import { sortPartiesById } from './WorldSortUtilities';
 import { PartyState } from './Enums';
 import { sortByCharacterId } from './CharacterSortUtilities';
-import { addMainCharacter } from './PartyUtilities';
+import { addMainCharacter, resolvePartyMoment } from './PartyUtilities';
 
-export function startNextMoment(world: World): void {
-	/*this.parties.forEach(party => {
-		console.log(party);
-	});*/
-	// TODO handle isPaused
-	// TODO this should probably do something with combat as well?
-	world.currentMoment++;
+export function startNextMoment(world: World): string[] {
+	let messages: string[] = [];
+	if (!world.isPaused) {
+		world.currentMoment++;
+		messages.push(`Starting moment ${world.currentMoment}`);
+		world.parties.forEach(party => {
+			messages = messages.concat(resolvePartyMoment(party, world.currentMoment));
+		});
+	}
+	return messages;
 }
 
 /**

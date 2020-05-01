@@ -1,8 +1,9 @@
 import Party from '@/models/Party';
-import { attackOpponent, processTurn, getShortDetails } from './CharacterUtilities';
+import { attackOpponent, processTurn, getShortDetails, setInitialTurn } from './CharacterUtilities';
 import Character from '@/models/Character';
 import { sortBySpeed } from './CharacterSortUtilities';
 import { sortByPartyId } from './PartySortUtilities';
+import { PartyState } from './Enums';
 
 /**
  * Combine multiple parties together. Returns true if parties are combined.
@@ -41,6 +42,12 @@ export function resolvePartyMoment(party: Party, currentMoment: number): string[
 	const messages: string[] = [];
 	if (party.mainCharacters.length > 0) {
 		if (party.opponents.length > 0) {
+			if (party.state !== PartyState.InBattle) {
+				party.mainCharacters.forEach(c => setInitialTurn(c, currentMoment));
+				party.opponents.forEach(c => setInitialTurn(c, currentMoment));
+				party.state = PartyState.InBattle;
+			}
+
 			let characters: Character[] = [];
 			characters = characters.concat(party.mainCharacters);
 			characters = characters.concat(party.opponents);
@@ -73,8 +80,13 @@ export function resolvePartyMoment(party: Party, currentMoment: number): string[
 					}
 				});
 			}
+		} else {
+			console.log('no opponents');
+			// TODO no battle
 		}
 	}
+	// TODO handle combat being over
+
 	return messages;
 }
 
