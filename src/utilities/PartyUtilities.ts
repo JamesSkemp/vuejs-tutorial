@@ -34,6 +34,10 @@ export function partyHasLivingOpponents(party: Party): boolean {
 	return party.opponents.filter(c => c.currentHealth > 0).length > 0;
 }
 
+/**
+ * Returns true if a party has both living main characters and opponents.
+ * @param party Party to check.
+ */
 export function partyHasOngoingBattle(party: Party) {
 	return partyHasLivingMainCharacters(party) && partyHasLivingOpponents(party);
 }

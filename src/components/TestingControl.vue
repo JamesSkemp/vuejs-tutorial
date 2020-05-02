@@ -13,45 +13,45 @@
 		<div>Final results short length: {{ finalResultShortLength }}</div>
 		<div>
 			Health:
-			<input type="number" v-model="healthMin" value="" /> -
-			<input type="number" v-model="healthMax" value="" />
+			<input type="number" v-model.number="healthMin" value="" /> -
+			<input type="number" v-model.number="healthMax" value="" />
 			<br />
 			Attack:
-			<input type="number" v-model="attackMin" value="" /> -
-			<input type="number" v-model="attackMax" value="" />
+			<input type="number" v-model.number="attackMin" value="" /> -
+			<input type="number" v-model.number="attackMax" value="" />
 			<br />
 			Dodge:
-			<input type="number" v-model="dodgeMin" value="" /> -
-			<input type="number" v-model="dodgeMax" value="" />
+			<input type="number" v-model.number="dodgeMin" value="" /> -
+			<input type="number" v-model.number="dodgeMax" value="" />
 			<br />
 			Armor:
-			<input type="number" v-model="armorMin" value="" /> -
-			<input type="number" v-model="armorMax" value="" />
+			<input type="number" v-model.number="armorMin" value="" /> -
+			<input type="number" v-model.number="armorMax" value="" />
 			<br />
 			Speed:
-			<input type="number" v-model="speedMin" value="" /> -
-			<input type="number" v-model="speedMax" value="" />
+			<input type="number" v-model.number="speedMin" value="" /> -
+			<input type="number" v-model.number="speedMax" value="" />
 			<br />
 			Opponent health:
-			<input type="number" v-model="opponentHealth" value="" />
+			<input type="number" v-model.number="opponentHealth" value="" />
 			<br />
 			Opponent attack:
-			<input type="number" v-model="opponentAttack" value="" />
+			<input type="number" v-model.number="opponentAttack" value="" />
 			<br />
 			Opponent damage:
-			<input type="text" v-model="opponentDamage" value="" />
+			<input type="text" v-model.number="opponentDamage" value="" />
 			<br />
 			Opponent dodge:
-			<input type="number" v-model="opponentDodge" value="" />
+			<input type="number" v-model.number="opponentDodge" value="" />
 			<br />
 			Opponent armor:
-			<input type="number" v-model="opponentArmor" value="" />
+			<input type="number" v-model.number="opponentArmor" value="" />
 			<br />
 			Opponent speed:
-			<input type="number" v-model="opponentSpeed" value="" />
+			<input type="number" v-model.number="opponentSpeed" value="" />
 			<br />
 			Times to test:
-			<input type="number" v-model="testTimes" value="" />
+			<input type="number" v-model.number="testTimes" value="" />
 			<br />
 			<button v-on:click="test">Test cases</button>
 			<button v-on:click="clearTestResults">Clear test results</button>
@@ -60,28 +60,28 @@
 		<div>
 			<h2>Console World Testing</h2>
 			Test character max health:
-			<input type="number" v-model="testCharacterMaxHealth" value="" />
+			<input type="number" v-model.number="testCharacterMaxHealth" value="" />
 			<br />
 			Test character current health:
-			<input type="number" v-model="testCharacterCurrentHealth" value="" />
+			<input type="number" v-model.number="testCharacterCurrentHealth" value="" />
 			<br />
 			Test character melee:
-			<input type="number" v-model="testCharacterMelee" value="" />
+			<input type="number" v-model.number="testCharacterMelee" value="" />
 			<br />
 			Test character range:
-			<input type="number" v-model="testCharacterRange" value="" />
+			<input type="number" v-model.number="testCharacterRange" value="" />
 			<br />
 			Test character magic:
-			<input type="number" v-model="testCharacterMagic" value="" />
+			<input type="number" v-model.number="testCharacterMagic" value="" />
 			<br />
 			Test character dodge:
-			<input type="number" v-model="testCharacterDodge" value="" />
+			<input type="number" v-model.number="testCharacterDodge" value="" />
 			<br />
 			Test character armor:
-			<input type="number" v-model="testCharacterArmor" value="" />
+			<input type="number" v-model.number="testCharacterArmor" value="" />
 			<br />
 			Test character speed:
-			<input type="number" v-model="testCharacterSpeed" value="" />
+			<input type="number" v-model.number="testCharacterSpeed" value="" />
 			<br />
 			<button v-on:click="addTestCharacter">Add test character</button>
 		</div>
@@ -168,6 +168,8 @@ export default class TestingControl extends Vue {
 
   test(): void {
 	const world: World = new World();
+	const totalMomentsWon: number[] = [];
+	const totalMomentsLost: number[] = [];
 	for (let health = this.healthMin; health <= this.healthMax; health++) {
 		if (health % 3 !== 0) {
 			continue;
@@ -221,6 +223,7 @@ export default class TestingControl extends Vue {
 									console.log('more than 500 turns');
 									this.finalResultsShort.push(`[ENDED EARLY] Character ${getSuperShortBaseStats(testCharacter)}, Time ${runTime}, Turns ${turns}, Hero health ${testWorld.parties[0].mainCharacters[0].currentHealth}, Opponent health ${testWorld.parties[0].opponents[0].currentHealth}`);
 									//console.log(testWorld);
+									totalMomentsLost.push(whileLoopNumber);
 									break;
 								}
 
@@ -242,7 +245,10 @@ export default class TestingControl extends Vue {
 
 							//this.testResults.push(`Character ${JSON.stringify(getShortBaseStats(testCharacter))}`);
 							if (!partyHasLivingMainCharacters(testWorld.parties[0])) {
-								this.finalResultsShort.push(`Character ${getSuperShortBaseStats(testCharacter)}, Time ${runTime}, Turns ${turns}, Heroes won ${partyHasLivingMainCharacters(testWorld.parties[0])}`);
+								this.finalResultsShort.push(`Character ${getSuperShortBaseStats(testCharacter)}, Time ${runTime}, Turns ${turns} / ${whileLoopNumber}, Heroes won ${partyHasLivingMainCharacters(testWorld.parties[0])}`);
+								totalMomentsLost.push(whileLoopNumber);
+							} else {
+								totalMomentsWon.push(whileLoopNumber);
 							}
 
 							//this.testResults.push(JSON.stringify(testWorld));
@@ -253,6 +259,11 @@ export default class TestingControl extends Vue {
 		}
 	}
 	this.finalResultShortLength = this.finalResultsShort.length;
+	//console.log(totalMomentsWon);
+	//console.log(totalMomentsLost);
+
+	window.slTotalMoments = { 'won': totalMomentsWon, 'lost': totalMomentsLost };
+	console.log(window.slTotalMoments);
   }
 
   rollDice(): void {
