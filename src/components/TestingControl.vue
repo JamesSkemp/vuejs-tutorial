@@ -39,7 +39,7 @@
 			<input type="number" v-model.number="opponentAttack" value="" />
 			<br />
 			Opponent damage:
-			<input type="text" v-model.number="opponentDamage" value="" />
+			<input type="text" v-model="opponentDamage" value="" />
 			<br />
 			Opponent dodge:
 			<input type="number" v-model.number="opponentDodge" value="" />
@@ -262,8 +262,8 @@ export default class TestingControl extends Vue {
 	//console.log(totalMomentsWon);
 	//console.log(totalMomentsLost);
 
-	window.slTotalMoments = { 'won': totalMomentsWon, 'lost': totalMomentsLost };
-	console.log(window.slTotalMoments);
+	window['slTotalMoments'] = { 'won': totalMomentsWon, 'lost': totalMomentsLost };
+	console.log(window['slTotalMoments']);
   }
 
   rollDice(): void {
