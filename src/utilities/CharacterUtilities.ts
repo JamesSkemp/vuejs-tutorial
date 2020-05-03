@@ -1,6 +1,8 @@
 import Character from '@/models/Character';
 import { DiceRoll } from 'rpg-dice-roller';
 import { processStatModificationTurn, totalStatModifications } from './StatModificationUtilities';
+import { Desire, PartyState } from './Enums';
+import Party from '@/models/Party';
 
 export function attackOpponent(character: Character, opponent: Character): string[] {
 	// TODO different for each type of attack, or should this determine what the character will attack with? should it just be simplified to an attack value?
@@ -166,6 +168,14 @@ export function checkDodge(character: Character, modifier?: number): boolean {
 	return success;
 }
 
+export function getCurrentHealthMax(character: Character): number {
+	let health = character.baseStats.health;
+	character.statMods.healthModifications.forEach(mod => {
+		health += mod.amount;
+	});
+	return health;
+}
+
 export function getCurrentMelee(character: Character): number {
 	let melee = character.baseStats.melee.value;
 	character.statMods.meleeModifications.forEach(mod => {
@@ -221,6 +231,33 @@ export function setInitialTurn(character: Character, initialTurn: number = 0): v
 	character.lastAttack = -1;
 	character.nextAttack = initialTurn + getCurrentSpeed(character);
 	character.isInBattle = true;
+}
+
+export function getCharacterDesire(party: Party, character: Character): Desire {
+	if (party.state === PartyState.AtLocationTown) {
+		if (character.currentHealth < getCurrentHealthMax(character)) {
+			return Desire.Rest;
+		} else if (party.timeAtLocation >= 100) {
+			// TODO change number as needed - 100 = 5 minutes
+			return Desire.SearchForParty;
+		} else if (party.targetLocation >= 0) {
+			return Desire.Travel;
+		} else {
+			return Desire.Explore;
+		}
+	} else {
+		// They're not at town.
+		if (party.state === PartyState.InBattle) {
+			return Desire.Battle;
+		} else if (character.currentHealth <= getCurrentHealthMax(character) / 2) {
+			// TODO tweak as needed
+			return Desire.Rest;
+		} else if (party.targetLocation >= 0) {
+			return Desire.Travel;
+		} else {
+			return Desire.Explore;
+		}
+	}
 }
 
 export function processTurn(character: Character, currentTurn: number): void {

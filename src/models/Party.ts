@@ -6,7 +6,10 @@ export default class Party {
 	public mainCharacters: Character[] = [];
 	public opponents: Character[] = [];
 	public state: PartyState;
-	// TODO isResting? (defined in state, but needs to be used), location?
+	// TODO set the following items
+	public location = -1;
+	public timeAtLocation = -1;
+	public targetLocation = -1;
 
 	public constructor(id: number) {
 		this.id = id;

@@ -3,6 +3,7 @@
 		<b-row>
 			<b-col>
 				<h5>Character {{ character.id }}, {{ character.name }}</h5>
+				<p>Desire: {{ getDesire() }}</p>
 			</b-col>
 		</b-row>
 		<b-row align-v="start">
@@ -60,10 +61,13 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Character from '../models/Character';
 import { getAttackText } from '../utilities/AttackUtilities';
-import { getShortBaseStats, getCurrentStats, getStatModifications } from '../utilities/CharacterUtilities';
+import { getShortBaseStats, getCurrentStats, getStatModifications, getCharacterDesire } from '../utilities/CharacterUtilities';
 import Attack from '../models/Attack';
+import { desireToText } from '../utilities/Enums';
+import Party from '../models/Party';
 @Component
 export default class CharacterDisplay extends Vue {
+	@Prop() party!: Party;
 	@Prop() character!: Character;
 	baseStats = '';
 	statModifications = '';
@@ -97,6 +101,10 @@ export default class CharacterDisplay extends Vue {
 	getMagicText() {
 		return `Magic: ${this.character.baseStats.magic.value}<br />
 		${JSON.stringify(this.character.baseStats.magic.attacks)}`;
+	}
+
+	getDesire() {
+		return desireToText(getCharacterDesire(this.party, this.character));
 	}
 
 	refreshData() {

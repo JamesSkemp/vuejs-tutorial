@@ -25,7 +25,7 @@
 				<div v-if="party.mainCharacters.length > 0">
 					<h4>Main characters ({{ party.mainCharacters.length }})</h4>
 					<div>
-						<CharacterDisplay v-for="character in party.mainCharacters" :character="character" :key="character.id" />
+						<CharacterDisplay v-for="character in party.mainCharacters" :party="party" :character="character" :key="character.id" />
 					</div>
 				</div>
 				<div v-else>
@@ -34,7 +34,7 @@
 				<div v-if="party.opponents.length > 0">
 					<h4>Opponents</h4>
 					<div>
-						<CharacterDisplay v-for="opponent in party.opponents" :character="opponent" :key="opponent.id" />
+						<CharacterDisplay v-for="opponent in party.opponents" :party="party" :character="opponent" :key="opponent.id" />
 					</div>
 				</div>
 			</div>
