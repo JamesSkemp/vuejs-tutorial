@@ -14,5 +14,6 @@ export default class StatModifications {
 	public damageModifications: StatModification[] = [];
 
 	constructor() {
+		// TODO?
 	}
 }

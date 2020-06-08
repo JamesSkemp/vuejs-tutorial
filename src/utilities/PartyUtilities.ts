@@ -38,7 +38,7 @@ export function partyHasLivingOpponents(party: Party): boolean {
  * Returns true if a party has both living main characters and opponents.
  * @param party Party to check.
  */
-export function partyHasOngoingBattle(party: Party) {
+export function partyHasOngoingBattle(party: Party): boolean {
 	return partyHasLivingMainCharacters(party) && partyHasLivingOpponents(party);
 }
 
@@ -100,13 +100,13 @@ export function resolvePartyMoment(party: Party, currentMoment: number): string[
  * @param party Party to add the main character to.
  * @param character Character to add.
  */
-export function addMainCharacter(party: Party, character: Character) {
+export function addMainCharacter(party: Party, character: Character): void {
 	// TODO may also want to resort party so melee > range > magic for order?
 	character.side = 1;
 	party.mainCharacters.push(character);
 }
 
-export function addOpponent(party: Party, opponent: Character) {
+export function addOpponent(party: Party, opponent: Character): void {
 	opponent.side = 2;
 	party.opponents.push(opponent);
 }

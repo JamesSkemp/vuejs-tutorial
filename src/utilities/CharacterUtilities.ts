@@ -40,8 +40,9 @@ export function attackOpponent(character: Character, opponent: Character): strin
  * @param character Character to take damage.
  * @param damage Damage dealt to the character, before armor.
  * @param minimumDamage Minimum damage to deal to the character.
+ * @returns Final damage taken.
  */
-export function takeDamage(character: Character, damage: number, minimumDamage: number = 0) {
+export function takeDamage(character: Character, damage: number, minimumDamage = 0): number {
 	let damageTaken = damage;
 	damageTaken -= getCurrentArmor(character);
 
@@ -50,6 +51,8 @@ export function takeDamage(character: Character, damage: number, minimumDamage: 
 	}
 	// TODO some skills may negate this minimum damage
 	character.currentHealth -= damageTaken;
+
+	return damageTaken;
 }
 
 /**
@@ -227,7 +230,7 @@ export function getCurrentSpeed(character: Character): number {
 /**
  * Setup a character for their first turn of a battle.
  */
-export function setInitialTurn(character: Character, initialTurn: number = 0): void {
+export function setInitialTurn(character: Character, initialTurn = 0): void {
 	character.lastAttack = -1;
 	character.nextAttack = initialTurn + getCurrentSpeed(character);
 	character.isInBattle = true;
@@ -271,14 +274,14 @@ export function processTurn(character: Character, currentTurn: number): void {
  * @param character Character to revive.
  * @param healthPercentage Percentage of health to restore them to.
  */
-export function revive(character: Character, healthPercentage: number = 100): void {
+export function revive(character: Character, healthPercentage = 100): void {
 	character.currentHealth = Math.round(character.baseStats.health * (healthPercentage / 100));
 }
 
 /**
  * Completely resets all combat stats for a character. Should generally only be done for non-player characters.
  */
-export function resetCombatStats(character: Character) {
+export function resetCombatStats(character: Character): void {
 	character.combatStats.meleeFailures = 0;
 	character.combatStats.rangeFailures = 0;
 	character.combatStats.magicFailures = 0;
@@ -301,7 +304,7 @@ export function getCurrentStats(character: Character): string[] {
 	return [`Health ${character.currentHealth}`, `Melee ${getCurrentMelee(character)}`, `Range ${getCurrentRange(character)}`, `Magic ${getCurrentMagic(character)}`, `Dodge ${getCurrentDodge(character)}`, `Armor ${getCurrentArmor(character)}`, `Speed ${getCurrentSpeed(character)}`];
 }
 
-export function getStatModifications(character: Character, emptyMessage: string = 'None'): string[] {
+export function getStatModifications(character: Character, emptyMessage = 'None'): string[] {
 	let healthMods = '';
 	let damageMods = '';
 	let meleeMods = '';
@@ -312,35 +315,35 @@ export function getStatModifications(character: Character, emptyMessage: string 
 	let speedMods = '';
 
 	if (character.statMods.healthModifications.length > 0) {
-		let totals = totalStatModifications(character.statMods.healthModifications);
+		const totals = totalStatModifications(character.statMods.healthModifications);
 		healthMods = `Health ${totals.total} for ${totals.turns} turns`;
 	}
 	if (character.statMods.damageModifications.length > 0) {
-		let totals = totalStatModifications(character.statMods.damageModifications);
+		const totals = totalStatModifications(character.statMods.damageModifications);
 		damageMods = `Damage ${totals.total} for ${totals.turns} turns`;
 	}
 	if (character.statMods.meleeModifications.length > 0) {
-		let totals = totalStatModifications(character.statMods.meleeModifications);
+		const totals = totalStatModifications(character.statMods.meleeModifications);
 		meleeMods = `Melee ${totals.total} for ${totals.turns} turns`;
 	}
 	if (character.statMods.rangeModifications.length > 0) {
-		let totals = totalStatModifications(character.statMods.rangeModifications);
+		const totals = totalStatModifications(character.statMods.rangeModifications);
 		rangeMods = `Range ${totals.total} for ${totals.turns} turns`;
 	}
 	if (character.statMods.magicModifications.length > 0) {
-		let totals = totalStatModifications(character.statMods.magicModifications);
+		const totals = totalStatModifications(character.statMods.magicModifications);
 		magicMods = `Magic ${totals.total} for ${totals.turns} turns`;
 	}
 	if (character.statMods.dodgeModifications.length > 0) {
-		let totals = totalStatModifications(character.statMods.dodgeModifications);
+		const totals = totalStatModifications(character.statMods.dodgeModifications);
 		dodgeMods = `Dodge ${totals.total} for ${totals.turns} turns`;
 	}
 	if (character.statMods.armorModifications.length > 0) {
-		let totals = totalStatModifications(character.statMods.armorModifications);
+		const totals = totalStatModifications(character.statMods.armorModifications);
 		armorMods = `Armor ${totals.total} for ${totals.turns} turns`;
 	}
 	if (character.statMods.speedModifications.length > 0) {
-		let totals = totalStatModifications(character.statMods.speedModifications);
+		const totals = totalStatModifications(character.statMods.speedModifications);
 		speedMods = `Speed ${totals.total} for ${totals.turns} turns`;
 	}
 

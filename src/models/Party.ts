@@ -2,7 +2,7 @@ import Character from './Character';
 import { PartyState } from '@/utilities/Enums';
 
 export default class Party {
-	public id: number = -1;
+	public id = -1;
 	public mainCharacters: Character[] = [];
 	public opponents: Character[] = [];
 	public state: PartyState;

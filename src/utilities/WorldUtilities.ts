@@ -109,7 +109,7 @@ export function createNewTestWorldForSingleBattle(character: Character, opponent
  * Loop through all parties and remove those that are empty of characters. This also loops through and fixes the party ids so that they contain no gaps in numbering.
  * @param world World to update.
  */
-export function removeEmptyParties(world: World) {
+export function removeEmptyParties(world: World): void {
 	if (world.parties.length > 0) {
 		for (let i = 0; i < world.parties.length; i++) {
 			while (world.parties[i] && world.parties[i].mainCharacters.length === 0) {
@@ -125,7 +125,7 @@ export function removeEmptyParties(world: World) {
  * Fix all party ids in a world so they include no gaps.
  * @param world World to update.
  */
-export function fixPartyIds(world: World) {
+export function fixPartyIds(world: World): void {
 	if (world.parties.length > 0) {
 		for (let i = 0; i < world.parties.length; i++) {
 			if (world.parties[i].id !== i) {

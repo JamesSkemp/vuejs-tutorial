@@ -2,13 +2,13 @@ export default class Attack {
 	public id: number;
 	public name: string;
 	public damage: string;
-	public cooldown: number = 0;
-	public meleeMod: number = 0;
-	public rangeMod: number = 0;
-	public magicMod: number = 0;
-	public dodgeMod: number = 0;
-	public armorMod: number = 0;
-	public speedMod: number = 0;
+	public cooldown = 0;
+	public meleeMod = 0;
+	public rangeMod = 0;
+	public magicMod = 0;
+	public dodgeMod = 0;
+	public armorMod = 0;
+	public speedMod = 0;
 
 	public constructor(id: number, name: string, damage: string, cooldown?: number, meleeMod?: number, rangeMod?: number, magicMod?: number, dodgeMod?: number, armorMod?: number, speedMod?: number) {
 		this.id = id;

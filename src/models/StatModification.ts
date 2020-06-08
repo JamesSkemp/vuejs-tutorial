@@ -12,7 +12,7 @@ export default class StatModification {
 	 */
 	public newlyAdded: boolean;
 
-	public constructor(amount: number, turns: number, newlyAdded: boolean = false) {
+	public constructor(amount: number, turns: number, newlyAdded = false) {
 		this.amount = amount;
 		this.turns = turns;
 		this.newlyAdded = newlyAdded;

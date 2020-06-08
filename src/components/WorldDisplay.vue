@@ -70,6 +70,8 @@ import { sortBySpeed, sortByHealth, sortByDodge, sortByArmor } from '../utilitie
 import Character from '../models/Character';
 import StatModification from '../models/StatModification';
 
+type EquivalenceResult = { equivalent: boolean, differences: string[] }
+
 @Component({
 	components: {
 		PartyDisplay
@@ -82,7 +84,7 @@ export default class WorldDisplay extends Vue {
 	worldMoment = -1;
 	worldMessages = '';
 
-	created() {
+	created(): void {
 		console.log('WorldDisplay created');
 		this.worldMoment = this.world.currentMoment;
 	}
@@ -211,7 +213,7 @@ export default class WorldDisplay extends Vue {
 		// TODO start battle
 	}
 
-	isEquivalent(a, b) {
+	isEquivalent(a, b): EquivalenceResult {
 		// Create arrays of property names
 		const aProps = Object.getOwnPropertyNames(a);
 		const bProps = Object.getOwnPropertyNames(b);

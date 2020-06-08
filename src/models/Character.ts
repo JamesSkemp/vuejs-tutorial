@@ -9,7 +9,7 @@ export default class Character {
 	/**
 	 * Unique id of the character, if a main character.
 	 */
-	public id: number = -1;
+	public id = -1;
 	/**
 	 * Character's name. May be generic for opponents.
 	 */
@@ -28,12 +28,12 @@ export default class Character {
 	public statMods: StatModifications;
 	public combatStats: CombatStats;
 	public currentHealth: number;
-	public lastAttack: number = -1;
-	public nextAttack: number = -1;
-	public side: number = -1;
-	public isInBattle: boolean = false;
-	public isResting: boolean = false;
-	public testString: string = "";
+	public lastAttack = -1;
+	public nextAttack = -1;
+	public side = -1;
+	public isInBattle = false;
+	public isResting = false;
+	public testString = "";
 
 	public constructor() {
 		// TODO accept id of some sort to change initial values, or should this be a utility?
