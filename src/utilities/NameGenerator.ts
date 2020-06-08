@@ -1,6 +1,7 @@
 export default class NameGenerator {
 	/**
 	 * Create a random name. TypeScript code based upon zephren's battle-inf.
+	 *
 	 * @param minSyllables Minimum number of syllables to include.
 	 * @param maxSyllables Maximum number of syllables to include.
 	 */
@@ -89,6 +90,7 @@ export default class NameGenerator {
 
 	/**
 	 * Returns a random number between two numbers, inclusive.
+	 *
 	 * @param minValue Minimum number that can be returned.
 	 * @param maxValue Maximum number that can be returned.
 	 */

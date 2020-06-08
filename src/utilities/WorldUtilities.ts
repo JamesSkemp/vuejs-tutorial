@@ -6,6 +6,12 @@ import { PartyState } from './Enums';
 import { sortByCharacterId } from './CharacterSortUtilities';
 import { addMainCharacter, resolvePartyMoment } from './PartyUtilities';
 
+/**
+ * Start the next moment in a world.
+ *
+ * @param world World to start the next moment in.
+ * @returns {string[]} Messages, if any.
+ */
 export function startNextMoment(world: World): string[] {
 	let messages: string[] = [];
 	if (!world.isPaused) {
@@ -20,6 +26,9 @@ export function startNextMoment(world: World): string[] {
 
 /**
  * Initializes and returns next character id.
+ *
+ * @param world World to generate character in.
+ * @returns New character's id.
  */
 export function generateNextCharacterId(world: World): number {
 	world.nextCharacterId++;
@@ -28,8 +37,10 @@ export function generateNextCharacterId(world: World): number {
 
 /**
  * Adds a party to a world. Returns the party id of the added party.
+ *
  * @param world World to add the party to.
  * @param party Optional party to add to the world. If not provided one will be created. If provided but it doesn't include a valid id, one will be set.
+ * @returns {number} Party's id.
  */
 export function addPartyToWorld(world: World, party?: Party): number {
 	if (party) {
@@ -45,6 +56,12 @@ export function addPartyToWorld(world: World, party?: Party): number {
 	}
 }
 
+/**
+ * Get the first unused party id in a World.
+ *
+ * @param world World to check.
+ * @returns Return first unused party id.
+ */
 export function getUnusedPartyId(world: World): number {
 	if (world.parties.length === 0) {
 		return 0;
@@ -69,6 +86,7 @@ export function getUnusedPartyId(world: World): number {
 
 /**
  * Breaks an existing party up so that each character has their own party. Requires the party to be at town.
+ *
  * @param world World that contains the party and will contain the new parties.
  * @param party Party to disband/split up.
  */
@@ -93,6 +111,10 @@ export function disbandParty(world: World, party: Party): boolean {
 	return false;
 }
 
+/**
+ * @param character
+ * @param opponent
+ */
 export function createNewTestWorldForSingleBattle(character: Character, opponent: Character): World {
 	const newWorld: World = new World();
 
@@ -107,6 +129,7 @@ export function createNewTestWorldForSingleBattle(character: Character, opponent
 
 /**
  * Loop through all parties and remove those that are empty of characters. This also loops through and fixes the party ids so that they contain no gaps in numbering.
+ *
  * @param world World to update.
  */
 export function removeEmptyParties(world: World): void {
@@ -123,6 +146,7 @@ export function removeEmptyParties(world: World): void {
 
 /**
  * Fix all party ids in a world so they include no gaps.
+ *
  * @param world World to update.
  */
 export function fixPartyIds(world: World): void {

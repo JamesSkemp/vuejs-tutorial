@@ -2,7 +2,9 @@ import Party from '@/models/Party';
 
 /**
  * Sorts parties by id.
+ *
  * @param parties Parties to sort.
+ * @returns Sorted parties.
  */
 export function sortByPartyId(parties: Party[]): Party[] {
 	return parties.sort((p1, p2) => {

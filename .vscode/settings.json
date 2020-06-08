@@ -1,4 +1,5 @@
 {
+	"files.trimTrailingWhitespace": true,
 	"eslint.validate": ["typescript"],
 	"vetur.validation.script": false,
 	"vetur.validation.template": false

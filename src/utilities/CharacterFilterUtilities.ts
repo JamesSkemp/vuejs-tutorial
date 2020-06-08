@@ -4,6 +4,7 @@ import { getCurrentMagic } from './CharacterUtilities';
 
 /**
  * Return the character with the most health, or null if there are no (living) characters.
+ *
  * @param characters Characters to search.
  */
 export function getCharacterWithHighestHealth(characters: Character[]): Character | null {
@@ -17,6 +18,7 @@ export function getCharacterWithHighestHealth(characters: Character[]): Characte
 
 /**
  * Return the character with the least health, or null if there are no (living) characters.
+ *
  * @param characters Characters to search.
  */
 export function getCharacterWithLowestHealth(characters: Character[]): Character | null {
@@ -30,6 +32,7 @@ export function getCharacterWithLowestHealth(characters: Character[]): Character
 
 /**
  * Return the character with the highest melee, or null if there are no (living) characters.
+ *
  * @param characters Characters to search.
  */
 export function getCharacterWithHighestMelee(characters: Character[]): Character | null {
@@ -43,6 +46,7 @@ export function getCharacterWithHighestMelee(characters: Character[]): Character
 
 /**
  * Return the character with the lowest melee, or null if there are no (living) characters.
+ *
  * @param characters Characters to search.
  */
 export function getCharacterWithLowestMelee(characters: Character[]): Character | null {
@@ -56,6 +60,7 @@ export function getCharacterWithLowestMelee(characters: Character[]): Character 
 
 /**
  * Return the character with the highest range, or null if there are no (living) characters.
+ *
  * @param characters Characters to search.
  */
 export function getCharacterWithHighestRange(characters: Character[]): Character | null {
@@ -69,6 +74,7 @@ export function getCharacterWithHighestRange(characters: Character[]): Character
 
 /**
  * Return the character with the lowest range, or null if there are no (living) characters.
+ *
  * @param characters Characters to search.
  */
 export function getCharacterWithLowestRange(characters: Character[]): Character | null {
@@ -82,6 +88,7 @@ export function getCharacterWithLowestRange(characters: Character[]): Character 
 
 /**
  * Return the character with the highest magic, or null if there are no (living) characters.
+ *
  * @param characters Characters to search.
  */
 export function getCharacterWithHighestMagic(characters: Character[]): Character | null {
@@ -95,6 +102,7 @@ export function getCharacterWithHighestMagic(characters: Character[]): Character
 
 /**
  * Return the character with the lowest magic, or null if there are no (living or able) characters.
+ *
  * @param characters Characters to search.
  */
 export function getCharacterWithLowestMagic(characters: Character[]): Character | null {
@@ -108,6 +116,7 @@ export function getCharacterWithLowestMagic(characters: Character[]): Character 
 
 /**
  * Return the character with the highest dodge, or null if there are no (living) characters.
+ *
  * @param characters Characters to search.
  */
 export function getCharacterWithHighestDodge(characters: Character[]): Character | null {
@@ -121,6 +130,7 @@ export function getCharacterWithHighestDodge(characters: Character[]): Character
 
 /**
  * Return the character with the lowest dodge, or null if there are no (living) characters.
+ *
  * @param characters Characters to search.
  */
 export function getCharacterWithLowestDodge(characters: Character[]): Character | null {
@@ -134,6 +144,7 @@ export function getCharacterWithLowestDodge(characters: Character[]): Character 
 
 /**
  * Return the character with the most armor, or null if there are no (living) characters.
+ *
  * @param characters Characters to search.
  */
 export function getCharacterWithHighestArmor(characters: Character[]): Character | null {
@@ -147,6 +158,7 @@ export function getCharacterWithHighestArmor(characters: Character[]): Character
 
 /**
  * Return the character with the least armor, or null if there are no (living) characters.
+ *
  * @param characters Characters to search.
  */
 export function getCharacterWithLowestArmor(characters: Character[]): Character | null {
@@ -160,6 +172,7 @@ export function getCharacterWithLowestArmor(characters: Character[]): Character 
 
 /**
  * Return the character with the highest speed (slowest character, or null if there are no (living) characters.
+ *
  * @param characters Characters to search.
  */
 export function getCharacterWithHighestSpeed(characters: Character[]): Character | null {
@@ -173,6 +186,7 @@ export function getCharacterWithHighestSpeed(characters: Character[]): Character
 
 /**
  * Return the character with the lowest speed (fastest character), or null if there are no (living) characters.
+ *
  * @param characters Characters to search.
  */
 export function getCharacterWithLowestSpeed(characters: Character[]): Character | null {
@@ -184,6 +198,9 @@ export function getCharacterWithLowestSpeed(characters: Character[]): Character 
 	return null;
 }
 
+/**
+ * @param characters
+ */
 export function getLivingCharacters(characters: Character[]): Character[] {
 	const livingCharacters = characters.filter(c => c.currentHealth > 0);
 	return livingCharacters;

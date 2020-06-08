@@ -7,6 +7,7 @@ import { PartyState } from './Enums';
 
 /**
  * Combine multiple parties together. Returns true if parties are combined.
+ *
  * @param parties Parties to combine together.
  */
 export function combineParties(parties: Party[]): boolean {
@@ -26,22 +27,33 @@ export function combineParties(parties: Party[]): boolean {
 	return false;
 }
 
+/**
+ * @param party
+ */
 export function partyHasLivingMainCharacters(party: Party): boolean {
 	return party.mainCharacters.filter(c => c.currentHealth > 0).length > 0;
 }
 
+/**
+ * @param party
+ */
 export function partyHasLivingOpponents(party: Party): boolean {
 	return party.opponents.filter(c => c.currentHealth > 0).length > 0;
 }
 
 /**
  * Returns true if a party has both living main characters and opponents.
+ *
  * @param party Party to check.
  */
 export function partyHasOngoingBattle(party: Party): boolean {
 	return partyHasLivingMainCharacters(party) && partyHasLivingOpponents(party);
 }
 
+/**
+ * @param party
+ * @param currentMoment
+ */
 export function resolvePartyMoment(party: Party, currentMoment: number): string[] {
 	const messages: string[] = [];
 	if (party.mainCharacters.length > 0) {
@@ -97,6 +109,7 @@ export function resolvePartyMoment(party: Party, currentMoment: number): string[
 
 /**
  * Adds a character to a party, setting the individuals side as needed.
+ *
  * @param party Party to add the main character to.
  * @param character Character to add.
  */
@@ -106,6 +119,10 @@ export function addMainCharacter(party: Party, character: Character): void {
 	party.mainCharacters.push(character);
 }
 
+/**
+ * @param party
+ * @param opponent
+ */
 export function addOpponent(party: Party, opponent: Character): void {
 	opponent.side = 2;
 	party.opponents.push(opponent);

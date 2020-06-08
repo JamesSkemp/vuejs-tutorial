@@ -4,6 +4,10 @@ import { processStatModificationTurn, totalStatModifications } from './StatModif
 import { Desire, PartyState } from './Enums';
 import Party from '@/models/Party';
 
+/**
+ * @param character
+ * @param opponent
+ */
 export function attackOpponent(character: Character, opponent: Character): string[] {
 	// TODO different for each type of attack, or should this determine what the character will attack with? should it just be simplified to an attack value?
 	const messages: string[] = [];
@@ -37,6 +41,7 @@ export function attackOpponent(character: Character, opponent: Character): strin
 
 /**
  * Damage to deal to the character, not including damage reduction like armor.
+ *
  * @param character Character to take damage.
  * @param damage Damage dealt to the character, before armor.
  * @param minimumDamage Minimum damage to deal to the character.
@@ -56,7 +61,7 @@ export function takeDamage(character: Character, damage: number, minimumDamage =
 }
 
 /**
- * 
+ * @param character
  * @param modifier Amount to change the check. Positive makes success more likely, negative makes the check more difficult.
  * @returns True if the character succeed their check.
  */
@@ -85,7 +90,7 @@ export function checkMelee(character: Character, modifier?: number): boolean {
 }
 
 /**
- * 
+ * @param character
  * @param modifier Amount to change the check. Positive makes success more likely, negative makes the check more difficult.
  * @returns True if the character succeed their check.
  */
@@ -114,7 +119,7 @@ export function checkRange(character: Character, modifier?: number): boolean {
 }
 
 /**
- * 
+ * @param character
  * @param modifier Amount to change the check. Positive makes success more likely, negative makes the check more difficult.
  * @returns True if the character succeed their check.
  */
@@ -143,7 +148,7 @@ export function checkMagic(character: Character, modifier?: number): boolean {
 }
 
 /**
- * 
+ * @param character
  * @param modifier Amount to change the check. Positive makes success more likely, negative makes the check more difficult.
  */
 export function checkDodge(character: Character, modifier?: number): boolean {
@@ -171,6 +176,9 @@ export function checkDodge(character: Character, modifier?: number): boolean {
 	return success;
 }
 
+/**
+ * @param character
+ */
 export function getCurrentHealthMax(character: Character): number {
 	let health = character.baseStats.health;
 	character.statMods.healthModifications.forEach(mod => {
@@ -179,6 +187,9 @@ export function getCurrentHealthMax(character: Character): number {
 	return health;
 }
 
+/**
+ * @param character
+ */
 export function getCurrentMelee(character: Character): number {
 	let melee = character.baseStats.melee.value;
 	character.statMods.meleeModifications.forEach(mod => {
@@ -187,6 +198,9 @@ export function getCurrentMelee(character: Character): number {
 	return melee;
 }
 
+/**
+ * @param character
+ */
 export function getCurrentRange(character: Character): number {
 	let range = character.baseStats.range.value;
 	character.statMods.rangeModifications.forEach(mod => {
@@ -195,6 +209,9 @@ export function getCurrentRange(character: Character): number {
 	return range;
 }
 
+/**
+ * @param character
+ */
 export function getCurrentMagic(character: Character): number {
 	let magic = character.baseStats.magic.value;
 	character.statMods.magicModifications.forEach(mod => {
@@ -203,6 +220,9 @@ export function getCurrentMagic(character: Character): number {
 	return magic;
 }
 
+/**
+ * @param character
+ */
 export function getCurrentDodge(character: Character): number {
 	let dodge = character.baseStats.dodge;
 	character.statMods.dodgeModifications.forEach(mod => {
@@ -211,6 +231,9 @@ export function getCurrentDodge(character: Character): number {
 	return dodge;
 }
 
+/**
+ * @param character
+ */
 export function getCurrentArmor(character: Character): number {
 	let armor = character.baseStats.armor;
 	character.statMods.armorModifications.forEach(mod => {
@@ -219,6 +242,9 @@ export function getCurrentArmor(character: Character): number {
 	return armor;
 }
 
+/**
+ * @param character
+ */
 export function getCurrentSpeed(character: Character): number {
 	let speed = character.baseStats.speed;
 	character.statMods.speedModifications.forEach(mod => {
@@ -229,6 +255,9 @@ export function getCurrentSpeed(character: Character): number {
 
 /**
  * Setup a character for their first turn of a battle.
+ *
+ * @param character
+ * @param initialTurn
  */
 export function setInitialTurn(character: Character, initialTurn = 0): void {
 	character.lastAttack = -1;
@@ -236,6 +265,10 @@ export function setInitialTurn(character: Character, initialTurn = 0): void {
 	character.isInBattle = true;
 }
 
+/**
+ * @param party
+ * @param character
+ */
 export function getCharacterDesire(party: Party, character: Character): Desire {
 	if (party.state === PartyState.AtLocationTown) {
 		if (character.currentHealth < getCurrentHealthMax(character)) {
@@ -263,6 +296,10 @@ export function getCharacterDesire(party: Party, character: Character): Desire {
 	}
 }
 
+/**
+ * @param character
+ * @param currentTurn
+ */
 export function processTurn(character: Character, currentTurn: number): void {
 	processStatModificationTurn(character.statMods);
 	character.lastAttack = currentTurn;
@@ -271,6 +308,7 @@ export function processTurn(character: Character, currentTurn: number): void {
 
 /**
  * Revives a character with current health set to a percentage of their maximum health. Stat mods are not taken into effect.
+ *
  * @param character Character to revive.
  * @param healthPercentage Percentage of health to restore them to.
  */
@@ -280,6 +318,8 @@ export function revive(character: Character, healthPercentage = 100): void {
 
 /**
  * Completely resets all combat stats for a character. Should generally only be done for non-player characters.
+ *
+ * @param character
  */
 export function resetCombatStats(character: Character): void {
 	character.combatStats.meleeFailures = 0;
@@ -288,22 +328,38 @@ export function resetCombatStats(character: Character): void {
 	character.combatStats.dodgeFailures = 0;
 }
 
+/**
+ * @param character
+ */
 export function getShortDetails(character: Character): string {
 	return `Character ${character.id} | Party ${character.side}`;
 }
 
+/**
+ * @param character
+ */
 export function getSuperShortBaseStats(character: Character): string {
 	return `${character.baseStats.health}-${character.baseStats.melee.value}-${character.baseStats.range.value}-${character.baseStats.magic.value}-${character.baseStats.dodge}-${character.baseStats.armor}-${character.baseStats.speed}`;
 }
 
+/**
+ * @param character
+ */
 export function getShortBaseStats(character: Character): string {
 	return `Health ${character.baseStats.health}, Melee ${character.baseStats.melee.value}, Range ${character.baseStats.range.value}, Magic ${character.baseStats.magic.value}, Dodge ${character.baseStats.dodge}, Armor ${character.baseStats.armor}, Speed ${character.baseStats.speed}`;
 }
 
+/**
+ * @param character
+ */
 export function getCurrentStats(character: Character): string[] {
 	return [`Health ${character.currentHealth}`, `Melee ${getCurrentMelee(character)}`, `Range ${getCurrentRange(character)}`, `Magic ${getCurrentMagic(character)}`, `Dodge ${getCurrentDodge(character)}`, `Armor ${getCurrentArmor(character)}`, `Speed ${getCurrentSpeed(character)}`];
 }
 
+/**
+ * @param character
+ * @param emptyMessage
+ */
 export function getStatModifications(character: Character, emptyMessage = 'None'): string[] {
 	let healthMods = '';
 	let damageMods = '';

@@ -1,5 +1,8 @@
 import Attack from '@/models/Attack';
 
+/**
+ * @param attack
+ */
 export function getAttackText(attack: Attack): string {
 	const cooldown = attack.cooldown === 0 ? '' : `Cooldown ${attack.cooldown}.`;
 	const meleeMod = attack.meleeMod === 0 ? '' : ` Melee ${attack.meleeMod}`;

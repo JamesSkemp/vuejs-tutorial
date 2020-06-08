@@ -29,6 +29,12 @@ export enum PartyState {
 	IsTravelling
 }
 
+/**
+ * Get the string version of a Desire.
+ *
+ * @param desire Character's Desire.
+ * @returns String representation of the Desire.
+ */
 export function desireToText(desire: Desire): string {
 	switch (desire) {
 		case Desire.Rest:
@@ -48,7 +54,9 @@ export function desireToText(desire: Desire): string {
 
 /**
  * Gets friendly text for a PartyState.
+ *
  * @param partyState PartyState to convert to text.
+ * @returns {string} Friendly text for display.
  */
 export function partyStateToText(partyState: PartyState): string {
 	switch (partyState) {

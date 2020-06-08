@@ -3,41 +3,73 @@ import StatModification from '@/models/StatModification';
 
 type TotalStatModification = { turns: number, total: number }
 
+/**
+ * @param statMods StatModifications to modify.
+ * @param statMod Health modification to add.
+ */
 export function addHealthModification(statMods: StatModifications, statMod: StatModification): void {
 	// TODO what if a modification already exists? does it extend or replace?
 	statMods.healthModifications.push(statMod);
 }
 
+/**
+ * @param statMods
+ * @param statMod
+ */
 export function addMeleeModification(statMods: StatModifications, statMod: StatModification): void {
 	// TODO what if a modification already exists? does it extend or replace?
 	statMods.meleeModifications.push(statMod);
 }
 
+/**
+ * @param statMods
+ * @param statMod
+ */
 export function addRangeModification(statMods: StatModifications, statMod: StatModification): void {
 	// TODO what if a modification already exists? does it extend or replace?
 	statMods.rangeModifications.push(statMod);
 }
 
+/**
+ * @param statMods
+ * @param statMod
+ */
 export function addMagicModification(statMods: StatModifications, statMod: StatModification): void {
 	// TODO what if a modification already exists? does it extend or replace?
 	statMods.magicModifications.push(statMod);
 }
 
+/**
+ * @param statMods
+ * @param statMod
+ */
 export function addDodgeModification(statMods: StatModifications, statMod: StatModification): void {
 	// TODO what if a modification already exists? does it extend or replace?
 	statMods.dodgeModifications.push(statMod);
 }
 
+/**
+ * @param statMods
+ * @param statMod
+ */
 export function addArmorModification(statMods: StatModifications, statMod: StatModification): void {
 	// TODO what if a modification already exists? does it extend or replace?
 	statMods.armorModifications.push(statMod);
 }
 
+/**
+ * @param statMods
+ * @param statMod
+ */
 export function addSpeedModification(statMods: StatModifications, statMod: StatModification): void {
 	// TODO what if a modification already exists? does it extend or replace?
 	statMods.speedModifications.push(statMod);
 }
 
+/**
+ * @param statMods
+ * @param statMod
+ */
 export function addDamageModification(statMods: StatModifications, statMod: StatModification): void {
 	// TODO what if a modification already exists? does it extend or replace?
 	statMods.damageModifications.push(statMod);
@@ -45,6 +77,7 @@ export function addDamageModification(statMods: StatModifications, statMod: Stat
 
 /**
  * Get the total modifications for a stat, including maximum turns the stat is modified.
+ *
  * @param statMods StatModifications to check.
  * @returns Turns a modification is in effect, and the current modification amount. The total may change as turns go by, and modifications expire.
  */
@@ -64,6 +97,7 @@ export function totalStatModifications(statMods: StatModification[]): TotalStatM
 
 /**
  * Process a turn on all modifications, decreasing turn counts and dropping any that are no longer valid.
+ *
  * @param statMods StatModifications to process.
  */
 export function processStatModificationTurn(statMods: StatModifications): void {
@@ -79,6 +113,12 @@ export function processStatModificationTurn(statMods: StatModifications): void {
 	statMods.damageModifications = statMods.damageModifications.filter(filterExpiredStatModification);
 }
 
+/**
+ * Clears all modifications, no matter their state.
+ *
+ * @param statMods Modifications to clear.
+ * @returns {void}
+ */
 export function clearAllModifications(statMods: StatModifications): void {
 	statMods.healthModifications = [];
 	statMods.meleeModifications = [];
@@ -92,6 +132,7 @@ export function clearAllModifications(statMods: StatModifications): void {
 
 /**
  * Given a collection of StatModification, decrements the turns count, if it wasn't added this round, and then drops any that no longer have turns remaining.
+ *
  * @param element StatModification to check.
  */
 function filterExpiredStatModification(element: StatModification): boolean {
