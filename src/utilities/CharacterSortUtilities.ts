@@ -5,6 +5,7 @@ import { getCurrentDodge, getCurrentArmor, getCurrentSpeed, getCurrentMelee, get
  * Sorts characters by id, with those created first being returned first.
  *
  * @param characters Characters to sort.
+ * @returns Sorted characters.
  */
 export function sortByCharacterId(characters: Character[]): Character[] {
 	return characters.sort((n1, n2) => {
@@ -17,6 +18,7 @@ export function sortByCharacterId(characters: Character[]): Character[] {
  * Sorts characters by health, with those with the highest health being returned first.
  *
  * @param characters Characters to sort.
+ * @returns Sorted characters.
  */
 export function sortByHealth(characters: Character[]): Character[] {
 	return characters.sort((n1, n2) => {
@@ -32,6 +34,7 @@ export function sortByHealth(characters: Character[]): Character[] {
  * Sorts characters by melee, with those with the highest value being returned first.
  *
  * @param characters Characters to sort.
+ * @returns Sorted characters.
  */
 export function sortByMelee(characters: Character[]): Character[] {
 	return characters.sort((n1, n2) => {
@@ -48,6 +51,7 @@ export function sortByMelee(characters: Character[]): Character[] {
  * Sorts characters by range, with those with the highest value being returned first.
  *
  * @param characters Characters to sort.
+ * @returns Sorted characters.
  */
 export function sortByRange(characters: Character[]): Character[] {
 	return characters.sort((n1, n2) => {
@@ -64,6 +68,7 @@ export function sortByRange(characters: Character[]): Character[] {
  * Sorts characters by magic, with those with the highest value being returned first.
  *
  * @param characters Characters to sort.
+ * @returns Sorted characters.
  */
 export function sortByMagic(characters: Character[]): Character[] {
 	return characters.sort((n1, n2) => {
@@ -80,6 +85,7 @@ export function sortByMagic(characters: Character[]): Character[] {
  * Sorts characters by dodge, with those with the highest dodge being returned first.
  *
  * @param characters Characters to sort.
+ * @returns Sorted characters.
  */
 export function sortByDodge(characters: Character[]): Character[] {
 	return characters.sort((n1, n2) => {
@@ -95,6 +101,7 @@ export function sortByDodge(characters: Character[]): Character[] {
  * Sorts characters by armor, with those with the highest armor being returned first.
  *
  * @param characters Characters to sort.
+ * @returns Sorted characters.
  */
 export function sortByArmor(characters: Character[]): Character[] {
 	return characters.sort((n1, n2) => {
@@ -110,6 +117,7 @@ export function sortByArmor(characters: Character[]): Character[] {
  * Sorts characters by speed, with the quickest (lowest number) being before slower characters (higher number).
  *
  * @param characters Characters to sort.
+ * @returns Sorted characters.
  */
 export function sortBySpeed(characters: Character[]): Character[] {
 	// For all checks we want the lower number to go first.

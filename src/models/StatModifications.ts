@@ -1,5 +1,10 @@
 import StatModification from './StatModification';
 
+/**
+ * Represents all stat modifications for a character.
+ *
+ * @class
+ */
 export default class StatModifications {
 	public healthModifications: StatModification[] = [];
 	public meleeModifications: StatModification[] = [];

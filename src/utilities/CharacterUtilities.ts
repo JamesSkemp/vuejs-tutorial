@@ -177,7 +177,10 @@ export function checkDodge(character: Character, modifier?: number): boolean {
 }
 
 /**
- * @param character
+ * Get the current health, including modifications, for a character.
+ *
+ * @param character Character to check.
+ * @returns {number} Current stat value, taking into account modifications.
  */
 export function getCurrentHealthMax(character: Character): number {
 	let health = character.baseStats.health;
@@ -188,7 +191,10 @@ export function getCurrentHealthMax(character: Character): number {
 }
 
 /**
- * @param character
+ * Get the current melee, including modifications, for a character.
+ *
+ * @param character Character to check.
+ * @returns {number} Current stat value, taking into account modifications.
  */
 export function getCurrentMelee(character: Character): number {
 	let melee = character.baseStats.melee.value;
@@ -199,7 +205,10 @@ export function getCurrentMelee(character: Character): number {
 }
 
 /**
- * @param character
+ * Get the current range, including modifications, for a character.
+ *
+ * @param character Character to check.
+ * @returns {number} Current stat value, taking into account modifications.
  */
 export function getCurrentRange(character: Character): number {
 	let range = character.baseStats.range.value;
@@ -210,7 +219,10 @@ export function getCurrentRange(character: Character): number {
 }
 
 /**
- * @param character
+ * Get the current magic, including modifications, for a character.
+ *
+ * @param character Character to check.
+ * @returns {number} Current stat value, taking into account modifications.
  */
 export function getCurrentMagic(character: Character): number {
 	let magic = character.baseStats.magic.value;
@@ -221,7 +233,10 @@ export function getCurrentMagic(character: Character): number {
 }
 
 /**
- * @param character
+ * Get the current dodge, including modifications, for a character.
+ *
+ * @param character Character to check.
+ * @returns {number} Current stat value, taking into account modifications.
  */
 export function getCurrentDodge(character: Character): number {
 	let dodge = character.baseStats.dodge;
@@ -232,7 +247,10 @@ export function getCurrentDodge(character: Character): number {
 }
 
 /**
- * @param character
+ * Get the current armor, including modifications, for a character.
+ *
+ * @param character Character to check.
+ * @returns {number} Current stat value, taking into account modifications.
  */
 export function getCurrentArmor(character: Character): number {
 	let armor = character.baseStats.armor;
@@ -243,7 +261,10 @@ export function getCurrentArmor(character: Character): number {
 }
 
 /**
- * @param character
+ * Get the current speed, including modifications, for a character.
+ *
+ * @param character Character to check.
+ * @returns {number} Current stat value, taking into account modifications.
  */
 export function getCurrentSpeed(character: Character): number {
 	let speed = character.baseStats.speed;
@@ -319,7 +340,7 @@ export function revive(character: Character, healthPercentage = 100): void {
 /**
  * Completely resets all combat stats for a character. Should generally only be done for non-player characters.
  *
- * @param character
+ * @param character Character to modify.
  */
 export function resetCombatStats(character: Character): void {
 	character.combatStats.meleeFailures = 0;
@@ -329,36 +350,41 @@ export function resetCombatStats(character: Character): void {
 }
 
 /**
- * @param character
+ * @param character Character to check.
  */
 export function getShortDetails(character: Character): string {
 	return `Character ${character.id} | Party ${character.side}`;
 }
 
 /**
- * @param character
+ * @param character Character to check.
  */
 export function getSuperShortBaseStats(character: Character): string {
 	return `${character.baseStats.health}-${character.baseStats.melee.value}-${character.baseStats.range.value}-${character.baseStats.magic.value}-${character.baseStats.dodge}-${character.baseStats.armor}-${character.baseStats.speed}`;
 }
 
 /**
- * @param character
+ * @param character Character to check.
+ * @returns Single line of the character's base stats.
  */
 export function getShortBaseStats(character: Character): string {
 	return `Health ${character.baseStats.health}, Melee ${character.baseStats.melee.value}, Range ${character.baseStats.range.value}, Magic ${character.baseStats.magic.value}, Dodge ${character.baseStats.dodge}, Armor ${character.baseStats.armor}, Speed ${character.baseStats.speed}`;
 }
 
 /**
- * @param character
+ * @param character Character to check.
+ * @returns {string[]} Collection of current stats, one per stat.
  */
 export function getCurrentStats(character: Character): string[] {
 	return [`Health ${character.currentHealth}`, `Melee ${getCurrentMelee(character)}`, `Range ${getCurrentRange(character)}`, `Magic ${getCurrentMagic(character)}`, `Dodge ${getCurrentDodge(character)}`, `Armor ${getCurrentArmor(character)}`, `Speed ${getCurrentSpeed(character)}`];
 }
 
 /**
- * @param character
- * @param emptyMessage
+ * Get total stat modifications for each stat of a character.
+ *
+ * @param character Character to check.
+ * @param emptyMessage The message that will be returned whenever there are no modifications for a stat.
+ * @returns {string[]} Collection of current stat modifications, one per stat.
  */
 export function getStatModifications(character: Character, emptyMessage = 'None'): string[] {
 	let healthMods = '';

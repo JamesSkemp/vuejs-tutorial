@@ -4,6 +4,7 @@ export default class NameGenerator {
 	 *
 	 * @param minSyllables Minimum number of syllables to include.
 	 * @param maxSyllables Maximum number of syllables to include.
+	 * @returns Random name.
 	 */
 	public static randomName(minSyllables: number, maxSyllables: number): string {
 		let data;
@@ -33,7 +34,7 @@ export default class NameGenerator {
 						break;
 					}
 				}
-			} while (1);
+			} while (1); // eslint-disable-line no-constant-condition
 			generatedName += data[0];
 			isvowel = 1 - isvowel; // Alternate between vowels and consonants.
 		}
@@ -93,9 +94,11 @@ export default class NameGenerator {
 	 *
 	 * @param minValue Minimum number that can be returned.
 	 * @param maxValue Maximum number that can be returned.
+	 * @returns {number} Random number.
 	 */
 	private static rollDie(minValue: number, maxValue: number): number {
 		let result: number;
+		// eslint-disable-next-line no-constant-condition
 		while (true) {
 			result = Math.floor(Math.random() * (maxValue - minValue + 1) + minValue);
 			if (result >= minValue && result <= maxValue) {

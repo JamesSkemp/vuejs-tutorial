@@ -9,8 +9,10 @@ import { PartyState } from './Enums';
  * Combine multiple parties together. Returns true if parties are combined.
  *
  * @param parties Parties to combine together.
+ * @returns {boolean} True if the parties have been combined.
  */
 export function combineParties(parties: Party[]): boolean {
+	// TODO should probably verify that they're at least in the same location and possibly that they're not in battle (?) before combining
 	// Filter the parties to just those with characters in them.
 	parties = sortByPartyId(parties.filter(p => p && p.mainCharacters && p.mainCharacters.length > 0));
 	if (parties.length > 1) {
@@ -28,31 +30,41 @@ export function combineParties(parties: Party[]): boolean {
 }
 
 /**
- * @param party
+ * Check whether a party has living main characters.
+ *
+ * @param party Party to check.
+ * @returns {boolean} True if the party has living main characters.
  */
 export function partyHasLivingMainCharacters(party: Party): boolean {
 	return party.mainCharacters.filter(c => c.currentHealth > 0).length > 0;
 }
 
 /**
- * @param party
+ * Check whether a party has living opponents.
+ *
+ * @param party Party to check.
+ * @returns {boolean} True if the party has living opponents.
  */
 export function partyHasLivingOpponents(party: Party): boolean {
 	return party.opponents.filter(c => c.currentHealth > 0).length > 0;
 }
 
 /**
- * Returns true if a party has both living main characters and opponents.
+ * Check if a party has an ongoing battle.
  *
  * @param party Party to check.
+ * @returns {boolean} True if the party has both living main characters and opponents.
  */
 export function partyHasOngoingBattle(party: Party): boolean {
 	return partyHasLivingMainCharacters(party) && partyHasLivingOpponents(party);
 }
 
 /**
- * @param party
- * @param currentMoment
+ * Resolve the world's current moment for a party.
+ *
+ * @param party Party to resolve.
+ * @param currentMoment Current moment in the world.
+ * @returns {string[]} Messages that could be output.
  */
 export function resolvePartyMoment(party: Party, currentMoment: number): string[] {
 	const messages: string[] = [];
@@ -73,11 +85,11 @@ export function resolvePartyMoment(party: Party, currentMoment: number): string[
 			const charactersActingThisTurn = sortBySpeed(characters.filter(c =>
 				c.currentHealth > 0 && c.nextAttack <= currentMoment
 			));
-	
+
 			if (charactersActingThisTurn.length > 0) {
 				//console.log(JSON.stringify(charactersActingThisTurn));
 			}
-	
+
 			if (charactersActingThisTurn.length > 0) {
 				// TODO if a character is slowed the turn they are supposed to go, do they still go? I think the answer is yes since this is effectively them acting at the same time ... or maybe we need to do a check anyway ...
 				charactersActingThisTurn.forEach(character => {
@@ -88,11 +100,11 @@ export function resolvePartyMoment(party: Party, currentMoment: number): string[
 						const opponent = characters.filter(c =>
 							c.side !== character.side && c.currentHealth > 0
 						)[0];
-	
+
 						//console.log(opponent);
-	
+
 						messages.push(JSON.stringify(attackOpponent(character, opponent)));
-	
+
 						processTurn(character, currentMoment);
 					}
 				});

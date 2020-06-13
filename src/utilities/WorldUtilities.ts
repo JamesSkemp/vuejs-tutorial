@@ -89,6 +89,7 @@ export function getUnusedPartyId(world: World): number {
  *
  * @param world World that contains the party and will contain the new parties.
  * @param party Party to disband/split up.
+ * @returns {boolean} True if the party was disbanded.
  */
 export function disbandParty(world: World, party: Party): boolean {
 	if (party.mainCharacters.length > 0) {
@@ -112,8 +113,11 @@ export function disbandParty(world: World, party: Party): boolean {
 }
 
 /**
- * @param character
- * @param opponent
+ * Testing functionality. Creates a new test world with one character and one opponent.
+ *
+ * @param character Main character to add to the world.
+ * @param opponent Opponent to add to the world.
+ * @returns Test world.
  */
 export function createNewTestWorldForSingleBattle(character: Character, opponent: Character): World {
 	const newWorld: World = new World();

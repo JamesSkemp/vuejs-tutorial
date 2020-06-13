@@ -4,6 +4,8 @@ import StatModification from '@/models/StatModification';
 type TotalStatModification = { turns: number, total: number }
 
 /**
+ * Add a health stat modification.
+ *
  * @param statMods StatModifications to modify.
  * @param statMod Health modification to add.
  */
@@ -13,8 +15,10 @@ export function addHealthModification(statMods: StatModifications, statMod: Stat
 }
 
 /**
- * @param statMods
- * @param statMod
+ * Add a melee stat modification.
+ *
+ * @param statMods StatModifications to modify.
+ * @param statMod Melee modification to add.
  */
 export function addMeleeModification(statMods: StatModifications, statMod: StatModification): void {
 	// TODO what if a modification already exists? does it extend or replace?
@@ -22,8 +26,10 @@ export function addMeleeModification(statMods: StatModifications, statMod: StatM
 }
 
 /**
- * @param statMods
- * @param statMod
+ * Add a range stat modification.
+ *
+ * @param statMods StatModifications to modify.
+ * @param statMod Range modification to add.
  */
 export function addRangeModification(statMods: StatModifications, statMod: StatModification): void {
 	// TODO what if a modification already exists? does it extend or replace?
@@ -31,8 +37,10 @@ export function addRangeModification(statMods: StatModifications, statMod: StatM
 }
 
 /**
- * @param statMods
- * @param statMod
+ * Add a magic stat modification.
+ *
+ * @param statMods StatModifications to modify.
+ * @param statMod Magic modification to add.
  */
 export function addMagicModification(statMods: StatModifications, statMod: StatModification): void {
 	// TODO what if a modification already exists? does it extend or replace?
@@ -40,8 +48,10 @@ export function addMagicModification(statMods: StatModifications, statMod: StatM
 }
 
 /**
- * @param statMods
- * @param statMod
+ * Add a dodge stat modification.
+ *
+ * @param statMods StatModifications to modify.
+ * @param statMod Dodge modification to add.
  */
 export function addDodgeModification(statMods: StatModifications, statMod: StatModification): void {
 	// TODO what if a modification already exists? does it extend or replace?
@@ -49,8 +59,10 @@ export function addDodgeModification(statMods: StatModifications, statMod: StatM
 }
 
 /**
- * @param statMods
- * @param statMod
+ * Add an armor stat modification.
+ *
+ * @param statMods StatModifications to modify.
+ * @param statMod Armor modification to add.
  */
 export function addArmorModification(statMods: StatModifications, statMod: StatModification): void {
 	// TODO what if a modification already exists? does it extend or replace?
@@ -58,8 +70,10 @@ export function addArmorModification(statMods: StatModifications, statMod: StatM
 }
 
 /**
- * @param statMods
- * @param statMod
+ * Add a speed stat modification.
+ *
+ * @param statMods StatModifications to modify.
+ * @param statMod Speed modification to add.
  */
 export function addSpeedModification(statMods: StatModifications, statMod: StatModification): void {
 	// TODO what if a modification already exists? does it extend or replace?
@@ -67,8 +81,10 @@ export function addSpeedModification(statMods: StatModifications, statMod: StatM
 }
 
 /**
- * @param statMods
- * @param statMod
+ * Add a damage stat modification.
+ *
+ * @param statMods StatModifications to modify.
+ * @param statMod Damage modification to add.
  */
 export function addDamageModification(statMods: StatModifications, statMod: StatModification): void {
 	// TODO what if a modification already exists? does it extend or replace?
@@ -134,6 +150,7 @@ export function clearAllModifications(statMods: StatModifications): void {
  * Given a collection of StatModification, decrements the turns count, if it wasn't added this round, and then drops any that no longer have turns remaining.
  *
  * @param element StatModification to check.
+ * @returns {boolean} True if the modification is still active.
  */
 function filterExpiredStatModification(element: StatModification): boolean {
 	//console.log(arguments);
