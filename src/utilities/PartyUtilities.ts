@@ -124,11 +124,14 @@ export function resolvePartyMoment(party: Party, currentMoment: number): string[
  *
  * @param party Party to add the main character to.
  * @param character Character to add.
+ * @returns True if the character was added.
  */
-export function addMainCharacter(party: Party, character: Character): void {
+export function addMainCharacter(party: Party, character: Character): boolean {
 	// TODO may also want to resort party so melee > range > magic for order?
 	character.side = 1;
 	party.mainCharacters.push(character);
+	// TODO verify that a character can be added
+	return true;
 }
 
 /**
@@ -136,10 +139,14 @@ export function addMainCharacter(party: Party, character: Character): void {
  *
  * @param party Party to add the opponent to.
  * @param opponent Opponent character to add.
+ * @returns True if the opponent was added.
  */
-export function addOpponent(party: Party, opponent: Character): void {
+export function addOpponent(party: Party, opponent: Character): boolean {
 	opponent.side = 2;
 	party.opponents.push(opponent);
+	// TODO verify that an opponent can be added - can't add in limbo or in town
+	// TODO verify party has heroes? or could a party of opponents be created? I think the latter ...
+	return true;
 }
 
 // TODO start battle - populate opponents (?) and set initial turns - see resolvePartyMoment
