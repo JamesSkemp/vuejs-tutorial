@@ -3,6 +3,7 @@ import { DiceRoll } from 'rpg-dice-roller';
 import { processStatModificationTurn, totalStatModifications } from './StatModificationUtilities';
 import { Desire, PartyState } from './Enums';
 import Party from '@/models/Party';
+import StatCheckResults from '@/models/StatCheckResults';
 
 /**
  * @param character
@@ -11,7 +12,7 @@ import Party from '@/models/Party';
 export function attackOpponent(character: Character, opponent: Character): string[] {
 	// TODO different for each type of attack, or should this determine what the character will attack with? should it just be simplified to an attack value?
 	const messages: string[] = [];
-	if (checkMelee(character))
+	if (checkMelee(character).successful)
 	{
 		messages.push('Character hit');
 		const damageRoll = new DiceRoll(character.baseStats.melee.attacks[0].damage);
@@ -19,7 +20,7 @@ export function attackOpponent(character: Character, opponent: Character): strin
 		{
 			messages.push('Damage of ' + damageRoll.total);
 			let damageTotal = damageRoll.total;
-			if (checkDodge(opponent)) {
+			if (checkDodge(opponent).successful) {
 				damageTotal = Math.ceil(damageTotal / 2);
 				messages.push('Damage halved to ' + damageTotal);
 			}
@@ -67,8 +68,8 @@ export function takeDamage(character: Character, damage: number, minimumDamage =
  * @param modifier Amount to change the check. Positive makes success more likely, negative makes the check more difficult.
  * @returns True if the check was successful.
  */
-export function checkMelee(character: Character, modifier?: number): boolean {
-	let success = false;
+export function checkMelee(character: Character, modifier?: number): StatCheckResults {
+	const result = new StatCheckResults();
 	let meleeStat = character.baseStats.melee.value;
 	if (character.statMods.meleeModifications) {
 		character.statMods.meleeModifications.forEach(mod => {
@@ -83,12 +84,14 @@ export function checkMelee(character: Character, modifier?: number): boolean {
 
 	if (meleeStat >= 1) {
 		const roll = new DiceRoll('1d20').total;
-		success = roll <= meleeStat && roll !== 20;
+		result.successful = roll <= meleeStat && roll !== 20;
+		result.critical = (roll === 1 || roll === 20);
+		result.difference = (meleeStat - roll);
 	}
-	if (!success) {
+	if (!result.successful) {
 		character.combatStats.meleeFailures++;
 	}
-	return success;
+	return result;
 }
 
 /**
@@ -98,8 +101,8 @@ export function checkMelee(character: Character, modifier?: number): boolean {
  * @param modifier Amount to change the check. Positive makes success more likely, negative makes the check more difficult.
  * @returns True if the check was successful.
  */
-export function checkRange(character: Character, modifier?: number): boolean {
-	let success = false;
+export function checkRange(character: Character, modifier?: number): StatCheckResults {
+	const result = new StatCheckResults();
 	let rangeStat = character.baseStats.range.value;
 	if (character.statMods.rangeModifications) {
 		character.statMods.rangeModifications.forEach(mod => {
@@ -114,12 +117,14 @@ export function checkRange(character: Character, modifier?: number): boolean {
 
 	if (rangeStat >= 1) {
 		const roll = new DiceRoll('1d20').total;
-		success = roll <= rangeStat && roll !== 20;
+		result.successful = roll <= rangeStat && roll !== 20;
+		result.critical = (roll === 1 || roll === 20);
+		result.difference = (rangeStat - roll);
 	}
-	if (!success) {
+	if (!result.successful) {
 		character.combatStats.rangeFailures++;
 	}
-	return success;
+	return result;
 }
 
 /**
@@ -129,8 +134,8 @@ export function checkRange(character: Character, modifier?: number): boolean {
  * @param modifier Amount to change the check. Positive makes success more likely, negative makes the check more difficult.
  * @returns True if the check was successful.
  */
-export function checkMagic(character: Character, modifier?: number): boolean {
-	let success = false;
+export function checkMagic(character: Character, modifier?: number): StatCheckResults {
+	const result = new StatCheckResults();
 	let magicStat = character.baseStats.magic.value;
 	if (character.statMods.magicModifications) {
 		character.statMods.magicModifications.forEach(mod => {
@@ -145,12 +150,14 @@ export function checkMagic(character: Character, modifier?: number): boolean {
 
 	if (magicStat >= 1) {
 		const roll = new DiceRoll('1d20').total;
-		success = roll <= magicStat && roll !== 20;
+		result.successful = roll <= magicStat && roll !== 20;
+		result.critical = (roll === 1 || roll === 20);
+		result.difference = (magicStat - roll);
 	}
-	if (!success) {
+	if (!result.successful) {
 		character.combatStats.magicFailures++;
 	}
-	return success;
+	return result;
 }
 
 /**
@@ -160,8 +167,8 @@ export function checkMagic(character: Character, modifier?: number): boolean {
  * @param modifier Amount to change the check. Positive makes success more likely, negative makes the check more difficult.
  * @returns True if the check was successful.
  */
-export function checkDodge(character: Character, modifier?: number): boolean {
-	let success = false;
+export function checkDodge(character: Character, modifier?: number): StatCheckResults {
+	const result = new StatCheckResults();
 	let dodgeStat = character.baseStats.dodge;
 	if (character.statMods.dodgeModifications) {
 		character.statMods.dodgeModifications.forEach(mod => {
@@ -176,13 +183,14 @@ export function checkDodge(character: Character, modifier?: number): boolean {
 
 	if (dodgeStat >= 1) {
 		const roll = new DiceRoll('1d20').total;
-		success = roll <= dodgeStat && roll !== 20;
+		result.successful = roll <= dodgeStat && roll !== 20;
+		result.critical = (roll === 1 || roll === 20);
+		result.difference = (dodgeStat - roll);
 	}
-	if (!success) {
+	if (!result.successful) {
 		character.combatStats.dodgeFailures++;
 	}
-
-	return success;
+	return result;
 }
 
 /**
