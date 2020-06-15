@@ -19,17 +19,14 @@ export default class NameGenerator {
 					data = this.consonants[this.rollDie(0, this.consonants.length - 1)];
 				}
 				if (i === 1) { // first syllable.
-					// tslint:disable-next-line no-bitwise
 					if (data[1] & 2) {
 						break;
 					}
 				} else if (i === leng) { // last syllable.
-					// tslint:disable-next-line no-bitwise
 					if (data[1] & 1) {
 						break;
 					}
 				} else { // middle syllable.
-					// tslint:disable-next-line no-bitwise
 					if (data[1] & 4) {
 						break;
 					}

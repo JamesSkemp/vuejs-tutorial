@@ -213,7 +213,8 @@ export default class WorldDisplay extends Vue {
 		// TODO start battle
 	}
 
-	isEquivalent(a, b): EquivalenceResult {
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+	isEquivalent(a: any, b: any): EquivalenceResult {
 		// Create arrays of property names
 		const aProps = Object.getOwnPropertyNames(a);
 		const bProps = Object.getOwnPropertyNames(b);
