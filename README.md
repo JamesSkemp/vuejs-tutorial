@@ -16,8 +16,14 @@ npm run build
 ```
 
 ### Lints and fixes files
+Out of the box Vue functionality. Automatically fixes issues when it can, and includes context.
 ```
 npm run lint
+```
+
+This custom one uses eslint directly, and doesn't automatically fix issues.
+```
+npm run eslint
 ```
 
 #### Check for specific issues

@@ -120,7 +120,7 @@ export function resolvePartyMoment(party: Party, currentMoment: number): string[
 }
 
 /**
- * Adds a character to a party, setting the individuals side as needed.
+ * Adds a character to a party, setting the individual's side as needed.
  *
  * @param party Party to add the main character to.
  * @param character Character to add.
@@ -132,8 +132,10 @@ export function addMainCharacter(party: Party, character: Character): void {
 }
 
 /**
- * @param party
- * @param opponent
+ * Adds an opponent to a party, setting the side as needed.
+ *
+ * @param party Party to add the opponent to.
+ * @param opponent Opponent character to add.
  */
 export function addOpponent(party: Party, opponent: Character): void {
 	opponent.side = 2;
