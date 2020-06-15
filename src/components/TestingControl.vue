@@ -94,7 +94,7 @@ import { DiceRoll, DiceRoller } from 'rpg-dice-roller';
 import World from '../models/World';
 import Character from '../models/Character';
 import StatModification from '../models/StatModification';
-import { attackOpponent, getSuperShortBaseStats, revive, processTurn, getShortDetails, setInitialTurn } from '../utilities/CharacterUtilities';
+import { attackOpponent, getSuperShortBaseStats, revive, processAttackTurn, getShortDetails, setInitialTurn } from '../utilities/CharacterUtilities';
 import { createNewTestWorldForSingleBattle, startNextMoment, generateNextCharacterId } from '../utilities/WorldUtilities';
 import { resolvePartyMoment, partyHasOngoingBattle, partyHasLivingMainCharacters } from '../utilities/PartyUtilities';
 import { getCharacterWithHighestHealth } from '../utilities/CharacterFilterUtilities';
@@ -496,8 +496,7 @@ export default class TestingControl extends Vue {
 
 					this.diceRoll += JSON.stringify(attackOpponent(character, opponent)) + '<br />';
 
-					processTurn(character, world.currentMoment);
-
+					processAttackTurn(character, world.currentMoment);
 				}
 			});
 			turns++;
