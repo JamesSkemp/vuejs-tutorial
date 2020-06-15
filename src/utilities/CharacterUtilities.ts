@@ -61,9 +61,11 @@ export function takeDamage(character: Character, damage: number, minimumDamage =
 }
 
 /**
- * @param character
+ * Check to see a character makes a melee check.
+ *
+ * @param character Character to check.
  * @param modifier Amount to change the check. Positive makes success more likely, negative makes the check more difficult.
- * @returns True if the character succeed their check.
+ * @returns True if the check was successful.
  */
 export function checkMelee(character: Character, modifier?: number): boolean {
 	let success = false;
@@ -81,7 +83,7 @@ export function checkMelee(character: Character, modifier?: number): boolean {
 
 	if (meleeStat >= 1) {
 		const roll = new DiceRoll('1d20').total;
-		success = roll <= meleeStat;
+		success = roll <= meleeStat && roll !== 20;
 	}
 	if (!success) {
 		character.combatStats.meleeFailures++;
@@ -90,9 +92,11 @@ export function checkMelee(character: Character, modifier?: number): boolean {
 }
 
 /**
- * @param character
+ * Check to see a character makes a range check.
+ *
+ * @param character Character to check.
  * @param modifier Amount to change the check. Positive makes success more likely, negative makes the check more difficult.
- * @returns True if the character succeed their check.
+ * @returns True if the check was successful.
  */
 export function checkRange(character: Character, modifier?: number): boolean {
 	let success = false;
@@ -110,7 +114,7 @@ export function checkRange(character: Character, modifier?: number): boolean {
 
 	if (rangeStat >= 1) {
 		const roll = new DiceRoll('1d20').total;
-		success = roll <= rangeStat;
+		success = roll <= rangeStat && roll !== 20;
 	}
 	if (!success) {
 		character.combatStats.rangeFailures++;
@@ -119,9 +123,11 @@ export function checkRange(character: Character, modifier?: number): boolean {
 }
 
 /**
- * @param character
+ * Check to see a character makes a magic check.
+ *
+ * @param character Character to check.
  * @param modifier Amount to change the check. Positive makes success more likely, negative makes the check more difficult.
- * @returns True if the character succeed their check.
+ * @returns True if the check was successful.
  */
 export function checkMagic(character: Character, modifier?: number): boolean {
 	let success = false;
@@ -139,7 +145,7 @@ export function checkMagic(character: Character, modifier?: number): boolean {
 
 	if (magicStat >= 1) {
 		const roll = new DiceRoll('1d20').total;
-		success = roll <= magicStat;
+		success = roll <= magicStat && roll !== 20;
 	}
 	if (!success) {
 		character.combatStats.magicFailures++;
@@ -148,8 +154,11 @@ export function checkMagic(character: Character, modifier?: number): boolean {
 }
 
 /**
- * @param character
+ * Check to see a character makes a dodge check.
+ *
+ * @param character Character to check.
  * @param modifier Amount to change the check. Positive makes success more likely, negative makes the check more difficult.
+ * @returns True if the check was successful.
  */
 export function checkDodge(character: Character, modifier?: number): boolean {
 	let success = false;
@@ -167,7 +176,7 @@ export function checkDodge(character: Character, modifier?: number): boolean {
 
 	if (dodgeStat >= 1) {
 		const roll = new DiceRoll('1d20').total;
-		success = roll <= dodgeStat;
+		success = roll <= dodgeStat && roll !== 20;
 	}
 	if (!success) {
 		character.combatStats.dodgeFailures++;
@@ -277,8 +286,8 @@ export function getCurrentSpeed(character: Character): number {
 /**
  * Setup a character for their first turn of a battle.
  *
- * @param character
- * @param initialTurn
+ * @param character Character to setup.
+ * @param initialTurn Turn/moment the character was initialized. Should be set to the world's current moment.
  */
 export function setInitialTurn(character: Character, initialTurn = 0): void {
 	character.lastAttack = -1;
@@ -287,8 +296,11 @@ export function setInitialTurn(character: Character, initialTurn = 0): void {
 }
 
 /**
- * @param party
- * @param character
+ * Get a character's current desire.
+ *
+ * @param party Party the character is in (as party state can impact the character).
+ * @param character Character to check.
+ * @returns Character's current desire.
  */
 export function getCharacterDesire(party: Party, character: Character): Desire {
 	if (party.state === PartyState.AtLocationTown) {
@@ -318,7 +330,7 @@ export function getCharacterDesire(party: Party, character: Character): Desire {
 }
 
 /**
- * @param character
+ * @param character Character to process.
  * @param currentTurn
  */
 export function processTurn(character: Character, currentTurn: number): void {
@@ -350,20 +362,28 @@ export function resetCombatStats(character: Character): void {
 }
 
 /**
+ * Get a character's displayable id and party side.
+ *
  * @param character Character to check.
+ * @returns Character's id and side.
  */
 export function getShortDetails(character: Character): string {
 	return `Character ${character.id} | Party ${character.side}`;
 }
 
 /**
+ * Get a loggable string of a character's base stats.
+ *
  * @param character Character to check.
+ * @returns All of the character's base stats, joined by a `-`.
  */
 export function getSuperShortBaseStats(character: Character): string {
 	return `${character.baseStats.health}-${character.baseStats.melee.value}-${character.baseStats.range.value}-${character.baseStats.magic.value}-${character.baseStats.dodge}-${character.baseStats.armor}-${character.baseStats.speed}`;
 }
 
 /**
+ * Get a displayable list of a character's base stats.
+ *
  * @param character Character to check.
  * @returns Single line of the character's base stats.
  */
@@ -372,6 +392,8 @@ export function getShortBaseStats(character: Character): string {
 }
 
 /**
+ * Get a character's current stats.
+ *
  * @param character Character to check.
  * @returns {string[]} Collection of current stats, one per stat.
  */
