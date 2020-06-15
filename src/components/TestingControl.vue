@@ -143,7 +143,7 @@ export default class TestingControl extends Vue {
   testCharacterArmor = 0;
   testCharacterSpeed = 10;
 
-  created() {
+  created(): void {
 	console.log('component created');
 
 	/*this.attackMin = 12;
@@ -152,11 +152,11 @@ export default class TestingControl extends Vue {
 	this.speedMin = 10;*/
   }
 
-  beforeDestroy() {
+  beforeDestroy(): void {
 	clearInterval(this.timer);
   }
 
-  startTimer() {
+  startTimer(): void {
 	this.timer = setInterval(() => {
 		console.log('timer');
 	}, 1000);

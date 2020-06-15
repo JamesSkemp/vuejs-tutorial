@@ -1,5 +1,5 @@
 import Party from '@/models/Party';
-import { attackOpponent, processTurn, getShortDetails, setInitialTurn } from './CharacterUtilities';
+import { attackOpponent, processAttackTurn, getShortDetails, setInitialTurn } from './CharacterUtilities';
 import Character from '@/models/Character';
 import { sortBySpeed } from './CharacterSortUtilities';
 import { sortByPartyId } from './PartySortUtilities';
@@ -105,7 +105,7 @@ export function resolvePartyMoment(party: Party, currentMoment: number): string[
 
 						messages.push(JSON.stringify(attackOpponent(character, opponent)));
 
-						processTurn(character, currentMoment);
+						processAttackTurn(character, currentMoment);
 					}
 				});
 			}

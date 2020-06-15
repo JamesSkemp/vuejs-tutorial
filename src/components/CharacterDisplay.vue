@@ -69,45 +69,47 @@ import Party from '../models/Party';
 export default class CharacterDisplay extends Vue {
 	@Prop() party!: Party;
 	@Prop() character!: Character;
+	// TODO remove?
 	baseStats = '';
+	// TODO remove?
 	statModifications = '';
 
-	created() {
+	created(): void {
 		this.refreshData();
 	}
 
-	currentStats() {
+	currentStats(): string[] {
 		return getCurrentStats(this.character);
 	}
 
-	statMods() {
+	statMods(): string[] {
 		return getStatModifications(this.character);
 	}
 
-	displayAttackText(attack: Attack) {
+	displayAttackText(attack: Attack): string {
 		return getAttackText(attack);
 	}
 
-	getMeleeText() {
+	getMeleeText(): string {
 		return `Melee: ${this.character.baseStats.melee.value}<br />
 		${JSON.stringify(this.character.baseStats.melee.attacks)}`;
 	}
 
-	getRangeText() {
+	getRangeText(): string {
 		return `Range: ${this.character.baseStats.range.value}<br />
 		${JSON.stringify(this.character.baseStats.range.attacks)}`;
 	}
 
-	getMagicText() {
+	getMagicText(): string {
 		return `Magic: ${this.character.baseStats.magic.value}<br />
 		${JSON.stringify(this.character.baseStats.magic.attacks)}`;
 	}
 
-	getDesire() {
+	getDesire(): string {
 		return desireToText(getCharacterDesire(this.party, this.character));
 	}
 
-	refreshData() {
+	refreshData(): void {
 		this.baseStats = getShortBaseStats(this.character);
 	}
 }

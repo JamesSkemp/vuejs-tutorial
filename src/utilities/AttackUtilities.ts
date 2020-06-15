@@ -1,7 +1,10 @@
 import Attack from '@/models/Attack';
 
 /**
- * @param attack
+ * Get the display-friendly text for an attack.
+ *
+ * @param attack Attack to display.
+ * @returns {string} User-friendly text.
  */
 export function getAttackText(attack: Attack): string {
 	const cooldown = attack.cooldown === 0 ? '' : `Cooldown ${attack.cooldown}.`;
@@ -12,5 +15,5 @@ export function getAttackText(attack: Attack): string {
 	const armorMod = attack.armorMod === 0 ? '' : ` Armor ${attack.armorMod}`;
 	const speedMod = attack.speedMod === 0 ? '' : ` Speed ${attack.speedMod}`;
 
-	return `[${attack.id}] ${attack.name} Attack - ${attack.damage} damage. ${cooldown} ${meleeMod} ${rangeMod} ${magicMod} ${dodgeMod} ${armorMod} ${speedMod}`;
+	return `[${attack.id}] ${attack.name} Attack - ${attack.damage} damage. ${cooldown}${meleeMod}${rangeMod}${magicMod}${dodgeMod}${armorMod}${speedMod}`;
 }

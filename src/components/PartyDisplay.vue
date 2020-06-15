@@ -63,7 +63,7 @@ export default class PartyDisplay extends Vue {
 	@Prop() private party!: Party;
 	stateText = '';
 
-	created() {
+	created(): void {
 		this.stateText = partyStateToText(this.party.state);
 	}
 

@@ -6,12 +6,17 @@ import Party from '@/models/Party';
 import StatCheckResults from '@/models/StatCheckResults';
 
 /**
- * @param character
- * @param opponent
+ * Trigger an attack from one character to another.
+ *
+ * @param character Character attacking.
+ * @param opponent Character being attacked.
+ * @returns {string[]} Messages, if any.
  */
 export function attackOpponent(character: Character, opponent: Character): string[] {
+	// TODO what about attacks that target more than one opponent?
 	// TODO different for each type of attack, or should this determine what the character will attack with? should it just be simplified to an attack value?
 	const messages: string[] = [];
+	// TODO check for criticals
 	if (checkMelee(character).successful)
 	{
 		messages.push('Character hit');
@@ -20,6 +25,7 @@ export function attackOpponent(character: Character, opponent: Character): strin
 		{
 			messages.push('Damage of ' + damageRoll.total);
 			let damageTotal = damageRoll.total;
+			// TODO check for criticals
 			if (checkDodge(opponent).successful) {
 				damageTotal = Math.ceil(damageTotal / 2);
 				messages.push('Damage halved to ' + damageTotal);
@@ -338,10 +344,12 @@ export function getCharacterDesire(party: Party, character: Character): Desire {
 }
 
 /**
+ * Process a character's turn in which they attacked.
+ *
  * @param character Character to process.
- * @param currentTurn
+ * @param currentTurn Current moment in the world.
  */
-export function processTurn(character: Character, currentTurn: number): void {
+export function processAttackTurn(character: Character, currentTurn: number): void {
 	processStatModificationTurn(character.statMods);
 	character.lastAttack = currentTurn;
 	character.nextAttack += getCurrentSpeed(character);
