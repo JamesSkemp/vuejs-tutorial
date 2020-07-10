@@ -27,6 +27,7 @@ export default class Character {
 	 * Temporary modifications to the character's `baseStats`.
 	 */
 	public statMods: StatModifications;
+	// TODO skills, such as healing and boosts? should probably be off of corresponding baseStat
 	public combatStats: CombatStats;
 	public currentHealth: number;
 	public lastAttack = -1;

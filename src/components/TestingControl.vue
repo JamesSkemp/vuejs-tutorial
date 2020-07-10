@@ -85,6 +85,8 @@
 			<br />
 			<button v-on:click="addTestCharacter">Add test character</button>
 		</div>
+
+		<div v-html="dataDumps"></div>
 	</b-container>
 </template>
 
@@ -100,6 +102,7 @@ import { resolvePartyMoment, partyHasOngoingBattle, partyHasLivingMainCharacters
 import { getCharacterWithHighestHealth } from '../utilities/CharacterFilterUtilities';
 import { sortBySpeed, sortByHealth } from '../utilities/CharacterSortUtilities';
 import { addMeleeModification, addDodgeModification, addSpeedModification } from '../utilities/StatModificationUtilities';
+import CharacterData from '../data/CharacterData';
 
 @Component({})
 
@@ -143,6 +146,8 @@ export default class TestingControl extends Vue {
   testCharacterArmor = 0;
   testCharacterSpeed = 10;
 
+  dataDumps: string[] = [];
+
   created(): void {
 	console.log('component created');
 
@@ -150,6 +155,10 @@ export default class TestingControl extends Vue {
 	this.dodgeMin = 7;
 	this.armorMax = 1;
 	this.speedMin = 10;*/
+
+	CharacterData.Heroes.forEach(hero => {
+		this.dataDumps.push(`${hero.id} ${hero.shortName} ${JSON.stringify(hero.baseStats)}<br />`);
+	});
   }
 
   beforeDestroy(): void {
