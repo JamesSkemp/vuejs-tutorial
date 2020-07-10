@@ -1,5 +1,6 @@
 import Character from './Character';
 import Party from './Party';
+import Journal from './Journal';
 
 export default class World {
 	/**
@@ -10,8 +11,10 @@ export default class World {
 	public nextCharacterId = -1;
 	public mainCharacters: Character[] = [];
 	public parties: Party[] = [];
+	public journal: Journal;
 
 	public constructor() {
+		this.journal = new Journal();
 		// TODO add particular character to world?
 	}
 }

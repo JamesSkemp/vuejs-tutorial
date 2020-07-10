@@ -4,6 +4,7 @@ import CombatStats from './CombatStats';
 import Attack from './Attack';
 import { AttackPreference } from '@/utilities/Enums';
 import NameGenerator from '@/utilities/NameGenerator';
+import Journal from './Journal';
 
 export default class Character {
 	/**
@@ -34,6 +35,7 @@ export default class Character {
 	public isInBattle = false;
 	public isResting = false;
 	public testString = "";
+	public journal: Journal;
 
 	public constructor() {
 		// TODO accept id of some sort to change initial values, or should this be a utility?
@@ -44,5 +46,6 @@ export default class Character {
 		this.currentHealth = this.baseStats.health;
 		this.statMods = new StatModifications();
 		this.combatStats = new CombatStats();
+		this.journal = new Journal();
 	}
 }
