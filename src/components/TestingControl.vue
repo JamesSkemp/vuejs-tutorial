@@ -87,6 +87,7 @@
 		</div>
 
 		<div v-html="dataDumps"></div>
+		<div v-html="dataOutput"></div>
 	</b-container>
 </template>
 
@@ -96,7 +97,7 @@ import { DiceRoll, DiceRoller } from 'rpg-dice-roller';
 import World from '../models/World';
 import Character from '../models/Character';
 import StatModification from '../models/StatModification';
-import { attackOpponent, getSuperShortBaseStats, revive, processAttackTurn, getShortDetails, setInitialTurn } from '../utilities/CharacterUtilities';
+import { attackOpponent, getSuperShortBaseStats, revive, processAttackTurn, getShortDetails, setInitialTurn, getShortBaseStats } from '../utilities/CharacterUtilities';
 import { createNewTestWorldForSingleBattle, startNextMoment, generateNextCharacterId } from '../utilities/WorldUtilities';
 import { resolvePartyMoment, partyHasOngoingBattle, partyHasLivingMainCharacters } from '../utilities/PartyUtilities';
 import { getCharacterWithHighestHealth } from '../utilities/CharacterFilterUtilities';
@@ -147,6 +148,7 @@ export default class TestingControl extends Vue {
   testCharacterSpeed = 10;
 
   dataDumps: string[] = [];
+  dataOutput = "";
 
   created(): void {
 	console.log('component created');
@@ -156,9 +158,17 @@ export default class TestingControl extends Vue {
 	this.armorMax = 1;
 	this.speedMin = 10;*/
 
+	this.dataOutput = "<table><tbody>";
 	CharacterData.Heroes.forEach(hero => {
-		this.dataDumps.push(`${hero.id} ${hero.shortName} ${JSON.stringify(hero.baseStats)}<br />`);
+		this.dataDumps.push(`${hero.id} ${hero.shortName} ${getShortBaseStats(hero)}<br />`);
+		this.dataOutput += `<tr><td>${hero.id}</td><td>${hero.shortName}</td><td>${getShortBaseStats(hero)}</td></tr>`
 	});
+	this.dataOutput += "</tbody></table>";
+	this.dataOutput += "<table><thead><tr><th>Id</th>Short Name<th></th><th>Health</th><th>Melee</th><th>Range</th><th>Magic</th><th>Dodge</th><th>Armor</th><th>Speed</th></tr></thead><tbody>";
+	CharacterData.Heroes.forEach(hero => {
+		this.dataOutput += `<tr><td>${hero.id}</td><td>${hero.shortName}</td><td>${hero.baseStats.health}</td><td>${hero.baseStats.melee.value}</td><td>${hero.baseStats.range.value}</td><td>${hero.baseStats.magic.value}</td><td>${hero.baseStats.dodge}</td><td>${hero.baseStats.armor}</td><td>${hero.baseStats.speed}</td></tr>`
+	});
+	this.dataOutput += "</tbody></table>";
   }
 
   beforeDestroy(): void {

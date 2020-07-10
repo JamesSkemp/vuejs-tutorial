@@ -4,6 +4,7 @@ import { processStatModificationTurn, totalStatModifications } from './StatModif
 import { Desire, PartyState } from './Enums';
 import Party from '@/models/Party';
 import StatCheckResults from '@/models/StatCheckResults';
+import CharacterModel from '@/models/CharacterModel';
 
 /**
  * Trigger an attack from one character to another.
@@ -393,7 +394,7 @@ export function getShortDetails(character: Character): string {
  * @param character Character to check.
  * @returns All of the character's base stats, joined by a `-`.
  */
-export function getSuperShortBaseStats(character: Character): string {
+export function getSuperShortBaseStats(character: Character | CharacterModel): string {
 	return `${character.baseStats.health}-${character.baseStats.melee.value}-${character.baseStats.range.value}-${character.baseStats.magic.value}-${character.baseStats.dodge}-${character.baseStats.armor}-${character.baseStats.speed}`;
 }
 
@@ -403,7 +404,7 @@ export function getSuperShortBaseStats(character: Character): string {
  * @param character Character to check.
  * @returns Single line of the character's base stats.
  */
-export function getShortBaseStats(character: Character): string {
+export function getShortBaseStats(character: Character | CharacterModel): string {
 	return `Health ${character.baseStats.health}, Melee ${character.baseStats.melee.value}, Range ${character.baseStats.range.value}, Magic ${character.baseStats.magic.value}, Dodge ${character.baseStats.dodge}, Armor ${character.baseStats.armor}, Speed ${character.baseStats.speed}`;
 }
 

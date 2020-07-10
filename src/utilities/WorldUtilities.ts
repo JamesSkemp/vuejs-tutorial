@@ -16,6 +16,7 @@ export function startNextMoment(world: World): string[] {
 	let messages: string[] = [];
 	if (!world.isPaused) {
 		world.currentMoment++;
+		world.journal.addEntry(world.currentMoment, "Starting moment.");
 		messages.push(`Starting moment ${world.currentMoment}`);
 		world.parties.forEach(party => {
 			messages = messages.concat(resolvePartyMoment(party, world.currentMoment));
