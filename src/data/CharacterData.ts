@@ -1,5 +1,6 @@
 import CharacterModel from '@/models/CharacterModel';
 import Attack from '@/models/Attack';
+import { AttackPreference } from '@/utilities/Enums';
 
 export default class CharacterData {
 	public static Heroes: CharacterModel[] = [
@@ -27,7 +28,8 @@ export default class CharacterData {
 				dodge: 6,
 				armor: 0,
 				speed: 10
-			}
+			},
+			preferredAttack: AttackPreference.Melee
 		},
 		{
 			id: 2,
@@ -53,7 +55,8 @@ export default class CharacterData {
 				dodge: 7,
 				armor: 0,
 				speed: 10
-			}
+			},
+			preferredAttack: AttackPreference.Melee
 		},
 		{
 			id: 3,
@@ -81,7 +84,8 @@ export default class CharacterData {
 				dodge: 6,
 				armor: 0,
 				speed: 9
-			}
+			},
+			preferredAttack: AttackPreference.Range
 		},
 		{
 			id: 4,
@@ -107,7 +111,8 @@ export default class CharacterData {
 				dodge: 5,
 				armor: 0,
 				speed: 10
-			}
+			},
+			preferredAttack: AttackPreference.Melee
 		},
 		{
 			id: 5,
@@ -135,7 +140,8 @@ export default class CharacterData {
 				dodge: 7,
 				armor: 0,
 				speed: 9
-			}
+			},
+			preferredAttack: AttackPreference.Range
 		},
 		{
 			id: 6,
@@ -161,7 +167,8 @@ export default class CharacterData {
 				dodge: 6,
 				armor: 1,
 				speed: 10
-			}
+			},
+			preferredAttack: AttackPreference.Melee
 		},
 		{
 			id: 7,
@@ -182,12 +189,15 @@ export default class CharacterData {
 				},
 				magic: {
 					value: 12,
-					attacks: []
+					attacks: [
+						new Attack(0, "Basic", "1d4")
+					]
 				},
 				dodge: 6,
 				armor: 0,
 				speed: 10
-			}
+			},
+			preferredAttack: AttackPreference.Magic
 		},
 		{
 			id: 8,
@@ -215,7 +225,8 @@ export default class CharacterData {
 				dodge: 6,
 				armor: 0,
 				speed: 10
-			}
+			},
+			preferredAttack: AttackPreference.Magic
 		},
 		{
 			id: 9,
@@ -241,7 +252,8 @@ export default class CharacterData {
 				dodge: 4,
 				armor: 2,
 				speed: 11
-			}
+			},
+			preferredAttack: AttackPreference.Melee
 		},
 		{
 			id: 10,
@@ -269,7 +281,8 @@ export default class CharacterData {
 				dodge: 5,
 				armor: 1,
 				speed: 10
-			}
+			},
+			preferredAttack: AttackPreference.Range
 		},
 		{
 			id: 11,
@@ -295,7 +308,8 @@ export default class CharacterData {
 				dodge: 5,
 				armor: 0,
 				speed: 8
-			}
+			},
+			preferredAttack: AttackPreference.Melee
 		},
 		{
 			id: 12,
@@ -321,7 +335,8 @@ export default class CharacterData {
 				dodge: 6,
 				armor: 1,
 				speed: 10
-			}
+			},
+			preferredAttack: AttackPreference.Melee
 		},
 		{
 			id: 13,
@@ -347,7 +362,8 @@ export default class CharacterData {
 				dodge: 6,
 				armor: 1,
 				speed: 10
-			}
+			},
+			preferredAttack: AttackPreference.Melee
 		},
 		{
 			id: 14,
@@ -375,7 +391,8 @@ export default class CharacterData {
 				dodge: 7,
 				armor: 0,
 				speed: 10
-			}
+			},
+			preferredAttack: AttackPreference.Magic
 		},
 		{
 			id: 15,
@@ -396,12 +413,15 @@ export default class CharacterData {
 				},
 				magic: {
 					value: 14,
-					attacks: []
+					attacks: [
+						new Attack(0, "Basic", "1d4")
+					]
 				},
 				dodge: 6,
 				armor: 0,
 				speed: 10
-			}
+			},
+			preferredAttack: AttackPreference.Magic
 		}
 	]
 }

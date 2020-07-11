@@ -1,4 +1,5 @@
 import BaseStats from './BaseStats';
+import { AttackPreference } from '@/utilities/Enums';
 
 export default interface CharacterModel {
 	/**
@@ -15,4 +16,5 @@ export default interface CharacterModel {
 	 */
 	type: string;
 	baseStats: BaseStats;
+	preferredAttack: AttackPreference;
 }

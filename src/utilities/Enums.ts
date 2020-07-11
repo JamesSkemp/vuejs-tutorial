@@ -21,12 +21,31 @@ export enum Desire {
 export enum PartyState {
 	AtLocation,
 	/**
-	 * At a town location. 
+	 * At a town location.
 	 */
 	AtLocationTown,
 	InBattle,
 	IsResting,
 	IsTravelling
+}
+
+/**
+ * Get the string version of an AttackPreference.
+ *
+ * @param attackPreference Character's attack preference.
+ * @returns Friendly text for display.
+ */
+export function attackPreferenceToText(attackPreference: AttackPreference): string {
+	switch (attackPreference) {
+		case AttackPreference.Melee:
+			return 'Melee';
+		case AttackPreference.Range:
+			return 'Range';
+		case AttackPreference.Magic:
+			return 'Magic';
+		default:
+			return 'Unknown';
+	}
 }
 
 /**
