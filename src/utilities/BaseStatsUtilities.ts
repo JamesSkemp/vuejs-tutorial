@@ -10,28 +10,8 @@ export function getBaseStatsPoints(baseStats: BaseStats): number {
 	let pointTotal = 0;
 	// Every three health is a point.
 	pointTotal += Math.ceil(baseStats.health / 3);
+
 	// TODO all three of the following should take into account special skills
-	console.log(getCombatStatPoints(10));
-	console.log(getCombatStatPoints(11));
-	console.log(getCombatStatPoints(12));
-	console.log(getCombatStatPoints(13));
-	console.log(getCombatStatPoints(14));
-	console.log(getCombatStatPoints(15));
-	console.log(getCombatStatPoints(16));
-	console.log(getCombatStatPoints(17));
-	console.log(getCombatStatPoints(18));
-	console.log(getCombatStatPoints(9));
-	console.log(getCombatStatPoints(8));
-	console.log(getCombatStatPoints(7));
-	console.log(getCombatStatPoints(6));
-	console.log(getCombatStatPoints(5));
-	console.log(getCombatStatPoints(4));
-	console.log(getCombatStatPoints(3));
-	console.log(getCombatStatPoints(2));
-	console.log(getCombatStatPoints(1));
-	console.log(getCombatStatPoints(0));
-
-
 	pointTotal += getCombatStatPoints(baseStats.melee.value);
 	pointTotal += getCombatStatPoints(baseStats.range.value);
 	// TODO magic = 0 gives extra points
@@ -63,7 +43,8 @@ function getCombatStatPoints(value: number): number {
 	if (value === defaultValue) {
 		return 0;
 	} else if (value === 0) {
-		return 10; // only the magic stat should have a possible 0.
+		// TODO give them some sort of negative points to balance it?
+		return 0; // only the magic stat should have a possible 0.
 	// Stat is better than usual.
 	} else if (value === (defaultValue + 1)) {
 		return 1;

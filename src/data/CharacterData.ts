@@ -115,7 +115,7 @@ export default class CharacterData {
 			introText: "have one hand within their cloak.",
 			type: "1_6",
 			baseStats: {
-				health: 27,
+				health: 24,
 				melee: {
 					value: 12,
 					attacks: [
@@ -223,7 +223,7 @@ export default class CharacterData {
 			introText: "take measured steps behind their shield.",
 			type: "1_1",
 			baseStats: {
-				health: 33,
+				health: 36,
 				melee: {
 					value: 12,
 					attacks: [
@@ -292,9 +292,9 @@ export default class CharacterData {
 					value: 0,
 					attacks: []
 				},
-				dodge: 7,
+				dodge: 5,
 				armor: 0,
-				speed: 6
+				speed: 9
 			}
 		},
 		{
