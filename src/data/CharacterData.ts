@@ -171,7 +171,7 @@ export default class CharacterData {
 			baseStats: {
 				health: 27,
 				melee: {
-					value: 12,
+					value: 10,
 					attacks: [
 						new Attack(0, "Basic", "1d4")
 					]
