@@ -11,7 +11,7 @@ export default class CharacterData {
 			baseStats: {
 				health: 30,
 				melee: {
-					value: 12,
+					value: 13,
 					attacks: [
 						new Attack(0, "Basic", "1d6")
 					]
@@ -117,13 +117,13 @@ export default class CharacterData {
 			baseStats: {
 				health: 24,
 				melee: {
-					value: 12,
+					value: 11,
 					attacks: [
 						new Attack(0, "Basic", "1d4")
 					]
 				},
 				range: {
-					value: 12,
+					value: 11,
 					attacks: [
 						new Attack(0, "Basic", "1d4")
 					]
@@ -147,7 +147,7 @@ export default class CharacterData {
 				melee: {
 					value: 12,
 					attacks: [
-						new Attack(0, "Basic", "1d6+1")
+						new Attack(0, "Basic", "1d6")
 					]
 				},
 				range: {
@@ -171,9 +171,9 @@ export default class CharacterData {
 			baseStats: {
 				health: 27,
 				melee: {
-					value: 10,
+					value: 12,
 					attacks: [
-						new Attack(0, "Basic", "1d4")
+						new Attack(0, "Basic", "1d4+1")
 					]
 				},
 				range: {
@@ -181,7 +181,7 @@ export default class CharacterData {
 					attacks: []
 				},
 				magic: {
-					value: 14,
+					value: 12,
 					attacks: []
 				},
 				dodge: 6,
@@ -294,7 +294,7 @@ export default class CharacterData {
 				},
 				dodge: 5,
 				armor: 0,
-				speed: 9
+				speed: 8
 			}
 		},
 		{

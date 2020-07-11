@@ -104,7 +104,7 @@ import { getCharacterWithHighestHealth } from '../utilities/CharacterFilterUtili
 import { sortBySpeed, sortByHealth } from '../utilities/CharacterSortUtilities';
 import { addMeleeModification, addDodgeModification, addSpeedModification } from '../utilities/StatModificationUtilities';
 import CharacterData from '../data/CharacterData';
-import { getBaseStatsPoints } from '../utilities/BaseStatsUtilities';
+import { getBaseStatsPoints, getBaseStatAttacks } from '../utilities/BaseStatsUtilities';
 
 @Component({})
 
@@ -165,9 +165,9 @@ export default class TestingControl extends Vue {
 		this.dataOutput += `<tr><td>${hero.id}</td><td>${hero.shortName}</td><td>${getShortBaseStats(hero)}</td></tr>`
 	});
 	this.dataOutput += "</tbody></table>";
-	this.dataOutput += "<table><thead><tr><th>Id</th>Short Name<th></th><th>Health</th><th>Melee</th><th>Range</th><th>Magic</th><th>Dodge</th><th>Armor</th><th>Speed</th><th>Points</th></tr></thead><tbody>";
+	this.dataOutput += "<table><thead><tr><th>Id</th>Short Name<th></th><th>Health</th><th>Melee</th><th>Range</th><th>Magic</th><th>Dodge</th><th>Armor</th><th>Speed</th><th>Points</th><th>Melee Attacks</th><th>Range Attacks</th><th>Magic Attacks</th></tr></thead><tbody>";
 	CharacterData.Heroes.forEach(hero => {
-		this.dataOutput += `<tr><td>${hero.id}</td><td>${hero.shortName}</td><td>${hero.baseStats.health}</td><td>${hero.baseStats.melee.value}</td><td>${hero.baseStats.range.value}</td><td>${hero.baseStats.magic.value}</td><td>${hero.baseStats.dodge}</td><td>${hero.baseStats.armor}</td><td>${hero.baseStats.speed}</td><td>${getBaseStatsPoints(hero.baseStats)}</td></tr>`
+		this.dataOutput += `<tr><td>${hero.id}</td><td>${hero.shortName}</td><td>${hero.baseStats.health}</td><td>${hero.baseStats.melee.value}</td><td>${hero.baseStats.range.value}</td><td>${hero.baseStats.magic.value}</td><td>${hero.baseStats.dodge}</td><td>${hero.baseStats.armor}</td><td>${hero.baseStats.speed}</td><td>${getBaseStatsPoints(hero.baseStats)}</td><td>${getBaseStatAttacks(hero.baseStats.melee)}</td><td>${getBaseStatAttacks(hero.baseStats.range)}</td><td>${getBaseStatAttacks(hero.baseStats.magic)}</td></tr>`
 	});
 	this.dataOutput += "</tbody></table>";
   }

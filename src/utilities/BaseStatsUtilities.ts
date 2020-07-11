@@ -1,4 +1,6 @@
 import BaseStats from '@/models/BaseStats';
+import BaseStat from '@/models/BaseStat';
+import { Parser } from 'rpg-dice-roller';
 
 /**
  * Given a set of base stats, determine how many points they total to.
@@ -30,6 +32,28 @@ export function getBaseStatsPoints(baseStats: BaseStats): number {
 	}
 
 	return pointTotal;
+}
+
+/**
+ * Get attack information for a base stat.
+ *
+ * @param baseStat Melee/range/magic stat to get information for.
+ * @returns Array of strings with data.
+ */
+export function getBaseStatAttacks(baseStat: BaseStat): string[] {
+	const results: string[] = [];
+	const damageSearch = new RegExp('^(\\d*)d(\\d)(\\+(\\d))*$', 'g');
+	if (baseStat.attacks.length > 0) {
+		baseStat.attacks.forEach(attack => {
+			results.push(attack.damage);
+			console.log(damageSearch.exec(attack.damage));
+			console.log(Parser.parse(attack.damage));
+			console.log(Parser.parse('3d4+2'));
+			console.log(Parser.parse('4d%'));
+			console.log(Parser.parse('dF'));
+		});
+	}
+	return results;
 }
 
 /**
@@ -69,6 +93,5 @@ function getCombatStatPoints(value: number): number {
 	} else if (value > (defaultValue + 4)) {
 		return (6 + (3 * (value - (defaultValue + 4 ))));
 	}
-
 	return 0;
 }

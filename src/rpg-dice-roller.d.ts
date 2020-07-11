@@ -13,14 +13,14 @@ declare module 'rpg-dice-roller' {
 		 * @param data
 		 */
 		constructor(data?);
-	
+
 		/**
 		 * Returns the current roll log
 		 *
 		 * @returns {DiceRoll[]}
 		 */
 		get log(): DiceRoll[];
-	
+
 		/**
 		 * Returns the roll notation and rolls in the format of:
 		 * 2d20+1d6: [20,2]+[2] = 24; 1d8: [6] = 6
@@ -28,14 +28,14 @@ declare module 'rpg-dice-roller' {
 		 * @returns {string}
 		 */
 		get output(): string;
-	
+
 		/**
 		 * Returns the total for all the rolls
 		 *
 		 * @returns {number}
 		 */
 		get total(): number;
-	
+
 		/**
 		 * Takes the given data, imports it into a new DiceRoller instance
 		 * and returns the DiceRoller
@@ -45,12 +45,12 @@ declare module 'rpg-dice-roller' {
 		 * @returns {DiceRoller}
 		 */
 		static import(data): DiceRoller;
-	
+
 		/**
 		 * Clears the roll history log
 		 */
 		clearLog(): void;
-	
+
 		/**
 		 * Exports the roll log in the given format.
 		 * If no format is specified, JSON is returned.
@@ -81,7 +81,7 @@ declare module 'rpg-dice-roller' {
 		 * @returns {object}
 		 */
 		toJSON(): object;
-	
+
 		/**
 		 * Returns the String representation
 		 * of the object as the roll notations
@@ -140,4 +140,14 @@ declare module 'rpg-dice-roller' {
 
 	export class Dice {
 	}
+
+	export class Parser {
+		static parse(notation: string): [];
+	}
+
+	export class StandardDice {
+	}
+
+	export class PercentileDice {}
+	export class FudgeDice {}
 }
