@@ -159,16 +159,19 @@ export default class TestingControl extends Vue {
 	this.dodgeMin = 7;
 	this.armorMax = 1;
 	this.speedMin = 10;*/
-
-	this.dataOutput = "<table><tbody>";
+	this.dataOutput = "";
+	this.dataOutput += "<table><tbody>";
 	CharacterData.Heroes.forEach(hero => {
 		this.dataDumps.push(`${hero.id} ${hero.shortName} ${getShortBaseStats(hero)}<br />`);
 		this.dataOutput += `<tr><td>${hero.id}</td><td>${hero.shortName}</td><td>${getShortBaseStats(hero)}</td></tr>`
 	});
 	this.dataOutput += "</tbody></table>";
-	this.dataOutput += "<table><thead><tr><th>Id</th>Short Name<th></th><th>Health</th><th>Melee</th><th>Range</th><th>Magic</th><th>Dodge</th><th>Armor</th><th>Speed</th><th>Points</th><th>Melee Attacks</th><th>Range Attacks</th><th>Magic Attacks</th><th>Preferred Attack</th></tr></thead><tbody>";
+	this.dataOutput += "<h3>Balancing Testing</h3>";
+	this.dataOutput += "<table><thead><tr><th>Id</th>Short Name<th></th><th>Health</th><th>Melee</th><th>Range</th><th>Magic</th><th>Dodge</th><th>Armor</th><th>Speed</th><th>Points</th></tr></thead><tbody>";
 	CharacterData.Heroes.forEach(hero => {
-		this.dataOutput += `<tr><td>${hero.id}</td><td>${hero.shortName}</td><td>${hero.baseStats.health}</td><td>${hero.baseStats.melee.value}</td><td>${hero.baseStats.range.value}</td><td>${hero.baseStats.magic.value}</td><td>${hero.baseStats.dodge}</td><td>${hero.baseStats.armor}</td><td>${hero.baseStats.speed}</td><td>${getBaseStatsPoints(hero.baseStats)}</td><td>${getBaseStatAttacks(hero.baseStats.melee)}</td><td>${getBaseStatAttacks(hero.baseStats.range)}</td><td>${getBaseStatAttacks(hero.baseStats.magic)}</td><td>${attackPreferenceToText(hero.preferredAttack)}</td></tr>`
+		this.dataOutput += `<tr><td rowspan="3" class="balancing-row-id">${hero.id}</td><td rowspan="3" class="balancing-row-id">${hero.shortName}</td><td>${hero.baseStats.health}</td><td>${hero.baseStats.melee.value}</td><td>${hero.baseStats.range.value}</td><td>${hero.baseStats.magic.value}</td><td>${hero.baseStats.dodge}</td><td>${hero.baseStats.armor}</td><td>${hero.baseStats.speed}</td><td rowspan="3">${getBaseStatsPoints(hero.baseStats)}</td></tr>`;
+		this.dataOutput += `<tr><td rowspan="2"></td><td>${getBaseStatAttacks(hero.baseStats.melee)}</td><td>${getBaseStatAttacks(hero.baseStats.range)}</td><td>${getBaseStatAttacks(hero.baseStats.magic)}</td><td colspan="3"></td></tr>`;
+		this.dataOutput += `<tr><td colspan="3">Preferred Attack: ${attackPreferenceToText(hero.preferredAttack)}</td><td colspan="3"></td></tr>`;
 	});
 	this.dataOutput += "</tbody></table>";
   }
@@ -604,5 +607,8 @@ export default class TestingControl extends Vue {
 }
 </script>
 
-<style scoped>
+<style>
+	.balancing-row-id {
+		vertical-align: top;
+	}
 </style>

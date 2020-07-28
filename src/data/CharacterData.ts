@@ -3,6 +3,9 @@ import Attack from '@/models/Attack';
 import { AttackPreference } from '@/utilities/Enums';
 
 export default class CharacterData {
+	/**
+	 * Hero character data, used when creating a new hero.
+	 */
 	public static Heroes: CharacterModel[] = [
 		{
 			id: 1,
@@ -81,7 +84,7 @@ export default class CharacterData {
 					value: 0,
 					attacks: []
 				},
-				dodge: 6,
+				dodge: 5,
 				armor: 0,
 				speed: 9
 			},

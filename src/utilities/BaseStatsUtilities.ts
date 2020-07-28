@@ -1,6 +1,6 @@
 import BaseStats from '@/models/BaseStats';
 import BaseStat from '@/models/BaseStat';
-import { Parser } from 'rpg-dice-roller';
+import { Parser, DiceRoller, DiceRoll } from 'rpg-dice-roller';
 
 /**
  * Given a set of base stats, determine how many points they total to.
@@ -19,12 +19,28 @@ export function getBaseStatsPoints(baseStats: BaseStats): number {
 	// TODO magic = 0 gives extra points
 	pointTotal += getCombatStatPoints(baseStats.magic.value);
 
+	// Get an extra point for every attack after the first.
+	let attacksModifier = -1;
+	if (baseStats.melee.attacks.length > 0) {
+		attacksModifier++;
+		pointTotal += getBaseAttackPoints(baseStats.melee.attacks[0].damage);
+	}
+	if (baseStats.range.attacks.length > 0) {
+		attacksModifier++;
+		pointTotal += getBaseAttackPoints(baseStats.range.attacks[0].damage);
+	}
+	if (baseStats.magic.attacks.length > 0) {
+		attacksModifier++;
+		pointTotal += getBaseAttackPoints(baseStats.magic.attacks[0].damage);
+	}
+	pointTotal += attacksModifier;
+
 	if (baseStats.dodge !== 6) {
 		pointTotal += 2 * (baseStats.dodge - 6);
 	}
 
 	if (baseStats.armor > 0) {
-		pointTotal += baseStats.armor * 2;
+		pointTotal += baseStats.armor * 3;
 	}
 
 	if (baseStats.speed !== 10) {
@@ -48,9 +64,6 @@ export function getBaseStatAttacks(baseStat: BaseStat): string[] {
 			results.push(attack.damage);
 			console.log(damageSearch.exec(attack.damage));
 			console.log(Parser.parse(attack.damage));
-			console.log(Parser.parse('3d4+2'));
-			console.log(Parser.parse('4d%'));
-			console.log(Parser.parse('dF'));
 		});
 	}
 	return results;
@@ -94,4 +107,17 @@ function getCombatStatPoints(value: number): number {
 		return (6 + (3 * (value - (defaultValue + 4 ))));
 	}
 	return 0;
+}
+
+/**
+ * Get the number of points an attack grants.
+ *
+ * @param attackValue Dice notation for the attack.
+ * @returns Points for an attack value.
+ */
+function getBaseAttackPoints(attackValue: string): number {
+	const roller = new DiceRoller();
+	// TODO support characters with multiple attacks? dervish could be 1d6 and 1d4, for example, but would need to roll for hit with each attack
+	const roll: DiceRoll = roller.roll(attackValue) as DiceRoll;
+	return (roll.minTotal - 1) + roll.maxTotal;
 }
