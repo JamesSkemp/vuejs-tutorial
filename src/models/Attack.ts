@@ -1,6 +1,9 @@
 import StatModifications from './StatModifications';
 
 export default class Attack {
+	/**
+	 * Id of the attack. Basic attacks should always have an id of 0.
+	 */
 	public id: number;
 	/**
 	 * Name of the attack, for display.
@@ -10,6 +13,9 @@ export default class Attack {
 	 * Dice notation for the damage calculation.
 	 */
 	public damage: string;
+	/**
+	 * The number of turns that must go by between use.
+	 */
 	public cooldown = 0;
 	/**
 	 * Cooldown remaining since the attack was last used.

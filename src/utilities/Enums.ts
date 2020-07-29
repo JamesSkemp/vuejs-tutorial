@@ -1,7 +1,7 @@
 /**
  * Character attack preferences.
  */
-export enum AttackPreference {
+export enum AttackType {
 	Melee,
 	Range,
 	Magic
@@ -35,13 +35,13 @@ export enum PartyState {
  * @param attackPreference Character's attack preference.
  * @returns Friendly text for display.
  */
-export function attackPreferenceToText(attackPreference: AttackPreference): string {
+export function attackPreferenceToText(attackPreference: AttackType): string {
 	switch (attackPreference) {
-		case AttackPreference.Melee:
+		case AttackType.Melee:
 			return 'Melee';
-		case AttackPreference.Range:
+		case AttackType.Range:
 			return 'Range';
-		case AttackPreference.Magic:
+		case AttackType.Magic:
 			return 'Magic';
 		default:
 			return 'Unknown';

@@ -1,6 +1,6 @@
 import CharacterModel from '@/models/CharacterModel';
 import Attack from '@/models/Attack';
-import { AttackPreference } from '@/utilities/Enums';
+import { AttackType } from '@/utilities/Enums';
 
 export default class CharacterData {
 	/**
@@ -32,7 +32,7 @@ export default class CharacterData {
 				armor: 0,
 				speed: 10
 			},
-			preferredAttack: AttackPreference.Melee
+			preferredAttack: AttackType.Melee
 		},
 		{
 			id: 2,
@@ -59,7 +59,7 @@ export default class CharacterData {
 				armor: 0,
 				speed: 10
 			},
-			preferredAttack: AttackPreference.Melee
+			preferredAttack: AttackType.Melee
 		},
 		{
 			id: 3,
@@ -88,7 +88,7 @@ export default class CharacterData {
 				armor: 0,
 				speed: 9
 			},
-			preferredAttack: AttackPreference.Range
+			preferredAttack: AttackType.Range
 		},
 		{
 			id: 4,
@@ -115,7 +115,7 @@ export default class CharacterData {
 				armor: 0,
 				speed: 10
 			},
-			preferredAttack: AttackPreference.Melee
+			preferredAttack: AttackType.Melee
 		},
 		{
 			id: 5,
@@ -144,7 +144,7 @@ export default class CharacterData {
 				armor: 0,
 				speed: 9
 			},
-			preferredAttack: AttackPreference.Range
+			preferredAttack: AttackType.Range
 		},
 		{
 			id: 6,
@@ -171,7 +171,7 @@ export default class CharacterData {
 				armor: 1,
 				speed: 10
 			},
-			preferredAttack: AttackPreference.Melee
+			preferredAttack: AttackType.Melee
 		},
 		{
 			id: 7,
@@ -200,7 +200,7 @@ export default class CharacterData {
 				armor: 0,
 				speed: 10
 			},
-			preferredAttack: AttackPreference.Magic
+			preferredAttack: AttackType.Magic
 		},
 		{
 			id: 8,
@@ -229,7 +229,7 @@ export default class CharacterData {
 				armor: 0,
 				speed: 10
 			},
-			preferredAttack: AttackPreference.Magic
+			preferredAttack: AttackType.Magic
 		},
 		{
 			id: 9,
@@ -256,7 +256,7 @@ export default class CharacterData {
 				armor: 2,
 				speed: 11
 			},
-			preferredAttack: AttackPreference.Melee
+			preferredAttack: AttackType.Melee
 		},
 		{
 			id: 10,
@@ -285,7 +285,7 @@ export default class CharacterData {
 				armor: 1,
 				speed: 12
 			},
-			preferredAttack: AttackPreference.Range
+			preferredAttack: AttackType.Range
 		},
 		{
 			id: 11,
@@ -312,7 +312,7 @@ export default class CharacterData {
 				armor: 0,
 				speed: 7
 			},
-			preferredAttack: AttackPreference.Melee
+			preferredAttack: AttackType.Melee
 		},
 		{
 			id: 12,
@@ -339,7 +339,7 @@ export default class CharacterData {
 				armor: 1,
 				speed: 10
 			},
-			preferredAttack: AttackPreference.Melee
+			preferredAttack: AttackType.Melee
 		},
 		{
 			id: 13,
@@ -366,7 +366,7 @@ export default class CharacterData {
 				armor: 1,
 				speed: 10
 			},
-			preferredAttack: AttackPreference.Melee
+			preferredAttack: AttackType.Melee
 		},
 		{
 			id: 14,
@@ -395,7 +395,7 @@ export default class CharacterData {
 				armor: 0,
 				speed: 10
 			},
-			preferredAttack: AttackPreference.Magic
+			preferredAttack: AttackType.Magic
 		},
 		{
 			id: 15,
@@ -424,7 +424,7 @@ export default class CharacterData {
 				armor: 0,
 				speed: 10
 			},
-			preferredAttack: AttackPreference.Magic
+			preferredAttack: AttackType.Magic
 		}
 	]
 }

@@ -2,7 +2,7 @@ import BaseStats from './BaseStats';
 import StatModifications from './StatModifications';
 import CombatStats from './CombatStats';
 import Attack from './Attack';
-import { AttackPreference } from '@/utilities/Enums';
+import { AttackType } from '@/utilities/Enums';
 import NameGenerator from '@/utilities/NameGenerator';
 import Journal from './Journal';
 
@@ -18,7 +18,7 @@ export default class Character {
 	/**
 	 * How the character prefers to attack.
 	 */
-	public preferredAttack: AttackPreference;
+	public preferredAttack: AttackType;
 	/**
 	 * Stores the character's base stats. Temporary changes to these stats should be handled by `statMods` or `currentHealth`.
 	 */
@@ -41,7 +41,7 @@ export default class Character {
 	public constructor() {
 		// TODO accept id of some sort to change initial values, or should this be a utility?
 		this.name = `${NameGenerator.randomName(2, 5)} ${NameGenerator.randomName(2, 5)}`;
-		this.preferredAttack = AttackPreference.Melee;
+		this.preferredAttack = AttackType.Melee;
 		this.baseStats = new BaseStats(30, 12, 10, 0, 6, 0, 10);
 		this.baseStats.melee.attacks.push(new Attack(0, 'Basic', '1d6'));
 		this.currentHealth = this.baseStats.health;

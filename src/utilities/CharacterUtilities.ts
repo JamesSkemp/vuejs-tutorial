@@ -1,11 +1,12 @@
 import Character from '@/models/Character';
 import { DiceRoll } from 'rpg-dice-roller';
 import { processStatModificationTurn, totalStatModifications } from './StatModificationUtilities';
-import { Desire, PartyState } from './Enums';
+import { AttackType, Desire, PartyState } from './Enums';
 import Party from '@/models/Party';
 import StatCheckResults from '@/models/StatCheckResults';
 import CharacterModel from '@/models/CharacterModel';
 import { processAttackCooldown } from './AttackUtilities';
+import CharacterAttack from '@/models/CharacterAttack';
 
 /**
  * Trigger an attack from one character to another.
@@ -18,7 +19,10 @@ export function attackOpponent(character: Character, opponent: Character): strin
 	// TODO what about attacks that target more than one opponent?
 	// TODO different for each type of attack, or should this determine what the character will attack with? should it just be simplified to an attack value?
 	const messages: string[] = [];
+	// TODO logic to determine what sort of attack to use
+	// TODO get non-basic attack
 	// TODO check for criticals
+
 	if (checkMelee(character).successful)
 	{
 		messages.push('Character hit');
@@ -297,6 +301,28 @@ export function getCurrentSpeed(character: Character): number {
 		speed += mod.amount;
 	});
 	return speed;
+}
+
+/**
+ * Get a character's primary basic attack.
+ *
+ * @param character Character to check.
+ * @returns Character's preferred basic attack.
+ */
+export function getPrimaryBasicAttack(character: Character): CharacterAttack {
+	// TODO should this use checkMelee/checkRange/checkMagic in some way and either return null (if the check failed) or Attack?
+	// TODO do we need to verify id is 0?
+	switch (character.preferredAttack) {
+		case AttackType.Melee:
+			return new CharacterAttack(AttackType.Melee, getCurrentMelee(character), character.baseStats.melee.attacks[0]);
+		case AttackType.Range:
+			return new CharacterAttack(AttackType.Range, getCurrentRange(character), character.baseStats.range.attacks[0]);
+		case AttackType.Magic:
+			return new CharacterAttack(AttackType.Magic, getCurrentMagic(character), character.baseStats.magic.attacks[0]);
+		default:
+			// Each character will always have a basic melee attack.
+			return new CharacterAttack(AttackType.Melee, getCurrentMelee(character), character.baseStats.melee.attacks[0]);
+	}
 }
 
 /**
