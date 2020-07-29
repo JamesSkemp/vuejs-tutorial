@@ -1,42 +1,51 @@
+import StatModifications from './StatModifications';
+
 export default class Attack {
 	public id: number;
+	/**
+	 * Name of the attack, for display.
+	 */
 	public name: string;
+	/**
+	 * Dice notation for the damage calculation.
+	 */
 	public damage: string;
 	public cooldown = 0;
-	public meleeMod = 0;
-	public rangeMod = 0;
-	public magicMod = 0;
-	public dodgeMod = 0;
-	public armorMod = 0;
-	public speedMod = 0;
+	/**
+	 * Cooldown remaining since the attack was last used.
+	 */
+	public cooldownRemaining = 0; // TODO make this part of character turn to auto-decrement
+	/**
+	 * Modifier to the check to hit. Positive number increases the ability to hit.
+	 */
+	public attackModifier = 0;
+	/**
+	 * Modifer to the opponent's check to dodge. Negative number makes it harder for the attack to be dodged.
+	 */
+	public dodgeModifier = 0;
+	/**
+	 * Stat modifications applied to the target of the attack, if hit.
+	 */
+	public targetStatModifications: StatModifications;
+	/**
+	 * If true, the attack was used this turn, and cooldown should not be decreased.
+	 */
+	public skipCooldownTurn = false; // TODO this needs to be taken into account
 
-	public constructor(id: number, name: string, damage: string, cooldown?: number, meleeMod?: number, rangeMod?: number, magicMod?: number, dodgeMod?: number, armorMod?: number, speedMod?: number) {
+	public constructor(id: number, name: string, damage: string, cooldown?: number, attackModifier?: number, dodgeModifier?: number, targetStatModifications?: StatModifications) {
 		this.id = id;
 		this.name = name;
 		this.damage = damage;
 		if (cooldown) {
 			this.cooldown = cooldown;
 		}
-		if (meleeMod) {
-			this.meleeMod = meleeMod;
+		this.cooldownRemaining = 0;
+		if (attackModifier) {
+			this.attackModifier = attackModifier;
 		}
-		if (rangeMod) {
-			this.rangeMod = rangeMod;
+		if (dodgeModifier) {
+			this.dodgeModifier = dodgeModifier;
 		}
-		if (magicMod) {
-			this.magicMod = magicMod;
-		}
-		if (dodgeMod) {
-			this.dodgeMod = dodgeMod;
-		}
-		if (armorMod) {
-			this.armorMod = armorMod;
-		}
-		if (speedMod) {
-			this.speedMod = speedMod;
-		}
+		this.targetStatModifications = targetStatModifications ?? new StatModifications();
 	}
 }
-
-// TODO how does any of the stat mods work?
-// TODO how is cooldown tracked?

@@ -5,6 +5,7 @@ import { Desire, PartyState } from './Enums';
 import Party from '@/models/Party';
 import StatCheckResults from '@/models/StatCheckResults';
 import CharacterModel from '@/models/CharacterModel';
+import { processAttackCooldown } from './AttackUtilities';
 
 /**
  * Trigger an attack from one character to another.
@@ -26,7 +27,7 @@ export function attackOpponent(character: Character, opponent: Character): strin
 		{
 			messages.push('Damage of ' + damageRoll.total);
 			let damageTotal = damageRoll.total;
-			// TODO check for criticals
+			// TODO check for criticals - also add dodge modifier, if there is one
 			if (checkDodge(opponent).successful) {
 				damageTotal = Math.ceil(damageTotal / 2);
 				messages.push('Damage halved to ' + damageTotal);
@@ -352,6 +353,17 @@ export function getCharacterDesire(party: Party, character: Character): Desire {
  */
 export function processAttackTurn(character: Character, currentTurn: number): void {
 	processStatModificationTurn(character.statMods);
+	// Decrease remaining cooldowns on attacks that weren't used this turn.
+	// TODO improve the following three by using one call
+	character.baseStats.melee.attacks.forEach(attack => {
+		processAttackCooldown(attack);
+	});
+	character.baseStats.range.attacks.forEach(attack => {
+		processAttackCooldown(attack);
+	});
+	character.baseStats.magic.attacks.forEach(attack => {
+		processAttackCooldown(attack);
+	});
 	character.lastAttack = currentTurn;
 	character.nextAttack += getCurrentSpeed(character);
 }

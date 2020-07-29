@@ -147,6 +147,25 @@ export function clearAllModifications(statMods: StatModifications): void {
 }
 
 /**
+ * Get a displayable version of stat modifications. Properties without a modification are not displayed.
+ *
+ * @param statMods Stat modifications to display data for.
+ * @returns Stat modification details for display.
+ */
+export function getStatModificationsDetails(statMods: StatModifications): string {
+	// TODO this all needs to be cleaned up
+	const healthMod = statMods.healthModifications.length === 0 ? '' : ` Health ${JSON.stringify(statMods.healthModifications)}`;
+	const meleeMod = statMods.meleeModifications.length === 0 ? '' : ` Melee ${JSON.stringify(statMods.meleeModifications)}`;
+	const rangeMod = statMods.rangeModifications.length === 0 ? '' : ` Range ${JSON.stringify(statMods.rangeModifications)}`;
+	const magicMod = statMods.magicModifications.length === 0 ? '' : ` Magic ${JSON.stringify(statMods.magicModifications)}`;
+	const dodgeMod = statMods.dodgeModifications.length === 0 ? '' : ` Dodge ${JSON.stringify(statMods.dodgeModifications)}`;
+	const armorMod = statMods.armorModifications.length === 0 ? '' : ` Armor ${JSON.stringify(statMods.armorModifications)}`;
+	const speedMod = statMods.speedModifications.length === 0 ? '' : ` Speed ${JSON.stringify(statMods.speedModifications)}`;
+	const damageMod = statMods.damageModifications.length === 0 ? '' : `Damage ${JSON.stringify(statMods.damageModifications)}`;
+	return `${healthMod}${meleeMod}${rangeMod}${magicMod}${dodgeMod}${armorMod}${speedMod}${damageMod}`;
+}
+
+/**
  * Given a collection of StatModification, decrements the turns count, if it wasn't added this round, and then drops any that no longer have turns remaining.
  *
  * @param element StatModification to check.
