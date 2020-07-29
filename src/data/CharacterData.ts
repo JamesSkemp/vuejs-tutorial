@@ -15,7 +15,7 @@ export default class CharacterData {
 			baseStats: {
 				health: 30,
 				melee: {
-					value: 13,
+					value: 14,
 					attacks: [
 						new Attack(0, "Basic", "1d6")
 					]
@@ -44,7 +44,7 @@ export default class CharacterData {
 				melee: {
 					value: 12,
 					attacks: [
-						new Attack(0, "Basic", "1d6")
+						new Attack(0, "Basic", "1d6+1")
 					]
 				},
 				range: {
@@ -100,7 +100,7 @@ export default class CharacterData {
 				melee: {
 					value: 14,
 					attacks: [
-						new Attack(0, "Basic", "1d6")
+						new Attack(0, "Basic", "1d6+1")
 					]
 				},
 				range: {
@@ -181,7 +181,7 @@ export default class CharacterData {
 			baseStats: {
 				health: 27,
 				melee: {
-					value: 12,
+					value: 11,
 					attacks: [
 						new Attack(0, "Basic", "1d4+1")
 					]
@@ -268,7 +268,7 @@ export default class CharacterData {
 				melee: {
 					value: 10,
 					attacks: [
-						new Attack(0, "Basic", "1d6")
+						new Attack(0, "Basic", "1d4")
 					]
 				},
 				range: {
@@ -278,12 +278,12 @@ export default class CharacterData {
 					]
 				},
 				magic: {
-					value: 8,
+					value: 6,
 					attacks: []
 				},
 				dodge: 5,
 				armor: 1,
-				speed: 10
+				speed: 12
 			},
 			preferredAttack: AttackPreference.Range
 		},
@@ -297,7 +297,7 @@ export default class CharacterData {
 				melee: {
 					value: 12,
 					attacks: [
-						new Attack(0, "Basic", "1d4")
+						new Attack(0, "Basic", "1d6")
 					]
 				},
 				range: {
@@ -308,9 +308,9 @@ export default class CharacterData {
 					value: 0,
 					attacks: []
 				},
-				dodge: 5,
+				dodge: 6,
 				armor: 0,
-				speed: 8
+				speed: 7
 			},
 			preferredAttack: AttackPreference.Melee
 		},
@@ -382,7 +382,7 @@ export default class CharacterData {
 					]
 				},
 				range: {
-					value: 10,
+					value: 8,
 					attacks: []
 				},
 				magic: {
