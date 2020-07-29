@@ -4,9 +4,9 @@ import { AttackType } from '@/utilities/Enums';
 
 export default class CharacterData {
 	/**
-	 * Hero character data, used when creating a new hero.
+	 * Adventurer character data, used when creating a new adventurer.
 	 */
-	public static Heroes: CharacterModel[] = [
+	public static Adventurers: CharacterModel[] = [
 		{
 			id: 1,
 			shortName: "Knife/sword",

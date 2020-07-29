@@ -161,26 +161,26 @@ export default class TestingControl extends Vue {
 	this.speedMin = 10;*/
 	this.dataOutput = "";
 	this.dataOutput += "<table><tbody>";
-	CharacterData.Heroes.forEach(hero => {
-		this.dataDumps.push(`${hero.id} ${hero.shortName} ${getShortBaseStats(hero)}<br />`);
-		this.dataOutput += `<tr><td>${hero.id}</td><td>${hero.shortName}</td><td>${getShortBaseStats(hero)}</td></tr>`
+	CharacterData.Adventurers.forEach(adventurer => {
+		this.dataDumps.push(`${adventurer.id} ${adventurer.shortName} ${getShortBaseStats(adventurer)}<br />`);
+		this.dataOutput += `<tr><td>${adventurer.id}</td><td>${adventurer.shortName}</td><td>${getShortBaseStats(adventurer)}</td></tr>`
 	});
 	this.dataOutput += "</tbody></table>";
 	this.dataOutput += "<h3>Balancing Testing</h3>";
 	this.dataOutput += "<table><thead><tr><th>Id</th>Short Name<th></th><th>Health</th><th>Melee</th><th>Range</th><th>Magic</th><th>Dodge</th><th>Armor</th><th>Speed</th><th>Points</th></tr></thead><tbody>";
 
-	let heroPoints: number[] = [];
+	let adventurerPoints: number[] = [];
 
-	CharacterData.Heroes.forEach(hero => {
-		const heroPointTotal = getBaseStatsPoints(hero.baseStats);
-		heroPoints.push(heroPointTotal);
+	CharacterData.Adventurers.forEach(adventurer => {
+		const adventurerPointTotal = getBaseStatsPoints(adventurer.baseStats);
+		adventurerPoints.push(adventurerPointTotal);
 
-		this.dataOutput += `<tr><td rowspan="3" class="balancing-row-id">${hero.id}</td><td rowspan="3" class="balancing-row-id">${hero.shortName}</td><td>${hero.baseStats.health}</td><td>${hero.baseStats.melee.value}</td><td>${hero.baseStats.range.value}</td><td>${hero.baseStats.magic.value}</td><td>${hero.baseStats.dodge}</td><td>${hero.baseStats.armor}</td><td>${hero.baseStats.speed}</td><td rowspan="3">${heroPointTotal}</td></tr>`;
-		this.dataOutput += `<tr><td rowspan="2"></td><td>${getBaseStatAttacks(hero.baseStats.melee)}</td><td>${getBaseStatAttacks(hero.baseStats.range)}</td><td>${getBaseStatAttacks(hero.baseStats.magic)}</td><td colspan="3"></td></tr>`;
-		this.dataOutput += `<tr><td colspan="3">Preferred Attack: ${attackPreferenceToText(hero.preferredAttack)}</td><td colspan="3"></td></tr>`;
+		this.dataOutput += `<tr><td rowspan="3" class="balancing-row-id">${adventurer.id}</td><td rowspan="3" class="balancing-row-id">${adventurer.shortName}</td><td>${adventurer.baseStats.health}</td><td>${adventurer.baseStats.melee.value}</td><td>${adventurer.baseStats.range.value}</td><td>${adventurer.baseStats.magic.value}</td><td>${adventurer.baseStats.dodge}</td><td>${adventurer.baseStats.armor}</td><td>${adventurer.baseStats.speed}</td><td rowspan="3">${adventurerPointTotal}</td></tr>`;
+		this.dataOutput += `<tr><td rowspan="2"></td><td>${getBaseStatAttacks(adventurer.baseStats.melee)}</td><td>${getBaseStatAttacks(adventurer.baseStats.range)}</td><td>${getBaseStatAttacks(adventurer.baseStats.magic)}</td><td colspan="3"></td></tr>`;
+		this.dataOutput += `<tr><td colspan="3">Preferred Attack: ${attackPreferenceToText(adventurer.preferredAttack)}</td><td colspan="3"></td></tr>`;
 	});
 	this.dataOutput += "</tbody></table>";
-	console.log(heroPoints.sort());
+	console.log(adventurerPoints.sort());
   }
 
   beforeDestroy(): void {
@@ -252,7 +252,7 @@ export default class TestingControl extends Vue {
 								whileLoopNumber++;
 								if (whileLoopNumber > 500) {
 									console.log('more than 500 turns');
-									this.finalResultsShort.push(`[ENDED EARLY] Character ${getSuperShortBaseStats(testCharacter)}, Time ${runTime}, Turns ${turns}, Hero health ${testWorld.parties[0].mainCharacters[0].currentHealth}, Opponent health ${testWorld.parties[0].opponents[0].currentHealth}`);
+									this.finalResultsShort.push(`[ENDED EARLY] Character ${getSuperShortBaseStats(testCharacter)}, Time ${runTime}, Turns ${turns}, Adventurer health ${testWorld.parties[0].mainCharacters[0].currentHealth}, Opponent health ${testWorld.parties[0].opponents[0].currentHealth}`);
 									//console.log(testWorld);
 									totalMomentsLost.push(whileLoopNumber);
 									break;
@@ -276,7 +276,7 @@ export default class TestingControl extends Vue {
 
 							//this.testResults.push(`Character ${JSON.stringify(getShortBaseStats(testCharacter))}`);
 							if (!partyHasLivingMainCharacters(testWorld.parties[0])) {
-								this.finalResultsShort.push(`Character ${getSuperShortBaseStats(testCharacter)}, Time ${runTime}, Turns ${turns} / ${whileLoopNumber}, Heroes won ${partyHasLivingMainCharacters(testWorld.parties[0])}`);
+								this.finalResultsShort.push(`Character ${getSuperShortBaseStats(testCharacter)}, Time ${runTime}, Turns ${turns} / ${whileLoopNumber}, Adventurers won ${partyHasLivingMainCharacters(testWorld.parties[0])}`);
 								totalMomentsLost.push(whileLoopNumber);
 							} else {
 								totalMomentsWon.push(whileLoopNumber);

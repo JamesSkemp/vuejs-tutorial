@@ -145,7 +145,7 @@ export function addOpponent(party: Party, opponent: Character): boolean {
 	opponent.side = 2;
 	party.opponents.push(opponent);
 	// TODO verify that an opponent can be added - can't add in limbo or in town
-	// TODO verify party has heroes? or could a party of opponents be created? I think the latter ...
+	// TODO verify party has adventurers? or could a party of opponents be created? I think the latter ...
 	return true;
 }
 
