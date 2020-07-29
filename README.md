@@ -31,5 +31,11 @@ npm run eslint
 npm run lint | grep require-returns
 ```
 
+### Generate Docs
+This requires that `npm install --global typedoc http-server`. See https://typedoc.org/.
+```
+npm run docs
+```
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).

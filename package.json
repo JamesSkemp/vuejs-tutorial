@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --modern",
     "lint": "vue-cli-service lint",
-    "eslint": "eslint ./src --ext .js,.jsx,.ts,.tsx,.vue || (exit 0)"
+	"eslint": "eslint ./src --ext .js,.jsx,.ts,.tsx,.vue || (exit 0)",
+	"docs": "typedoc --out docs src && http-server docs"
   },
   "dependencies": {
     "@vue/eslint-config-typescript": "^5.0.2",
