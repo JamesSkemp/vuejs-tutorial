@@ -33,6 +33,13 @@ npm run test
 npm run test:coverage
 ```
 
+For the coverage report:
+- % Stmts = percent of statements called
+- % Branch = percent of if/switch branches that have been checked
+- % Funcs = percent of functions called
+- % Lines = percent of lines covered
+- Uncovered Line #s = exactly what it sounds like
+
 #### Check for specific issues
 ```
 npm run lint | grep require-returns
