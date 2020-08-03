@@ -18,6 +18,15 @@ export default class Journal {
 	}
 
 	/**
+	 * Get the number of entries in the journal.
+	 *
+	 * @returns Number of entries.
+	 */
+	public count(): number {
+		return this.entries.length;
+	}
+
+	/**
 	 * Removes all entries from the journal.
 	 */
 	public erase(): void {

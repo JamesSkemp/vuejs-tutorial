@@ -26,6 +26,13 @@ This custom one uses eslint directly, and doesn't automatically fix issues.
 npm run eslint
 ```
 
+### Jest testing
+
+```
+npm run test
+npm run test:coverage
+```
+
 #### Check for specific issues
 ```
 npm run lint | grep require-returns
