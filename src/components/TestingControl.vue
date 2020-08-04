@@ -239,7 +239,7 @@ export default class TestingControl extends Vue {
 							testOpponent.baseStats.speed = this.opponentSpeed;
 							setInitialTurn(testOpponent);
 
-							const testWorld = createNewTestWorldForSingleBattle(testCharacter, testOpponent);
+							const testWorld = createNewTestWorldForSingleBattle([testCharacter], [testOpponent]);
 
 							let continueBattle = true;
 							let turns = 0;

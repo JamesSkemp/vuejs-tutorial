@@ -4,7 +4,7 @@ import Character from '@/models/Character';
 import { sortPartiesById } from './WorldSortUtilities';
 import { PartyState } from './Enums';
 import { sortByCharacterId } from './CharacterSortUtilities';
-import { addMainCharacter, resolvePartyMoment } from './PartyUtilities';
+import { addMainCharacter, resolvePartyMoment, addOpponent } from './PartyUtilities';
 
 /**
  * Start the next moment in a world.
@@ -114,20 +114,25 @@ export function disbandParty(world: World, party: Party): boolean {
 }
 
 /**
- * Testing functionality. Creates a new test world with one character and one opponent.
+ * Testing functionality. Creates a new test world with characters and opponents.
  *
- * @param character Main character to add to the world.
- * @param opponent Opponent to add to the world.
+ * @param characters Main characters to add to the world.
+ * @param opponents Opponents to add to the world.
  * @returns Test world.
  */
-export function createNewTestWorldForSingleBattle(character: Character, opponent: Character): World {
+export function createNewTestWorldForSingleBattle(characters: Character[], opponents: Character[]): World {
 	const newWorld: World = new World();
 
 	const newParty = new Party(0);
-	addMainCharacter(newParty, character);
-	newParty.opponents.push(opponent);
+	characters.forEach(character => {
+		addMainCharacter(newParty, character);
+	});
 
-	newWorld.parties.push(newParty);
+	opponents.forEach(opponent => {
+		addOpponent(newParty, opponent);
+	});
+
+	addPartyToWorld(newWorld, newParty);
 
 	return newWorld;
 }
