@@ -1,6 +1,7 @@
 import CharacterModel from '@/models/CharacterModel';
 import Attack from '@/models/Attack';
 import { AttackType } from '@/utilities/Enums';
+import OpponentModel from '@/models/OpponentModel';
 
 export default class CharacterData {
 	/**
@@ -427,16 +428,14 @@ export default class CharacterData {
 			preferredAttack: AttackType.Magic
 		}
 	]
-}
-
-/*
-Template for adding a new character:
-
+	/*
+	Template for adding a new adventurer:
+		,
 		{
 			id: -1,
 			shortName: "",
 			introText: "",
-			type: "_"
+			type: "_",
 			baseStats: {
 				health: 30,
 				melee: {
@@ -456,6 +455,155 @@ Template for adding a new character:
 				dodge: 6,
 				armor: 0,
 				speed: 10
-			}
+			},
+			preferredAttack: AttackType.Melee
 		}
-*/
+	*/
+
+	public static Opponents: OpponentModel[] = [
+		{
+			id: 1,
+			shortName: "Wild Boar",
+			introText: "",
+			type: "3_6",
+			baseStats: {
+				health: 9,
+				melee: {
+					value: 12,
+					attacks: [
+						new Attack(0, "Basic", "1d4")
+					]
+				},
+				range: {
+					value: 0,
+					attacks: []
+				},
+				magic: {
+					value: 0,
+					attacks: []
+				},
+				dodge: 5,
+				armor: 0,
+				speed: 10
+			},
+			preferredAttack: AttackType.Melee,
+			challenge: 1
+		},
+		{
+			id: 2,
+			shortName: "Wild Dog",
+			introText: "",
+			type: "3_4",
+			baseStats: {
+				health: 9,
+				melee: {
+					value: 12,
+					attacks: [
+						new Attack(0, "Basic", "1d4")
+					]
+				},
+				range: {
+					value: 0,
+					attacks: []
+				},
+				magic: {
+					value: 0,
+					attacks: []
+				},
+				dodge: 6,
+				armor: 0,
+				speed: 10
+			},
+			preferredAttack: AttackType.Melee,
+			challenge: 1
+		},
+		{
+			id: 3,
+			shortName: "Gray Wolf",
+			introText: "",
+			type: "3_4",
+			baseStats: {
+				health: 12,
+				melee: {
+					value: 12,
+					attacks: [
+						new Attack(0, "Basic", "1d6")
+					]
+				},
+				range: {
+					value: 0,
+					attacks: []
+				},
+				magic: {
+					value: 0,
+					attacks: []
+				},
+				dodge: 6,
+				armor: 0,
+				speed: 10
+			},
+			preferredAttack: AttackType.Melee,
+			challenge: 1
+		},
+		{
+			id: 4,
+			shortName: "White Wolf",
+			introText: "",
+			type: "3_4",
+			baseStats: {
+				health: 12,
+				melee: {
+					value: 12,
+					attacks: [
+						new Attack(0, "Basic", "1d6")
+					]
+				},
+				range: {
+					value: 0,
+					attacks: []
+				},
+				magic: {
+					value: 0,
+					attacks: []
+				},
+				dodge: 6,
+				armor: 0,
+				speed: 10
+			},
+			preferredAttack: AttackType.Melee,
+			challenge: 1
+		}
+	]
+	/*
+	Template for adding a new opponent:
+		,
+		{
+			id: -1,
+			shortName: "",
+			introText: "",
+			type: "_",
+			baseStats: {
+				health: 30,
+				melee: {
+					value: 12,
+					attacks: [
+						new Attack(0, "Basic", "1d6")
+					]
+				},
+				range: {
+					value: 10,
+					attacks: []
+				},
+				magic: {
+					value: 0,
+					attacks: []
+				},
+				dodge: 6,
+				armor: 0,
+				speed: 10
+			},
+			preferredAttack: AttackType.Melee,
+			challenge: -1
+		}
+	*/
+}

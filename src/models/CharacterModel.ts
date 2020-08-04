@@ -1,6 +1,9 @@
 import BaseStats from './BaseStats';
 import { AttackType } from '@/utilities/Enums';
 
+/**
+ * Model used to define character data, that's later parsed into a Character.
+ */
 export default interface CharacterModel {
 	/**
 	 * Unique id of the character type.
@@ -17,4 +20,5 @@ export default interface CharacterModel {
 	type: string;
 	baseStats: BaseStats;
 	preferredAttack: AttackType;
+	// TODO skills, or is that part of something else?
 }
