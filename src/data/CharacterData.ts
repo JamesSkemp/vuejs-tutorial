@@ -418,6 +418,7 @@ export default class CharacterData {
 				magic: {
 					value: 14,
 					attacks: [
+						// TODO or one with auto hit, that increases magic by large amount?
 						new Attack(0, "Basic", "1d4")
 					]
 				},

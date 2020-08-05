@@ -26,7 +26,13 @@ export function attackOpponent(character: Character, opponent: Character): strin
 	if (checkMelee(character).successful)
 	{
 		messages.push('Character hit');
-		const damageRoll = new DiceRoll(character.baseStats.melee.attacks[0].damage);
+
+		const meleeDamage = character.baseStats.melee.attacks[0].damage;
+
+		// If we're given only a number, use that. Otherwise it's a dice notation we need to roll.
+		const damageRoll = /^\d+$/.test(meleeDamage) ? { total: parseInt(meleeDamage) } : new DiceRoll(meleeDamage);
+
+		// TODO what about 0? is the min damage 1?
 		if (damageRoll.total > 0)
 		{
 			messages.push('Damage of ' + damageRoll.total);

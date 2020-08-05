@@ -32,6 +32,9 @@
 			<input type="number" v-model.number="speedMin" value="" /> -
 			<input type="number" v-model.number="speedMax" value="" />
 			<br />
+			Damage:
+			<input type="text" v-model="damage" value="" />
+			<br />
 			Opponent health:
 			<input type="number" v-model.number="opponentHealth" value="" />
 			<br />
@@ -83,6 +86,9 @@
 			Test character speed:
 			<input type="number" v-model.number="testCharacterSpeed" value="" />
 			<br />
+			Test character damage:
+			<input type="text" v-model="testCharacterDamage" value="" />
+			<br />
 			<button v-on:click="addTestCharacter">Add test character</button>
 		</div>
 
@@ -128,6 +134,7 @@ export default class TestingControl extends Vue {
   armorMax = 2;
   speedMin = 8;
   speedMax = 12;
+  damage = '1d6';
   opponentHealth = 10;
   opponentAttack = 12;
   opponentDamage = '1d4';
@@ -148,6 +155,7 @@ export default class TestingControl extends Vue {
   testCharacterDodge = 6;
   testCharacterArmor = 0;
   testCharacterSpeed = 10;
+  testCharacterDamage = '1d6';
 
   dataDumps: string[] = [];
   dataOutput = "";
@@ -223,6 +231,7 @@ export default class TestingControl extends Vue {
 							testCharacter.side = 1;
 							testCharacter.baseStats.health = health;
 							testCharacter.baseStats.melee.value = attack;
+							testCharacter.baseStats.melee.attacks[0].damage = this.damage;
 							testCharacter.baseStats.dodge = dodge;
 							testCharacter.baseStats.armor = armor;
 							testCharacter.baseStats.speed = speed;
@@ -589,6 +598,7 @@ export default class TestingControl extends Vue {
 		newCharacter.baseStats.health = this.testCharacterMaxHealth;
 		newCharacter.currentHealth = this.testCharacterCurrentHealth;
 		newCharacter.baseStats.melee.value = this.testCharacterMelee;
+		newCharacter.baseStats.melee.attacks[0].damage = this.testCharacterDamage;
 		newCharacter.baseStats.range.value = this.testCharacterRange;
 		newCharacter.baseStats.magic.value = this.testCharacterMagic;
 		newCharacter.baseStats.dodge = this.testCharacterDodge;
