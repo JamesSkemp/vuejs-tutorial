@@ -4,7 +4,27 @@ import Character from '@/models/Character';
 import { sortPartiesById } from './WorldSortUtilities';
 import { PartyState } from './Enums';
 import { sortByCharacterId } from './CharacterSortUtilities';
-import { addMainCharacter, resolvePartyMoment, addOpponent } from './PartyUtilities';
+import { addMainCharacter, resolvePartyMoment, addOpponent, addStartingAdventurer } from './PartyUtilities';
+
+/**
+ * Create a new world, populated with a random starting character.
+ *
+ * @returns A world, populated with a single party.
+ */
+export function createNewWorld(): World {
+	const newWorld = new World();
+	newWorld.journal.addEntry(newWorld.currentMoment, "A new world has been created.");
+
+	// TODO utility?
+	const firstParty = new Party(0);
+	addStartingAdventurer(firstParty);
+
+	addPartyToWorld(newWorld, firstParty);
+
+	newWorld.journal.addEntry(newWorld.currentMoment, "A starting adventurer has been added to the world.");
+
+	return newWorld;
+}
 
 /**
  * Start the next moment in a world.

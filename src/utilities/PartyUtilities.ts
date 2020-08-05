@@ -135,6 +135,23 @@ export function addMainCharacter(party: Party, character: Character): boolean {
 }
 
 /**
+ * Adds one of the starting adventurer's to a party. Useful when first creating a world.
+ *
+ * @param party Party to add the adventurer to.
+ * @returns True if the character was added.
+ */
+export function addStartingAdventurer(party: Party): boolean {
+	// TODO move this into a data file?
+	const startingAdventurerOptions = [1, 2, 3];
+
+	const firstAdventurer = new Character(startingAdventurerOptions[Math.floor(Math.random() * startingAdventurerOptions.length)], true);
+	firstAdventurer.id = 1;
+
+	addMainCharacter(party, firstAdventurer);
+	return true;
+}
+
+/**
  * Adds an opponent to a party, setting the side as needed.
  *
  * @param party Party to add the opponent to.

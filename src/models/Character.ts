@@ -21,6 +21,10 @@ export default class Character {
 	 */
 	public name = '';
 	/**
+	 * Text to use when the character is introduced. May be generic or empty for opponents.
+	 */
+	public introText = '';
+	/**
 	 * How the character prefers to attack.
 	 */
 	public preferredAttack: AttackType;
@@ -67,58 +71,22 @@ export default class Character {
 			const characterModel = CharacterData.Adventurers.filter(c => c.id === modelId)[0];
 
 			if (characterModel) {
+				this.name += ` (${characterModel.shortName})`;
+				// TODO do we need a utility to display a message when a character appears?
+				this.introText = characterModel.introText;
 				this.modelType = characterModel.id;
 				this.preferredAttack = characterModel.preferredAttack;
 				this.baseStats = {...characterModel.baseStats};
 				// TODO skills
-				/*this.baseStats = new BaseStats(
-					characterModel.baseStats.health,
-					characterModel.baseStats.melee.value,
-					characterModel.baseStats.range.value,
-					characterModel.baseStats.magic.value,
-					characterModel.baseStats.dodge,
-					characterModel.baseStats.armor,
-					characterModel.baseStats.speed
-				);
-				characterModel.baseStats.melee.attacks.forEach(attack => {
-					this.baseStats.melee.attacks.push(new Attack(
-						attack.id,
-						attack.name,
-						attack.damage,
-						attack.cooldown,
-						attack.attackModifier,
-						attack.dodgeModifier,
-						attack.targetStatModifications
-					));
-				});
-				characterModel.baseStats.range.attacks.forEach(attack => {
-					this.baseStats.range.attacks.push(new Attack(
-						attack.id,
-						attack.name,
-						attack.damage,
-						attack.cooldown,
-						attack.attackModifier,
-						attack.dodgeModifier,
-						attack.targetStatModifications
-					));
-				});
-				characterModel.baseStats.magic.attacks.forEach(attack => {
-					this.baseStats.magic.attacks.push(new Attack(
-						attack.id,
-						attack.name,
-						attack.damage,
-						attack.cooldown,
-						attack.attackModifier,
-						attack.dodgeModifier,
-						attack.targetStatModifications
-					));
-				});*/
 				this.currentHealth = this.baseStats.health;
 			}
 		} else {
 			const opponentModel = CharacterData.Opponents.filter(c => c.id === modelId)[0];
 
 			if (opponentModel) {
+				this.name = opponentModel.shortName;
+				// TODO do we need a utility to display a message when an opponent appears, perhaps based upon the location they're encountered?
+				this.introText = opponentModel.introText;
 				this.modelType = opponentModel.id;
 				this.preferredAttack = opponentModel.preferredAttack;
 				this.baseStats = {...opponentModel.baseStats};

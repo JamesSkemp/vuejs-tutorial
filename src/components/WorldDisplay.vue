@@ -7,6 +7,9 @@
 		</b-row>
 		<b-row>
 			<b-col>
+				<button v-on:click="startNewWorld">Start new world</button>
+			</b-col>
+			<b-col>
 				<button v-on:click="populateTestWorld">Populate test world</button>
 			</b-col>
 			<b-col>
@@ -62,7 +65,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import PartyDisplay from './PartyDisplay.vue';
 import World from '../models/World';
-import { getUnusedPartyId, addPartyToWorld, removeEmptyParties, startNextMoment } from '../utilities/WorldUtilities';
+import { getUnusedPartyId, addPartyToWorld, removeEmptyParties, startNextMoment, createNewWorld } from '../utilities/WorldUtilities';
 import { addMainCharacter } from '../utilities/PartyUtilities';
 import Party from '../models/Party';
 import { getCharacterWithHighestHealth, getCharacterWithLowestHealth, getCharacterWithHighestMagic } from '../utilities/CharacterFilterUtilities';
@@ -85,8 +88,17 @@ export default class WorldDisplay extends Vue {
 	worldMessages = '';
 
 	created(): void {
-		console.log('WorldDisplay created');
+		console.log('WorldDisplay created!');
 		this.worldMoment = this.world.currentMoment;
+	}
+
+	startNewWorld(): void {
+		// Clear the current world.
+		this.world = createNewWorld();
+		this.worldMoment = this.world.currentMoment;
+		this.worldMessages = "New world started.";
+
+		console.log(this.world);
 	}
 
 	populateTestWorld(): void {
