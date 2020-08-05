@@ -38,7 +38,7 @@ describe('Verify party ids in world', () => {
 
 	test('Remove empty parties', () => {
 		const party = new Party(3);
-		const character = new Character();
+		const character = new Character(1, true);
 		addMainCharacter(party, character);
 		addPartyToWorld(world, party);
 		removeEmptyParties(world);

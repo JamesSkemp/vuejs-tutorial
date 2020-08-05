@@ -226,7 +226,7 @@ export default class TestingControl extends Vue {
 						// Loop through x number of times.
 						for (let runTime = 0; runTime < this.testTimes; runTime++) {
 
-							const testCharacter = new Character();
+							const testCharacter = new Character(-1, true);
 							testCharacter.id = generateNextCharacterId(world);
 							testCharacter.side = 1;
 							testCharacter.baseStats.health = health;
@@ -237,7 +237,7 @@ export default class TestingControl extends Vue {
 							testCharacter.baseStats.speed = speed;
 							setInitialTurn(testCharacter);
 
-							const testOpponent = new Character();
+							const testOpponent = new Character(-1);
 							testOpponent.side = 2;
 							testOpponent.baseStats.health = this.opponentHealth;
 							testOpponent.currentHealth = this.opponentHealth;
@@ -444,7 +444,7 @@ export default class TestingControl extends Vue {
 	console.log(world.mainCharacters);
 	if (world.mainCharacters.length === 0) {
 		// Determine characters that are participating in the battle.
-		const character1 = new Character();
+		const character1 = new Character(-1, true);
 		character1.id = generateNextCharacterId(world);
 		// TODO handle party setting better
 		character1.side = 1;
@@ -466,7 +466,7 @@ export default class TestingControl extends Vue {
 	let turns = 0;
 
 	// TODO pass id and possibly override object?
-	const character2 = new Character();
+	const character2 = new Character(-1);
 	character2.side = 2;
 	character2.baseStats.health = 10;
 	character2.currentHealth = 10;
@@ -594,7 +594,7 @@ export default class TestingControl extends Vue {
 	addTestCharacter(): void {
 		const testWorld: World = this.$testWorld;
 
-		const newCharacter = new Character();
+		const newCharacter = new Character(-1, true);
 		newCharacter.baseStats.health = this.testCharacterMaxHealth;
 		newCharacter.currentHealth = this.testCharacterCurrentHealth;
 		newCharacter.baseStats.melee.value = this.testCharacterMelee;

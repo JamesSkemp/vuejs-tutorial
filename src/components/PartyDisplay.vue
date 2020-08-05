@@ -94,7 +94,7 @@ export default class PartyDisplay extends Vue {
 	}
 
 	addOpponent(): void {
-		const opponent = new Character();
+		const opponent = new Character(-1);
 		opponent.baseStats.health = 10;
 		opponent.currentHealth = 10;
 		opponent.baseStats.melee.attacks[0].damage = '1d4';
