@@ -71,8 +71,14 @@ export function resolvePartyMoment(party: Party, currentMoment: number): string[
 	if (party.mainCharacters.length > 0) {
 		if (party.opponents.length > 0) {
 			if (party.state !== PartyState.InBattle) {
-				party.mainCharacters.forEach(c => setInitialTurn(c, currentMoment));
-				party.opponents.forEach(c => setInitialTurn(c, currentMoment));
+				party.mainCharacters.forEach(c => {
+					c.side = 1;
+					setInitialTurn(c, currentMoment);
+				});
+				party.opponents.forEach(c => {
+					c.side = 2;
+					setInitialTurn(c, currentMoment);
+				});
 				party.state = PartyState.InBattle;
 			}
 

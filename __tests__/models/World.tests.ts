@@ -1,4 +1,5 @@
 import World from 'src/models/World';
+import { eraseJournal } from '@/utilities/JournalUtilities';
 
 const world = new World();
 
@@ -13,6 +14,6 @@ test('World journal has an entry', () => {
 
 test('World journal is cleared', () => {
 	world.journal.addEntry(1, 'Test 2');
-	world.journal.erase();
+	eraseJournal(world.journal);
 	expect(world.journal.count()).toBe(0);
 });

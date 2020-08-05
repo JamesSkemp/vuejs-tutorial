@@ -41,6 +41,9 @@ export default class Character {
 	public currentHealth: number;
 	public lastAttack = -1;
 	public nextAttack = -1;
+	/**
+	 * Side the character is on. Typically 1 = adventurers and 2 = opponents, but each party just needs to have the same side.
+	 */
 	public side = -1;
 	public isInBattle = false;
 	public isResting = false;

@@ -1,10 +1,17 @@
 import JournalEntry from './JournalEntry';
 
+/**
+ * Represents a journal or log. The world, parties, and characters can all have a journal.
+ */
 export default class Journal {
-	private entries: JournalEntry[] = [];
+	/**
+	 * Entries in the journal.
+	 */
+	public entries: JournalEntry[] = [];
 
 	public constructor() {
 		// TODO
+		// TODO import utility? and should the below be utilities instead?
 	}
 
 	/**
@@ -24,12 +31,5 @@ export default class Journal {
 	 */
 	public count(): number {
 		return this.entries.length;
-	}
-
-	/**
-	 * Removes all entries from the journal.
-	 */
-	public erase(): void {
-		this.entries = [];
 	}
 }

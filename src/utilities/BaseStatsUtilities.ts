@@ -1,6 +1,6 @@
 import BaseStats from '@/models/BaseStats';
 import BaseStat from '@/models/BaseStat';
-import { Parser, DiceRoller, DiceRoll } from 'rpg-dice-roller';
+import { DiceRoller, DiceRoll } from 'rpg-dice-roller';
 
 /**
  * Given a set of base stats, determine how many points they total to.
@@ -58,12 +58,9 @@ export function getBaseStatsPoints(baseStats: BaseStats): number {
  */
 export function getBaseStatAttacks(baseStat: BaseStat): string[] {
 	const results: string[] = [];
-	const damageSearch = new RegExp('^(\\d*)d(\\d)(\\+(\\d))*$', 'g');
 	if (baseStat.attacks.length > 0) {
 		baseStat.attacks.forEach(attack => {
 			results.push(attack.damage);
-			console.log(damageSearch.exec(attack.damage));
-			console.log(Parser.parse(attack.damage));
 		});
 	}
 	return results;
