@@ -573,6 +573,36 @@ export default class CharacterData {
 			},
 			preferredAttack: AttackType.Melee,
 			challenge: 1
+		},
+		{
+			id: 5,
+			shortName: "Bandit",
+			introText: "",
+			type: "_",
+			baseStats: {
+				health: 21,
+				melee: {
+					value: 12,
+					attacks: [
+						new Attack(0, "Basic", "1d4")
+					]
+				},
+				range: {
+					value: 10,
+					attacks: [
+						new Attack(0, "Basic", "1d4")
+					]
+				},
+				magic: {
+					value: 0,
+					attacks: []
+				},
+				dodge: 6,
+				armor: 0,
+				speed: 10
+			},
+			preferredAttack: AttackType.Range,
+			challenge: 1
 		}
 	]
 	/*
