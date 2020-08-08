@@ -108,7 +108,7 @@ export default class WorldDisplay extends Vue {
 
 		const testCharacter1 = new Character(-1, true);
 		testCharacter1.id = 1;
-		addMainCharacter(testParty, testCharacter1);
+		addMainCharacter(testParty, testCharacter1, this.world.currentMoment);
 
 		const testCharacter2 = new Character(-1, true);
 		testCharacter2.id = 2;
@@ -116,21 +116,21 @@ export default class WorldDisplay extends Vue {
 		testCharacter2.statMods.speedModifications.push(new StatModification(-2, 1));
 		testCharacter2.statMods.dodgeModifications.push(new StatModification(2, 1));
 		testCharacter2.baseStats.armor = 1;
-		addMainCharacter(testParty, testCharacter2);
+		addMainCharacter(testParty, testCharacter2, this.world.currentMoment);
 
 		const testCharacter3 = new Character(-1, true);
 		testCharacter3.id = 3;
 		testCharacter3.baseStats.health = 27;
 		testCharacter3.currentHealth = 26;
 		testCharacter3.baseStats.speed = 8;
-		addMainCharacter(testParty4, testCharacter3);
+		addMainCharacter(testParty4, testCharacter3, this.world.currentMoment);
 
 		const testCharacter4 = new Character(-1, true);
 		testCharacter4.id = 4;
 		testCharacter4.currentHealth = 0;
 		testCharacter4.baseStats.speed = 9;
 		testCharacter4.baseStats.dodge = 8;
-		addMainCharacter(testParty, testCharacter4);
+		addMainCharacter(testParty, testCharacter4, this.world.currentMoment);
 
 		addPartyToWorld(this.world, testParty);
 		addPartyToWorld(this.world);

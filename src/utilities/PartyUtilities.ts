@@ -9,9 +9,10 @@ import { PartyState } from './Enums';
  * Combine multiple parties together. Returns true if parties are combined.
  *
  * @param parties Parties to combine together.
+ * @param currentMoment Current world moment.
  * @returns {boolean} True if the parties have been combined.
  */
-export function combineParties(parties: Party[]): boolean {
+export function combineParties(parties: Party[], currentMoment: number): boolean {
 	// TODO should probably verify that they're at least in the same location and possibly that they're not in battle (?) before combining
 	// Filter the parties to just those with characters in them.
 	parties = sortByPartyId(parties.filter(p => p && p.mainCharacters && p.mainCharacters.length > 0));
@@ -21,7 +22,7 @@ export function combineParties(parties: Party[]): boolean {
 				const partyMember = parties[i].mainCharacters[0];
 				console.log(partyMember);
 				parties[i].mainCharacters.splice(0, 1);
-				addMainCharacter(parties[0], partyMember);
+				addMainCharacter(parties[0], partyMember, currentMoment);
 			}
 		}
 		return true;
@@ -130,12 +131,14 @@ export function resolvePartyMoment(party: Party, currentMoment: number): string[
  *
  * @param party Party to add the main character to.
  * @param character Character to add.
+ * @param currentMoment Current world moment.
  * @returns True if the character was added.
  */
-export function addMainCharacter(party: Party, character: Character): boolean {
+export function addMainCharacter(party: Party, character: Character, currentMoment: number): boolean {
 	// TODO may also want to resort party so melee > range > magic for order?
 	character.side = 1;
 	party.mainCharacters.push(character);
+	party.journal.addEntry(currentMoment, `Adventurer added. ${character.name} (${character.id})`)
 	// TODO verify that a character can be added
 	return true;
 }
@@ -144,16 +147,17 @@ export function addMainCharacter(party: Party, character: Character): boolean {
  * Adds one of the starting adventurer's to a party. Useful when first creating a world.
  *
  * @param party Party to add the adventurer to.
+ * @param currentMoment Current world moment.
  * @returns True if the character was added.
  */
-export function addStartingAdventurer(party: Party): boolean {
+export function addStartingAdventurer(party: Party, currentMoment: number): boolean {
 	// TODO move this into a data file?
 	const startingAdventurerOptions = [1, 2, 3];
 
 	const firstAdventurer = new Character(startingAdventurerOptions[Math.floor(Math.random() * startingAdventurerOptions.length)], true);
 	firstAdventurer.id = 1;
 
-	addMainCharacter(party, firstAdventurer);
+	addMainCharacter(party, firstAdventurer, currentMoment);
 	return true;
 }
 
@@ -162,11 +166,13 @@ export function addStartingAdventurer(party: Party): boolean {
  *
  * @param party Party to add the opponent to.
  * @param opponent Opponent character to add.
+ * @param currentMoment Current world moment.
  * @returns True if the opponent was added.
  */
-export function addOpponent(party: Party, opponent: Character): boolean {
+export function addOpponent(party: Party, opponent: Character, currentMoment: number): boolean {
 	opponent.side = 2;
 	party.opponents.push(opponent);
+	party.journal.addEntry(currentMoment, `Opponent added. ${opponent.name} (${opponent.id})`);
 	// TODO verify that an opponent can be added - can't add in limbo or in town
 	// TODO verify party has adventurers? or could a party of opponents be created? I think the latter ...
 	return true;

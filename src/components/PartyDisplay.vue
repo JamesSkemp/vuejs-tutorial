@@ -99,7 +99,7 @@ export default class PartyDisplay extends Vue {
 		opponent.currentHealth = 10;
 		opponent.baseStats.melee.attacks[0].damage = '1d4';
 
-		addOpponent(this.party, opponent);
+		addOpponent(this.party, opponent, this.world.currentMoment);
 		this.$forceUpdate();
 	}
 }

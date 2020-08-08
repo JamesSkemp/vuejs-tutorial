@@ -17,7 +17,7 @@ export function createNewWorld(): World {
 
 	// TODO utility?
 	const firstParty = new Party(0);
-	addStartingAdventurer(firstParty);
+	addStartingAdventurer(firstParty, newWorld.currentMoment);
 
 	addPartyToWorld(newWorld, firstParty);
 
@@ -69,10 +69,12 @@ export function addPartyToWorld(world: World, party?: Party): number {
 			party.id = getUnusedPartyId(world);
 		}
 		world.parties.push(party);
+		world.journal.addEntry(world.currentMoment, 'Party added to world');
 		return party.id;
 	} else {
 		const newParty = new Party(getUnusedPartyId(world));
 		world.parties.push(newParty);
+		world.journal.addEntry(world.currentMoment, 'New party added to world');
 		return newParty.id;
 	}
 }
@@ -116,6 +118,7 @@ export function disbandParty(world: World, party: Party): boolean {
 	if (party.mainCharacters.length > 0) {
 		// TODO may have different states that allow disbanding
 		if (party.state === PartyState.AtLocationTown) {
+			world.journal.addEntry(world.currentMoment, 'Party is being disbanded.');
 			sortByCharacterId(party.mainCharacters);
 
 			while (party.mainCharacters.length > 1) {
@@ -123,7 +126,8 @@ export function disbandParty(world: World, party: Party): boolean {
 				party.mainCharacters.splice(1, 1);
 
 				const newParty = new Party(-1);
-				addMainCharacter(newParty, partyMember);
+				addMainCharacter(newParty, partyMember, world.currentMoment);
+				newParty.location = party.location;
 
 				addPartyToWorld(world, newParty);
 			}
@@ -145,11 +149,11 @@ export function createNewTestWorldForSingleBattle(characters: Character[], oppon
 
 	const newParty = new Party(0);
 	characters.forEach(character => {
-		addMainCharacter(newParty, character);
+		addMainCharacter(newParty, character, newWorld.currentMoment);
 	});
 
 	opponents.forEach(opponent => {
-		addOpponent(newParty, opponent);
+		addOpponent(newParty, opponent, newWorld.currentMoment);
 	});
 
 	addPartyToWorld(newWorld, newParty);
