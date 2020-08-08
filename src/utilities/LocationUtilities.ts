@@ -10,7 +10,12 @@ import LocationData from '@/data/LocationData';
  * @returns True if an encounter should be triggered.
  */
 export function checkForEncounter(location: Location, rateModifier: number): boolean {
-	const chance = location.encounterRate.chance + rateModifier;
+	let chance = location.encounterRate.chance;
+	if (chance === 0) {
+		// If a location has no chance of an encounter than no modifier will change that.
+		return false;
+	}
+	chance += rateModifier;
 
 	const roll = new DiceRoll('d%').total;
 	return roll <= chance;

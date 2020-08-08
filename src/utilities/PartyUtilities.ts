@@ -4,6 +4,8 @@ import Character from '@/models/Character';
 import { sortBySpeed } from './CharacterSortUtilities';
 import { sortByPartyId } from './PartySortUtilities';
 import { PartyState } from './Enums';
+import { checkForEncounter, getLocation, getLocationOpponent } from './LocationUtilities';
+import LocationData from '@/data/LocationData';
 
 /**
  * Combine multiple parties together. Returns true if parties are combined.
@@ -70,58 +72,35 @@ export function partyHasOngoingBattle(party: Party): boolean {
 export function resolvePartyMoment(party: Party, currentMoment: number): string[] {
 	const messages: string[] = [];
 	if (party.mainCharacters.length > 0) {
-		if (party.opponents.length > 0) {
-			if (party.state !== PartyState.InBattle) {
-				party.mainCharacters.forEach(c => {
-					c.side = 1;
-					setInitialTurn(c, currentMoment);
-				});
-				party.opponents.forEach(c => {
-					c.side = 2;
-					setInitialTurn(c, currentMoment);
-				});
-				party.state = PartyState.InBattle;
-			}
+		/* TODO party moment resolving looks something like ...
+			1. Combat. Not in combat? Check for an encounter. In combat? Continue it.
+			2. Travel/explore location. A battle pauses travel/exploration.
+			3. Searching for a party? Search.
+			4. Resting? Rest.
+		*/
+		/**
+		 * If the party participated in combat this moment their available actions later in the turn are different.
+		 */
+		const participatedInCombat = resolvePartyCombat(party, currentMoment);
 
-			let characters: Character[] = [];
-			characters = characters.concat(party.mainCharacters);
-			characters = characters.concat(party.opponents);
-
-			//console.log(JSON.stringify(characters));
-			//console.log(JSON.stringify(characters.filter(c => c.currentHealth > 0 && c.nextAttack <= currentMoment)));
-			const charactersActingThisTurn = sortBySpeed(characters.filter(c =>
-				c.currentHealth > 0 && c.nextAttack <= currentMoment
-			));
-
-			if (charactersActingThisTurn.length > 0) {
-				//console.log(JSON.stringify(charactersActingThisTurn));
-			}
-
-			if (charactersActingThisTurn.length > 0) {
-				// TODO if a character is slowed the turn they are supposed to go, do they still go? I think the answer is yes since this is effectively them acting at the same time ... or maybe we need to do a check anyway ...
-				charactersActingThisTurn.forEach(character => {
-					// Verify that they should still be going.
-					if (character.nextAttack <= currentMoment) {
-						messages.push('<strong>Character going: ' + getShortDetails(character) + '</strong>');
-						// TODO determine target - stop early if there's no one left alive?
-						const opponent = characters.filter(c =>
-							c.side !== character.side && c.currentHealth > 0
-						)[0];
-
-						//console.log(opponent);
-
-						messages.push(JSON.stringify(attackOpponent(character, opponent)));
-
-						processAttackTurn(character, currentMoment);
-					}
-				});
-			}
-		} else {
-			console.log('no opponents');
-			// TODO no battle
+		if (!participatedInCombat && party.state === PartyState.PostBattle) {
+			// TODO determine what they should be doing - there should be a function that will return this - exploring? resting? searching? traveling?
 		}
+
+		// TODO remove hardcoded change and possibly move this
+		if (party.location == 0 && currentMoment > 5) {
+			party.location = 1;
+		}
+
+		// TODO actual change for travel/explore
+		if (!participatedInCombat) {
+			// TODO
+		}
+
+		// TODO search for a party?
+
+		// TODO rest?
 	}
-	// TODO handle combat being over
 
 	return messages;
 }
@@ -176,6 +155,96 @@ export function addOpponent(party: Party, opponent: Character, currentMoment: nu
 	// TODO verify that an opponent can be added - can't add in limbo or in town
 	// TODO verify party has adventurers? or could a party of opponents be created? I think the latter ...
 	return true;
+}
+
+/**
+ * Determine if a party should be or is in combat.
+ *
+ * @param party Party to resolve.
+ * @param currentMoment Current world moment.
+ * @returns True if combat took place, false if it did not.
+ */
+export function resolvePartyCombat(party: Party, currentMoment: number): boolean {
+	// If they're not in combat already, see if combat should be triggered.
+	if (party.opponents.length === 0 && party.state !== PartyState.PostBattle) {
+		if (LocationData.LocationsWithoutEncounters.find(id => id === party.location)) {
+			const location = getLocation(party.location);
+
+			// TODO rate modifier
+			if (checkForEncounter(location, 0)) {
+				// TODO max opponents size
+				const opponentIds = getLocationOpponent(location, 1, party.mainCharacters.length);
+				if (opponentIds.length > 0) {
+					opponentIds.forEach(o => {
+						addOpponent(party, new Character(o), currentMoment);
+					});
+				}
+			}
+		}
+	}
+
+	// Resolve combat, if needed.
+	if (party.opponents.length > 0) {
+		if (party.state !== PartyState.InBattle) {
+			party.mainCharacters.forEach(c => {
+				c.side = 1;
+				setInitialTurn(c, 0);
+			});
+			party.opponents.forEach(c => {
+				c.side = 2;
+				setInitialTurn(c, 0);
+			});
+			party.state = PartyState.InBattle;
+		}
+
+		// Add everyone to a single group that we can sort.
+		let characters: Character[] = [];
+		characters = characters.concat(party.mainCharacters);
+		characters = characters.concat(party.opponents);
+
+		let continueBattle = true;
+		let currentTurn = 0;
+
+		while (continueBattle) {
+			const charactersActingThisTurn = sortBySpeed(characters.filter(c =>
+				c.currentHealth > 0 && c.nextAttack <= currentTurn
+			));
+
+			if (charactersActingThisTurn.length > 0) {
+				// TODO if a character is slowed the turn they are supposed to go, do they still go? I think the answer is yes since this is effectively them acting at the same time ... or maybe we need to do a check anyway ...
+				charactersActingThisTurn.forEach(character => {
+					if (continueBattle) {
+						// Verify that they should still be going.
+						if (character.nextAttack <= currentTurn) {
+							party.journal.addEntry(currentMoment, '<strong>Character going: ' + getShortDetails(character) + '</strong>');
+							// TODO determine target - stop early if there's no one left alive?
+							const opponents = characters.filter(c =>
+								c.side !== character.side && c.currentHealth > 0
+							);
+							if (opponents.length === 0) {
+								party.state = PartyState.PostBattle;
+								continueBattle = false;
+							} else {
+								// TODO character may have targetting priorities?
+								const targetOpponent = opponents[0];
+								party.journal.addEntry(currentMoment, JSON.stringify(attackOpponent(character, targetOpponent)));
+
+								processAttackTurn(character, currentTurn);
+							}
+						}
+					}
+				});
+			}
+			currentTurn++;
+			// TODO end early if currentTurn is above a certain number?
+			if (currentTurn > 9999) {
+				continueBattle = false;
+			}
+		}
+		return true;
+	} else {
+		return false;
+	}
 }
 
 // TODO start battle - populate opponents (?) and set initial turns - see resolvePartyMoment

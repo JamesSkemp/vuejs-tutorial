@@ -26,6 +26,7 @@ export enum PartyState {
 	AtLocationTown,
 	// TODO battle, or encounter? should there be another state for an encounter, which may become a battle?
 	InBattle,
+	PostBattle,
 	IsResting,
 	IsTravelling
 }

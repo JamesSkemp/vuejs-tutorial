@@ -114,4 +114,8 @@ export default class LocationData {
 		}
 	*/
 
+	/**
+	 * For ease, the locations (by index) that will never have an encounter.
+	 */
+	public static LocationsWithoutEncounters = [0]
 }

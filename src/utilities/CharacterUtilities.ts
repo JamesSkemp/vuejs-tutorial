@@ -335,7 +335,7 @@ export function getPrimaryBasicAttack(character: Character): CharacterAttack {
  * Setup a character for their first turn of a battle.
  *
  * @param character Character to setup.
- * @param initialTurn Turn/moment the character was initialized. Should be set to the world's current moment.
+ * @param initialTurn Turn/moment the character was initialized.
  */
 export function setInitialTurn(character: Character, initialTurn = 0): void {
 	character.lastAttack = -1;
@@ -381,7 +381,7 @@ export function getCharacterDesire(party: Party, character: Character): Desire {
  * Process a character's turn in which they attacked.
  *
  * @param character Character to process.
- * @param currentTurn Current moment in the world.
+ * @param currentTurn Current turn in the battle.
  */
 export function processAttackTurn(character: Character, currentTurn: number): void {
 	processStatModificationTurn(character.statMods);
