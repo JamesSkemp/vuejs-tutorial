@@ -5,6 +5,7 @@ import { sortPartiesById } from './WorldSortUtilities';
 import { PartyState } from './Enums';
 import { sortByCharacterId } from './CharacterSortUtilities';
 import { addMainCharacter, resolvePartyMoment, addOpponent, addStartingAdventurer } from './PartyUtilities';
+import LocationData from '@/data/LocationData';
 
 /**
  * Create a new world, populated with a random starting character.
@@ -17,8 +18,8 @@ export function createNewWorld(): World {
 
 	// TODO utility?
 	const firstParty = new Party(0);
+	firstParty.location = 0;
 	addStartingAdventurer(firstParty, newWorld.currentMoment);
-
 	addPartyToWorld(newWorld, firstParty);
 
 	newWorld.journal.addEntry(newWorld.currentMoment, "A starting adventurer has been added to the world.");

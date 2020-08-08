@@ -7,9 +7,17 @@ export default class Party {
 	public mainCharacters: Character[] = [];
 	public opponents: Character[] = [];
 	public state: PartyState;
-	// TODO set the following items
-	public location = -1;
+	/**
+	 * Location index.
+	 */
+	public location = 0;
+	/**
+	 * Number of full world moment's the party has been at this location.
+	 */
 	public timeAtLocation = -1;
+	/**
+	 * Index of the location the party is heading to.
+	 */
 	public targetLocation = -1;
 	public journal: Journal;
 
@@ -17,6 +25,5 @@ export default class Party {
 		this.id = id;
 		this.state = PartyState.AtLocationTown;
 		this.journal = new Journal();
-		// TODO?
 	}
 }

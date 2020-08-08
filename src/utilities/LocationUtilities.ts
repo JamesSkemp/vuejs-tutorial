@@ -1,5 +1,6 @@
 import Location from '@/models/Location';
 import { DiceRoll } from 'rpg-dice-roller';
+import LocationData from '@/data/LocationData';
 
 /**
  * Given a location, check whether an encounter should trigger.
@@ -13,6 +14,32 @@ export function checkForEncounter(location: Location, rateModifier: number): boo
 
 	const roll = new DiceRoll('d%').total;
 	return roll <= chance;
+}
+
+/**
+ * Get a location based upon starting village. Main village is index 0, with each additional location incremented by 1.
+ *
+ * @param index Index of the location based upon the main village.
+ * @returns Matching location.
+ */
+export function getLocation(index: number): Location {
+	if (index < 0) {
+		index = 0;
+	} else if (index >= LocationData.Locations.length) {
+		index = LocationData.Locations.length - 1;
+	}
+
+	return LocationData.Locations[index];
+}
+
+/**
+ * Get a location by id.
+ *
+ * @param id Unique id of the location to get.
+ * @returns Matching location.
+ */
+export function getLocationById(id: number): Location {
+	return LocationData.Locations.filter(l => l.id === id)[0];
 }
 
 // TODO different function to get a random opponent - verify that the numbers for that add up to 100? or maybe the last one is the default?
