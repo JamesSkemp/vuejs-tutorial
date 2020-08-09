@@ -21,7 +21,9 @@
 		</b-row>
 		<b-row>
 			<div>
-				State: {{ stateText }}
+				State: {{ stateText }}<br />
+				Location: {{ party.location }}
+				<div v-html="party.journal"></div>
 				<div v-if="party.mainCharacters.length > 0">
 					<h4>Main characters ({{ party.mainCharacters.length }})</h4>
 					<div>

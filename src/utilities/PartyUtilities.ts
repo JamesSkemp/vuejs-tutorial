@@ -88,7 +88,7 @@ export function resolvePartyMoment(party: Party, currentMoment: number): string[
 		}
 
 		// TODO remove hardcoded change and possibly move this
-		if (party.location == 0 && currentMoment > 5) {
+		if (party.location === 0 && currentMoment > 5) {
 			party.location = 1;
 		}
 
@@ -167,7 +167,7 @@ export function addOpponent(party: Party, opponent: Character, currentMoment: nu
 export function resolvePartyCombat(party: Party, currentMoment: number): boolean {
 	// If they're not in combat already, see if combat should be triggered.
 	if (party.opponents.length === 0 && party.state !== PartyState.PostBattle) {
-		if (LocationData.LocationsWithoutEncounters.find(id => id === party.location)) {
+		if (!LocationData.LocationsWithoutEncounters.find(id => id === party.location)) {
 			const location = getLocation(party.location);
 
 			// TODO rate modifier
@@ -216,7 +216,7 @@ export function resolvePartyCombat(party: Party, currentMoment: number): boolean
 					if (continueBattle) {
 						// Verify that they should still be going.
 						if (character.nextAttack <= currentTurn) {
-							party.journal.addEntry(currentMoment, '<strong>Character going: ' + getShortDetails(character) + '</strong>');
+							party.journal.addEntry(currentMoment, '<strong>Character going: ' + getShortDetails(character) + `</strong> (turn ${currentTurn})`);
 							// TODO determine target - stop early if there's no one left alive?
 							const opponents = characters.filter(c =>
 								c.side !== character.side && c.currentHealth > 0

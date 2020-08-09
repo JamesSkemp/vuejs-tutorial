@@ -32,8 +32,8 @@
 			<p>
 				Health: {{ character.currentHealth }} of {{ character.baseStats.health }}<br />
 			</p>
-			<div v-if="character.lastAttack >= 0">Last attack: {{ character.lastAttack }}</div>
-			<div v-if="character.nextAttack >= 0">Next attack: {{ character.nextAttack }}</div>
+			<p v-if="character.lastAttack >= 0"><br />Last attack: {{ character.lastAttack }}</p>
+			<p v-if="character.nextAttack >= 0"><br />Next attack: {{ character.nextAttack }}</p>
 			<p v-html="getMeleeText()"></p>
 			<ul v-if="character.baseStats.melee.attacks.length > 0">
 				<li v-for="attack in character.baseStats.melee.attacks" :key="attack.name">

@@ -18,6 +18,7 @@ export function checkForEncounter(location: Location, rateModifier: number): boo
 	chance += rateModifier;
 
 	const roll = new DiceRoll('d%').total;
+
 	return roll <= chance;
 }
 
