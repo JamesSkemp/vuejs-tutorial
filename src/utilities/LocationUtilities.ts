@@ -1,6 +1,7 @@
 import Location from '@/models/Location';
 import { DiceRoll } from 'rpg-dice-roller';
 import LocationData from '@/data/LocationData';
+import { randomNumberInRange } from './GeneralUtilities';
 
 /**
  * Given a location, check whether an encounter should trigger.
@@ -66,7 +67,7 @@ export function getLocationOpponent(location: Location, minimum: number, maximum
 		return [ location.opponents[0].id ];
 	}
 
-	const numberOfOpponents = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
+	const numberOfOpponents = randomNumberInRange(minimum, maximum);
 
 	const opponentIds: number[] = [];
 

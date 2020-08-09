@@ -6,6 +6,8 @@ import { sortByPartyId } from './PartySortUtilities';
 import { PartyState } from './Enums';
 import { checkForEncounter, getLocation, getLocationOpponent } from './LocationUtilities';
 import LocationData from '@/data/LocationData';
+import { randomNumberInRange } from './GeneralUtilities';
+import BattleLog from '@/models/BattleLog';
 
 /**
  * Combine multiple parties together. Returns true if parties are combined.
@@ -169,9 +171,16 @@ export function resolvePartyCombat(party: Party, currentMoment: number): boolean
 	if (party.opponents.length === 0 && party.state !== PartyState.PostBattle) {
 		if (!LocationData.LocationsWithoutEncounters.find(id => id === party.location)) {
 			const location = getLocation(party.location);
+			let encounterModifier = 0;
 
-			// TODO rate modifier
-			if (checkForEncounter(location, 0)) {
+			// Add a random delay before we start increasing the encounter modifier based upon how long they've been at the location.
+			// TODO set to something other than static value
+			if (party.lastBattleMoment + randomNumberInRange(2, 5) >= currentMoment) {
+				// TODO static value?
+				encounterModifier += Math.floor(party.timeAtLocation / 5);
+			}
+			// TODO rate modifier based upon progress, in the area or the world?
+			if (checkForEncounter(location, encounterModifier)) {
 				// TODO max opponents size
 				const opponentIds = getLocationOpponent(location, 1, party.mainCharacters.length);
 				if (opponentIds.length > 0) {
@@ -195,6 +204,9 @@ export function resolvePartyCombat(party: Party, currentMoment: number): boolean
 				setInitialTurn(c, 0);
 			});
 			party.state = PartyState.InBattle;
+			party.battleLog = new BattleLog();
+			party.battleLog.currentMoment = currentMoment;
+			party.battleLog.messages = [];
 		}
 
 		// Add everyone to a single group that we can sort.
@@ -216,18 +228,19 @@ export function resolvePartyCombat(party: Party, currentMoment: number): boolean
 					if (continueBattle) {
 						// Verify that they should still be going.
 						if (character.nextAttack <= currentTurn) {
-							party.journal.addEntry(currentMoment, '<strong>Character going: ' + getShortDetails(character) + `</strong> (turn ${currentTurn})`);
+							party.battleLog.messages.push({ turn: currentTurn, message: `Character going: ${getShortDetails(character)}` });
 							// TODO determine target - stop early if there's no one left alive?
 							const opponents = characters.filter(c =>
 								c.side !== character.side && c.currentHealth > 0
 							);
 							if (opponents.length === 0) {
+								party.battleLog.messages.push({ turn: currentTurn, message: `Battle over. ${character.side === 1 ? 'Adventurers' : 'Opponents'} won.`});
 								party.state = PartyState.PostBattle;
 								continueBattle = false;
 							} else {
 								// TODO character may have targetting priorities?
 								const targetOpponent = opponents[0];
-								party.journal.addEntry(currentMoment, JSON.stringify(attackOpponent(character, targetOpponent)));
+								party.battleLog.messages.push({ turn: currentTurn, message: JSON.stringify(attackOpponent(character, targetOpponent))});
 
 								processAttackTurn(character, currentTurn);
 							}
@@ -239,8 +252,10 @@ export function resolvePartyCombat(party: Party, currentMoment: number): boolean
 			// TODO end early if currentTurn is above a certain number?
 			if (currentTurn > 9999) {
 				continueBattle = false;
+				party.battleLog.messages.push({ turn: currentTurn, message: 'Battle over due to too many turns.'});
 			}
 		}
+		party.lastBattleMoment = currentMoment;
 		return true;
 	} else {
 		return false;

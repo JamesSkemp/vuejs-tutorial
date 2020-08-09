@@ -1,6 +1,7 @@
 import Character from './Character';
 import { PartyState } from '@/utilities/Enums';
 import Journal from './Journal';
+import BattleLog from './BattleLog';
 
 export default class Party {
 	public id = -1;
@@ -12,18 +13,24 @@ export default class Party {
 	 */
 	public location = 0;
 	/**
+	 * Index of the location the party is heading to.
+	 */
+	public targetLocation = -1;
+	/**
 	 * Number of full world moment's the party has been at this location.
 	 */
 	public timeAtLocation = -1;
 	/**
-	 * Index of the location the party is heading to.
+	 * World moment the last battle happened, or finished (if spanning multiple moments).
 	 */
-	public targetLocation = -1;
+	public lastBattleMoment = -1;
 	public journal: Journal;
+	public battleLog: BattleLog;
 
 	public constructor(id: number) {
 		this.id = id;
 		this.state = PartyState.AtLocationTown;
 		this.journal = new Journal();
+		this.battleLog = new BattleLog();
 	}
 }
