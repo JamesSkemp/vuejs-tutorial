@@ -12,5 +12,5 @@ Vue.prototype.$world = new World();
 Vue.prototype.$testWorld = new World();
 
 new Vue({
-  render: h => h(App)
+	render: h => h(App)
 }).$mount('#app')

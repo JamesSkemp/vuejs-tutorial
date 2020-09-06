@@ -16,10 +16,11 @@ module.exports = {
 	"jsdoc"
   ],
   rules: {
+	'indent': ['warn', 'tab', { "SwitchCase": 1 }],
 	'jsdoc/require-description': 1,
 	'jsdoc/require-param-type': 'off',
 	'jsdoc/require-returns-type': 'off',
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+	'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+	'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
   }
 }
