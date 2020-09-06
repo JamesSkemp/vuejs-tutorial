@@ -404,7 +404,7 @@ export function processAttackTurn(character: Character, currentTurn: number): vo
  * Revives a character with current health set to a percentage of their maximum health. Stat mods are not taken into effect.
  *
  * @param character Character to revive.
- * @param healthPercentage Percentage of health to restore them to.
+ * @param healthPercentage Percentage of health to restore them to. Revives at full health by default.
  */
 export function revive(character: Character, healthPercentage = 100): void {
 	character.currentHealth = Math.round(character.baseStats.health * (healthPercentage / 100));

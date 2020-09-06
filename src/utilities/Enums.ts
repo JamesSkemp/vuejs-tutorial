@@ -28,7 +28,11 @@ export enum PartyState {
 	InBattle,
 	PostBattle,
 	IsResting,
-	IsTravelling
+	IsTravelling,
+	/**
+	 * Unknown state. Used when first creating a party for previousState.
+	 */
+	Unknown
 }
 
 /**

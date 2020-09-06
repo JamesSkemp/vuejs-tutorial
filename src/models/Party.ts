@@ -9,6 +9,10 @@ export default class Party {
 	public opponents: Character[] = [];
 	public state: PartyState;
 	/**
+	 * The previous state of the party. Pulled from when switching out of combat, and pushed to whenever the state changes.
+	 */
+	public previousState: PartyState;
+	/**
 	 * Location index.
 	 */
 	public location = 0;
@@ -30,6 +34,7 @@ export default class Party {
 	public constructor(id: number) {
 		this.id = id;
 		this.state = PartyState.AtLocationTown;
+		this.previousState = PartyState.Unknown;
 		this.journal = new Journal();
 		this.battleLog = new BattleLog();
 	}

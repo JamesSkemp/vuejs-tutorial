@@ -1,9 +1,9 @@
 import Party from '@/models/Party';
-import { attackOpponent, processAttackTurn, getShortDetails, setInitialTurn } from './CharacterUtilities';
+import { attackOpponent, processAttackTurn, getShortDetails, setInitialTurn, revive } from './CharacterUtilities';
 import Character from '@/models/Character';
 import { sortBySpeed } from './CharacterSortUtilities';
 import { sortByPartyId } from './PartySortUtilities';
-import { PartyState } from './Enums';
+import { PartyState, partyStateToText } from './Enums';
 import { checkForEncounter, getLocation, getLocationOpponent } from './LocationUtilities';
 import LocationData from '@/data/LocationData';
 import { randomNumberInRange } from './GeneralUtilities';
@@ -86,12 +86,17 @@ export function resolvePartyMoment(party: Party, currentMoment: number): string[
 		const participatedInCombat = resolvePartyCombat(party, currentMoment);
 
 		if (!participatedInCombat && party.state === PartyState.PostBattle) {
+			// If they didn't participlate in combat, but they're post battle, that means they were in combat for the last moment.
+			resetPartyStateAfterCombat(party);
+
 			// TODO determine what they should be doing - there should be a function that will return this - exploring? resting? searching? traveling?
 		}
 
 		// TODO remove hardcoded change and possibly move this
 		if (party.location === 0 && currentMoment > 5) {
 			party.location = 1;
+			setCurrentPartyState(party, PartyState.AtLocation);
+			party.journal.addEntry(currentMoment, `Party has moved to location ${party.location}`);
 		}
 
 		// TODO actual change for travel/explore
@@ -151,12 +156,30 @@ export function addStartingAdventurer(party: Party, currentMoment: number): bool
  * @returns True if the opponent was added.
  */
 export function addOpponent(party: Party, opponent: Character, currentMoment: number): boolean {
+	// Give the opponent a unique (to the party) id, starting at -10 and getting more negative.
+	opponent.id = -10 - party.opponents.length;
 	opponent.side = 2;
 	party.opponents.push(opponent);
 	party.journal.addEntry(currentMoment, `Opponent added. ${opponent.name} (${opponent.id})`);
 	// TODO verify that an opponent can be added - can't add in limbo or in town
 	// TODO verify party has adventurers? or could a party of opponents be created? I think the latter ...
 	return true;
+}
+
+/**
+ * Clears all opponents of a party. Typically done after a battle.
+
+ * @param party Party to clear the opponents of.
+ */
+export function clearOpponents(party: Party): boolean {
+	if (party.opponents.length === 0) {
+		return true;
+	} else {
+		// Setting length to zero works fine.
+		party.opponents.length = 0;
+		return true;
+	}
+	return false;
 }
 
 /**
@@ -203,7 +226,7 @@ export function resolvePartyCombat(party: Party, currentMoment: number): boolean
 				c.side = 2;
 				setInitialTurn(c, 0);
 			});
-			party.state = PartyState.InBattle;
+			setCurrentPartyState(party, PartyState.InBattle);
 			party.battleLog = new BattleLog();
 			party.battleLog.currentMoment = currentMoment;
 			party.battleLog.messages = [];
@@ -235,8 +258,8 @@ export function resolvePartyCombat(party: Party, currentMoment: number): boolean
 							);
 							if (opponents.length === 0) {
 								party.battleLog.messages.push({ turn: currentTurn, message: `Battle over. ${character.side === 1 ? 'Adventurers' : 'Opponents'} won.`});
-								party.state = PartyState.PostBattle;
 								continueBattle = false;
+								finishPartyCombat(party);
 							} else {
 								// TODO character may have targetting priorities?
 								const targetOpponent = opponents[0];
@@ -253,12 +276,59 @@ export function resolvePartyCombat(party: Party, currentMoment: number): boolean
 			if (currentTurn > 9999) {
 				continueBattle = false;
 				party.battleLog.messages.push({ turn: currentTurn, message: 'Battle over due to too many turns.'});
+				finishPartyCombat(party);
 			}
 		}
 		party.lastBattleMoment = currentMoment;
 		return true;
 	} else {
 		return false;
+	}
+}
+
+/**
+ * Performs cleanup necessary after a party has finished combat.
+ * Currently includes marking them as being post-battle, clearing all opponents, and reviving all characters to full health.
+ *
+ * @param party Party to finish combat on.
+ */
+export function finishPartyCombat(party: Party) {
+	setCurrentPartyState(party, PartyState.PostBattle);
+	clearOpponents(party);
+	party.mainCharacters.forEach(character => {
+		// TODO set this to a percentage instead? if so, make sure description is updated too
+		revive(character);
+		character.isInBattle = false;
+	});
+	console.log(party);
+}
+
+/**
+ * Set the party's state to a new value, setting the previousState accordingly.
+ *
+ * @param party Party to update.
+ * @param state New state to set to the party.
+ */
+export function setCurrentPartyState(party: Party, state: PartyState) {
+	if (state === PartyState.PostBattle && party.state === PartyState.InBattle) {
+		// We don't set the previousState, since we need to know what they were doing before combat.
+		party.state = PartyState.PostBattle;
+	} else {
+		party.previousState = party.state;
+		party.state = state;
+	}
+}
+
+/**
+ * Update a party to reset its state to what it was before combat.
+ *
+ * @param party Party to switch back to its pre-combat state.
+ */
+export function resetPartyStateAfterCombat(party: Party) {
+	if (party.state === PartyState.PostBattle) {
+		const previousState = party.previousState;
+		party.previousState = party.state;
+		party.state = previousState;
 	}
 }
 
