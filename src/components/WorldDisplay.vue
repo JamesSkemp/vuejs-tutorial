@@ -49,7 +49,7 @@
 					<p>Total parties: {{world.parties.length}}</p>
 					<p>Current moment: {{ worldMoment }}</p>
 					<button v-on:click="increaseTime">Increase time</button>
-					<button v-on:click="startBattle">Start a battle</button>
+					<button v-on:click="toggleAutoTime">Toggle auto-time</button>
 					<div v-if="world && world.parties.length > 0">
 						<PartyDisplay v-for="party in world.parties" :world="world" :party="party" :key="party.id" v-on:party-disbanded="refreshDisplay" />
 					</div>
@@ -87,6 +87,9 @@ export default class WorldDisplay extends Vue {
 	world: World = new World();
 	worldMoment = -1;
 	worldMessages = '';
+	timer: number = -1;
+	// TODO should this be stored on the world? probably not since the world should just run
+	timerRunning = false;
 
 	created(): void {
 		console.log('WorldDisplay created!');
@@ -223,8 +226,17 @@ export default class WorldDisplay extends Vue {
 		return false;
 	}
 
-	startBattle(): void {
-		// TODO start battle
+	/**
+	 * Start or stop automatic time, depending upon current state.
+	 */
+	toggleAutoTime(): void {
+		// TODO switch to having this running by default?
+		if (this.timerRunning) {
+			clearInterval(this.timer);
+		} else {
+			this.timer = setInterval(this.increaseTime, 5000);
+		}
+		this.timerRunning = !this.timerRunning;
 	}
 
 	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
@@ -256,6 +268,10 @@ export default class WorldDisplay extends Vue {
 		// If we made it this far, objects
 		// are considered equivalent
 		return { equivalent, differences };
+	}
+
+	beforeDestroy(): void {
+		clearInterval(this.timer);
 	}
 }
 </script>
