@@ -69,10 +69,8 @@ export function partyHasOngoingBattle(party: Party): boolean {
  *
  * @param party Party to resolve.
  * @param currentMoment Current moment in the world.
- * @returns {string[]} Messages that could be output.
  */
-export function resolvePartyMoment(party: Party, currentMoment: number): string[] {
-	const messages: string[] = [];
+export function resolvePartyMoment(party: Party, currentMoment: number): void {
 	if (party.mainCharacters.length > 0) {
 		/* TODO party moment resolving looks something like ...
 			1. Combat. Not in combat? Check for an encounter. In combat? Continue it.
@@ -108,8 +106,6 @@ export function resolvePartyMoment(party: Party, currentMoment: number): string[
 
 		// TODO rest?
 	}
-
-	return messages;
 }
 
 /**

@@ -72,6 +72,7 @@ import { getCharacterWithHighestHealth, getCharacterWithLowestHealth, getCharact
 import { sortBySpeed, sortByHealth, sortByDodge, sortByArmor } from '../utilities/CharacterSortUtilities';
 import Character from '../models/Character';
 import StatModification from '../models/StatModification';
+import { getLatestJournalEntries } from '@/utilities/JournalUtilities';
 
 type EquivalenceResult = { equivalent: boolean, differences: string[] }
 
@@ -198,7 +199,8 @@ export default class WorldDisplay extends Vue {
 	}
 
 	increaseTime(): void {
-		this.worldMessages = JSON.stringify(startNextMoment(this.world));
+		startNextMoment(this.world);
+		this.worldMessages = JSON.stringify(getLatestJournalEntries(this.world.journal));
 		this.worldMoment = this.world.currentMoment;
 		//this.$forceUpdate();
 	}

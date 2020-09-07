@@ -30,19 +30,15 @@ export function createNewWorld(): World {
  * Start the next moment in a world.
  *
  * @param world World to start the next moment in.
- * @returns {string[]} Messages, if any.
  */
-export function startNextMoment(world: World): string[] {
-	let messages: string[] = [];
+export function startNextMoment(world: World): void {
 	if (!world.isPaused) {
 		world.currentMoment++;
 		world.journal.addEntry(world.currentMoment, "Starting moment.");
-		messages.push(`Starting moment ${world.currentMoment}`);
 		world.parties.forEach(party => {
-			messages = messages.concat(resolvePartyMoment(party, world.currentMoment));
+			resolvePartyMoment(party, world.currentMoment);
 		});
 	}
-	return messages;
 }
 
 /**

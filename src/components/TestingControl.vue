@@ -268,12 +268,10 @@ export default class TestingControl extends Vue {
 										break;
 									}
 
-									const partiesMoment = resolvePartyMoment(testWorld.parties[0], testWorld.currentMoment);
+									resolvePartyMoment(testWorld.parties[0], testWorld.currentMoment);
 
-									if (partiesMoment.length > 0) {
-										//this.testResults.push(partiesMoment);
-										turns++;
-									}
+									//this.testResults.push(testWorld.parties[].journal.entries);
+									turns++;
 
 									// TODO have this loop through all living characters and make sure only one party is represented
 									if (partyHasOngoingBattle(testWorld.parties[0])) {
