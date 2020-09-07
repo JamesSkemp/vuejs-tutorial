@@ -179,7 +179,6 @@ export function clearOpponents(party: Party): boolean {
 		party.opponents.length = 0;
 		return true;
 	}
-	return false;
 }
 
 /**
