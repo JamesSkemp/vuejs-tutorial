@@ -1,5 +1,5 @@
 /**
- * Character attack preferences.
+ * Character attack types/preferences.
  */
 export enum AttackType {
 	Melee,
