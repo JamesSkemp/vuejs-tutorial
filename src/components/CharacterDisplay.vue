@@ -58,17 +58,22 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Options, Vue } from 'vue-class-component';
 import Character from '../models/Character';
 import { getAttackText } from '../utilities/AttackUtilities';
 import { getShortBaseStats, getCurrentStats, getStatModifications, getCharacterDesire } from '../utilities/CharacterUtilities';
 import Attack from '../models/Attack';
 import { desireToText } from '../utilities/Enums';
 import Party from '../models/Party';
-@Component
+@Options({
+	props: {
+		party: Party,
+		character: Character
+	}
+})
 export default class CharacterDisplay extends Vue {
-	@Prop() party!: Party;
-	@Prop() character!: Character;
+	party!: Party;
+	character!: Character;
 	// TODO remove?
 	baseStats = '';
 	// TODO remove?

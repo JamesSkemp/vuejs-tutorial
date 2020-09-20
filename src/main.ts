@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import { createApp } from 'vue';
 import App from './App.vue';
 // Only import the layout-related controls.
 import { LayoutPlugin } from 'bootstrap-vue';
@@ -7,12 +7,10 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 import World from './models/World';
 
 // Reference the plugin(s) we imported above, here.
-Vue.use(LayoutPlugin);
+//Vue.use(LayoutPlugin);
+// TODO above is not currently supported with Vue 3
 
-Vue.config.productionTip = false;
-Vue.prototype.$world = new World();
-Vue.prototype.$testWorld = new World();
+(window as any).$world = new World();
+(window as any).$testWorld = new World();
 
-new Vue({
-	render: h => h(App)
-}).$mount('#app')
+createApp(App).mount('#app');

@@ -7,19 +7,22 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Options, Vue } from 'vue-class-component';
 import WorldDisplay from './WorldDisplay.vue';
 import TestingControl from './TestingControl.vue';
 
-@Component({
+@Options({
 	components: {
 		WorldDisplay,
 		TestingControl
+	},
+	props: {
+		msg: String
 	}
 })
 
 export default class HelloWorld extends Vue {
-  @Prop() private msg!: string;
+  msg!: string;
 }
 </script>
 

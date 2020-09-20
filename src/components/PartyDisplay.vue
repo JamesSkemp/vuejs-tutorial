@@ -2,7 +2,7 @@
 	<b-container>
 		<b-row>
 			<b-col>
-				<h3>Party {{this.party.id}}</h3>
+				<h3>Party {{party.id}}</h3>
 			</b-col>
 		</b-row>
 		<b-row>
@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Options, Vue } from 'vue-class-component';
 import CharacterDisplay from './CharacterDisplay.vue';
 import Party from '../models/Party';
 import { partyStateToText } from '../utilities/Enums'
@@ -55,15 +55,19 @@ import World from '../models/World';
 import { sortBySpeed, sortByHealth, sortByDodge, sortByArmor } from '../utilities/CharacterSortUtilities';
 import { addOpponent } from '../utilities/PartyUtilities';
 import Character from '../models/Character';
-@Component({
+@Options({
 	components: {
 		CharacterDisplay
+	},
+	props: {
+		world: World,
+		party: Party
 	}
 })
 
 export default class PartyDisplay extends Vue {
-	@Prop() private world!: World;
-	@Prop() private party!: Party;
+	world!: World;
+	party!: Party;
 	stateText = '';
 
 	created(): void {
@@ -72,28 +76,28 @@ export default class PartyDisplay extends Vue {
 
 	displayDisbandParty(): void {
 		disbandParty(this.world, this.party);
-		this.$forceUpdate();
+		//this.$forceUpdate();
 		this.$emit('party-disbanded', this.party.id);
 	}
 
 	displaySortHealth(): void {
 		sortByHealth(this.party.mainCharacters);
-		this.$forceUpdate();
+		//this.$forceUpdate();
 	}
 
 	displaySortDodge(): void {
 		sortByDodge(this.party.mainCharacters);
-		this.$forceUpdate();
+		//this.$forceUpdate();
 	}
 
 	displaySortArmor(): void {
 		sortByArmor(this.party.mainCharacters);
-		this.$forceUpdate();
+		//this.$forceUpdate();
 	}
 
 	displaySortSpeed(): void {
 		sortBySpeed(this.party.mainCharacters);
-		this.$forceUpdate();
+		//this.$forceUpdate();
 	}
 
 	addOpponent(): void {
@@ -103,7 +107,7 @@ export default class PartyDisplay extends Vue {
 		opponent.baseStats.melee.attacks[0].damage = '1d4';
 
 		addOpponent(this.party, opponent, this.world.currentMoment);
-		this.$forceUpdate();
+		//this.$forceUpdate();
 	}
 }
 </script>
