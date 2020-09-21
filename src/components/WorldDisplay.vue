@@ -1,45 +1,45 @@
 <template>
-	<b-container>
-		<b-row>
-			<b-col>
+	<div class="container">
+		<div class="row">
+			<div class="col">
 				<h2>World</h2>
-			</b-col>
-		</b-row>
-		<b-row>
-			<b-col>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
 				<button v-on:click="startNewWorld">Start new world</button>
-			</b-col>
-			<b-col>
+			</div>
+			<div class="col">
 				<button v-on:click="populateTestWorld">Populate test world</button>
-			</b-col>
-			<b-col>
+			</div>
+			<div class="col">
 				<button v-on:click="loadWorld">Load world (test-only)</button>
-			</b-col>
-		</b-row>
-		<b-row v-if="world && world.parties.length > 0">
-			<b-col>
+			</div>
+		</div>
+		<div class="row" v-if="world && world.parties.length > 0">
+			<div class="col">
 				<button v-if="world && world.parties.length > 0" v-on:click="saveWorld">Save world</button>
-			</b-col>
-			<b-col>
+			</div>
+			<div class="col">
 				<button v-on:click="cleanParties">Remove empty parties</button>
-			</b-col>
-			<b-col>
+			</div>
+			<div class="col">
 				Sorting options:<br />
 				<button v-on:click="displaySortByHealth">Sort by health</button>
 				<button v-on:click="displaySortByDodge">Sort by dodge</button>
 				<button v-on:click="displaySortByArmor">Sort by armor</button>
 				<button v-on:click="displaySortBySpeed">Sort by speed</button>
-			</b-col>
-		</b-row>
-		<b-row>
-			<b-col>
-			</b-col>
-			<b-col>
-			</b-col>
-			<b-col>
-			</b-col>
-		</b-row>
-		<b-row>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+			</div>
+			<div class="col">
+			</div>
+			<div class="col">
+			</div>
+		</div>
+		<div class="row">
 			<div style="text-align:left;">
 				<div>
 					<br /><br />
@@ -57,12 +57,12 @@
 				<button v-on:click="refreshDisplay">Refresh display</button>
 				<br />
 			</div>
-		</b-row>
-	</b-container>
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Options, Vue } from 'vue-class-component';
 import PartyDisplay from './PartyDisplay.vue';
 import World from '../models/World';
 import { getUnusedPartyId, addPartyToWorld, removeEmptyParties, startNextMoment, createNewWorld } from '../utilities/WorldUtilities';
@@ -76,7 +76,7 @@ import { getLatestJournalEntries } from '@/utilities/JournalUtilities';
 
 type EquivalenceResult = { equivalent: boolean, differences: string[] }
 
-@Component({
+@Options({
 	components: {
 		PartyDisplay
 	}
@@ -167,38 +167,38 @@ export default class WorldDisplay extends Vue {
 	}
 
 	refreshDisplay(): void {
-		this.$forceUpdate();
+		//this.$forceUpdate();
 	}
 
 	cleanParties(): void {
 		removeEmptyParties(this.world);
 		console.log('cleanParties');
-		this.$forceUpdate();
+		//this.$forceUpdate();
 	}
 
 	displaySortByHealth(): void {
 		sortByHealth(this.world.parties[0].mainCharacters);
 		console.log('sort by health');
-		this.$forceUpdate();
+		//this.$forceUpdate();
 	}
 
 	displaySortByDodge(): void {
 		sortByDodge(this.world.parties[0].mainCharacters);
 		console.log('sort by dodge');
-		this.$forceUpdate();
+		//this.$forceUpdate();
 	}
 
 	displaySortByArmor(): void {
 		sortByArmor(this.world.parties[0].mainCharacters);
 		console.log('sort by armor');
-		this.$forceUpdate();
+		//this.$forceUpdate();
 	}
 
 	displaySortBySpeed(): void {
 		sortBySpeed(this.world.parties[0].mainCharacters);
 		console.log('sort by speed');
 		// TODO all of the forceUpdate calls need to be removed
-		this.$forceUpdate();
+		//this.$forceUpdate();
 	}
 
 	increaseTime(): void {

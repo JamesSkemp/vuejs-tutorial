@@ -1,5 +1,5 @@
 <template>
-	<b-container>
+	<div class="container">
 		<button v-on:click="startTimer">Start timer - {{ timer }}</button>
 		<button v-on:click="rollDice">Roll dice - {{ timesRun }}</button>
 		<button v-on:click="rollDice2">Roll dice 2 - {{ timesRun2 }}</button>
@@ -13,48 +13,48 @@
 		<div>Final results short length: {{ finalResultShortLength }}</div>
 		<div>
 			Health:
-			<input type="number" v-model.number="healthMin" value="" /> -
-			<input type="number" v-model.number="healthMax" value="" />
+			<input type="number" v-model.number="healthMin" /> -
+			<input type="number" v-model.number="healthMax" />
 			<br />
 			Attack:
-			<input type="number" v-model.number="attackMin" value="" /> -
-			<input type="number" v-model.number="attackMax" value="" />
+			<input type="number" v-model.number="attackMin" /> -
+			<input type="number" v-model.number="attackMax" />
 			<br />
 			Dodge:
-			<input type="number" v-model.number="dodgeMin" value="" /> -
-			<input type="number" v-model.number="dodgeMax" value="" />
+			<input type="number" v-model.number="dodgeMin" /> -
+			<input type="number" v-model.number="dodgeMax" />
 			<br />
 			Armor:
-			<input type="number" v-model.number="armorMin" value="" /> -
-			<input type="number" v-model.number="armorMax" value="" />
+			<input type="number" v-model.number="armorMin" /> -
+			<input type="number" v-model.number="armorMax" />
 			<br />
 			Speed:
-			<input type="number" v-model.number="speedMin" value="" /> -
-			<input type="number" v-model.number="speedMax" value="" />
+			<input type="number" v-model.number="speedMin" /> -
+			<input type="number" v-model.number="speedMax" />
 			<br />
 			Damage:
-			<input type="text" v-model="damage" value="" />
+			<input type="text" v-model="damage" />
 			<br />
 			Opponent health:
-			<input type="number" v-model.number="opponentHealth" value="" />
+			<input type="number" v-model.number="opponentHealth" />
 			<br />
 			Opponent attack:
-			<input type="number" v-model.number="opponentAttack" value="" />
+			<input type="number" v-model.number="opponentAttack" />
 			<br />
 			Opponent damage:
-			<input type="text" v-model="opponentDamage" value="" />
+			<input type="text" v-model="opponentDamage" />
 			<br />
 			Opponent dodge:
-			<input type="number" v-model.number="opponentDodge" value="" />
+			<input type="number" v-model.number="opponentDodge" />
 			<br />
 			Opponent armor:
-			<input type="number" v-model.number="opponentArmor" value="" />
+			<input type="number" v-model.number="opponentArmor" />
 			<br />
 			Opponent speed:
-			<input type="number" v-model.number="opponentSpeed" value="" />
+			<input type="number" v-model.number="opponentSpeed" />
 			<br />
 			Times to test:
-			<input type="number" v-model.number="testTimes" value="" />
+			<input type="number" v-model.number="testTimes" />
 			<br />
 			<button v-on:click="test">Test cases</button>
 			<button v-on:click="clearTestResults">Clear test results</button>
@@ -63,42 +63,42 @@
 		<div>
 			<h2>Console World Testing</h2>
 			Test character max health:
-			<input type="number" v-model.number="testCharacterMaxHealth" value="" />
+			<input type="number" v-model.number="testCharacterMaxHealth" />
 			<br />
 			Test character current health:
-			<input type="number" v-model.number="testCharacterCurrentHealth" value="" />
+			<input type="number" v-model.number="testCharacterCurrentHealth" />
 			<br />
 			Test character melee:
-			<input type="number" v-model.number="testCharacterMelee" value="" />
+			<input type="number" v-model.number="testCharacterMelee" />
 			<br />
 			Test character range:
-			<input type="number" v-model.number="testCharacterRange" value="" />
+			<input type="number" v-model.number="testCharacterRange" />
 			<br />
 			Test character magic:
-			<input type="number" v-model.number="testCharacterMagic" value="" />
+			<input type="number" v-model.number="testCharacterMagic" />
 			<br />
 			Test character dodge:
-			<input type="number" v-model.number="testCharacterDodge" value="" />
+			<input type="number" v-model.number="testCharacterDodge" />
 			<br />
 			Test character armor:
-			<input type="number" v-model.number="testCharacterArmor" value="" />
+			<input type="number" v-model.number="testCharacterArmor" />
 			<br />
 			Test character speed:
-			<input type="number" v-model.number="testCharacterSpeed" value="" />
+			<input type="number" v-model.number="testCharacterSpeed" />
 			<br />
 			Test character damage:
-			<input type="text" v-model="testCharacterDamage" value="" />
+			<input type="text" v-model="testCharacterDamage" />
 			<br />
 			<button v-on:click="addTestCharacter">Add test character</button>
 		</div>
 
 		<div v-html="dataDumps"></div>
 		<div v-html="dataOutput"></div>
-	</b-container>
+	</div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Options, Vue } from 'vue-class-component';
 import { DiceRoll, DiceRoller } from 'rpg-dice-roller';
 import World from '../models/World';
 import Character from '../models/Character';
@@ -113,7 +113,7 @@ import CharacterData from '../data/CharacterData';
 import { getBaseStatsPoints, getBaseStatAttacks } from '../utilities/BaseStatsUtilities';
 import { attackPreferenceToText } from '../utilities/Enums';
 
-@Component({})
+@Options({})
 
 export default class TestingControl extends Vue {
 	currentMoment = 0;
@@ -590,7 +590,7 @@ export default class TestingControl extends Vue {
 	}
 
 	addTestCharacter(): void {
-		const testWorld: World = this.$testWorld;
+		const testWorld: World = (window as any).$testWorld;
 
 		const newCharacter = new Character(-1, true);
 		newCharacter.baseStats.health = this.testCharacterMaxHealth;

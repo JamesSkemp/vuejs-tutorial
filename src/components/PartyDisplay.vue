@@ -1,30 +1,30 @@
 <template>
-	<b-container>
-		<b-row>
-			<b-col>
-				<h3>Party {{this.party.id}}</h3>
-			</b-col>
-		</b-row>
-		<b-row>
-			<b-col>
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<h3>Party {{party.id}}</h3>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
 				<button v-on:click="displayDisbandParty">Disband party</button>
-			</b-col>
-			<b-col>
+			</div>
+			<div class="col">
 				<button v-on:click="addOpponent">Add an opponent</button>
-			</b-col>
-			<b-col>
+			</div>
+			<div class="col">
 				<button v-on:click="displaySortHealth">Sort by health</button>
 				<button v-on:click="displaySortDodge">Sort by dodge</button>
 				<button v-on:click="displaySortArmor">Sort by armor</button>
 				<button v-on:click="displaySortSpeed">Sort by speed</button>
-			</b-col>
-		</b-row>
-		<b-row>
+			</div>
+		</div>
+		<div class="row">
 			<div>
 				State: {{ stateText }}<br />
 				Location: {{ party.location }}
-				<div v-html="party.journal"></div>
-				<div v-html="party.battleLog"></div>
+				<div v-html="JSON.stringify(party.journal)"></div>
+				<div v-html="JSON.stringify(party.battleLog)"></div>
 				<div v-if="party.mainCharacters.length > 0">
 					<h4>Main characters ({{ party.mainCharacters.length }})</h4>
 					<div>
@@ -41,12 +41,12 @@
 					</div>
 				</div>
 			</div>
-		</b-row>
-	</b-container>
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Options, Vue } from 'vue-class-component';
 import CharacterDisplay from './CharacterDisplay.vue';
 import Party from '../models/Party';
 import { partyStateToText } from '../utilities/Enums'
@@ -55,15 +55,19 @@ import World from '../models/World';
 import { sortBySpeed, sortByHealth, sortByDodge, sortByArmor } from '../utilities/CharacterSortUtilities';
 import { addOpponent } from '../utilities/PartyUtilities';
 import Character from '../models/Character';
-@Component({
+@Options({
 	components: {
 		CharacterDisplay
+	},
+	props: {
+		world: World,
+		party: Party
 	}
 })
 
 export default class PartyDisplay extends Vue {
-	@Prop() private world!: World;
-	@Prop() private party!: Party;
+	world!: World;
+	party!: Party;
 	stateText = '';
 
 	created(): void {
@@ -72,28 +76,28 @@ export default class PartyDisplay extends Vue {
 
 	displayDisbandParty(): void {
 		disbandParty(this.world, this.party);
-		this.$forceUpdate();
+		//this.$forceUpdate();
 		this.$emit('party-disbanded', this.party.id);
 	}
 
 	displaySortHealth(): void {
 		sortByHealth(this.party.mainCharacters);
-		this.$forceUpdate();
+		//this.$forceUpdate();
 	}
 
 	displaySortDodge(): void {
 		sortByDodge(this.party.mainCharacters);
-		this.$forceUpdate();
+		//this.$forceUpdate();
 	}
 
 	displaySortArmor(): void {
 		sortByArmor(this.party.mainCharacters);
-		this.$forceUpdate();
+		//this.$forceUpdate();
 	}
 
 	displaySortSpeed(): void {
 		sortBySpeed(this.party.mainCharacters);
-		this.$forceUpdate();
+		//this.$forceUpdate();
 	}
 
 	addOpponent(): void {
@@ -103,7 +107,7 @@ export default class PartyDisplay extends Vue {
 		opponent.baseStats.melee.attacks[0].damage = '1d4';
 
 		addOpponent(this.party, opponent, this.world.currentMoment);
-		this.$forceUpdate();
+		//this.$forceUpdate();
 	}
 }
 </script>
