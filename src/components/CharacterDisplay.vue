@@ -1,23 +1,23 @@
 <template>
-	<b-container>
-		<b-row>
-			<b-col>
+	<div class="container">
+		<div class="row">
+			<div class="col">
 				<h5>Character {{ character.id }}, {{ character.name }}</h5>
 				<p>Desire: {{ getDesire() }}</p>
-			</b-col>
-		</b-row>
-		<b-row align-v="start">
-			<b-col>
+			</div>
+		</div>
+		<div class="row" align-v="start">
+			<div class="col">
 				<strong>Current Stats</strong><br />
 				<span v-for="stat in currentStats()" :key="stat">
 					{{stat}}<br />
 				</span>
-			</b-col>
-			<b-col>
+			</div>
+			<div class="col">
 				<strong>Stat Mods:</strong><br />
 				<span v-for="statMod in statMods()" :key="statMod">{{statMod}}<br /></span>
-			</b-col>
-			<b-col>
+			</div>
+			<div class="col">
 				<strong>Base Stats</strong><br />
 				Health {{character.baseStats.health}}<br />
 				Melee {{character.baseStats.melee.value}}<br />
@@ -26,9 +26,9 @@
 				Dodge {{character.baseStats.dodge}}<br />
 				Armor {{character.baseStats.armor}}<br />
 				Speed {{character.baseStats.speed}}
-			</b-col>
-		</b-row>
-		<b-row>
+			</div>
+		</div>
+		<div class="row">
 			<p>
 				Health: {{ character.currentHealth }} of {{ character.baseStats.health }}<br />
 			</p>
@@ -53,8 +53,8 @@
 				</li>
 			</ul>
 			<p style="overflow-wrap: break-word;">{{ JSON.stringify(character) }}</p>
-		</b-row>
-	</b-container>
+		</div>
+	</div>
 </template>
 
 <script lang="ts">

@@ -1,5 +1,5 @@
 <template>
-	<b-container>
+	<div class="container">
 		<button v-on:click="startTimer">Start timer - {{ timer }}</button>
 		<button v-on:click="rollDice">Roll dice - {{ timesRun }}</button>
 		<button v-on:click="rollDice2">Roll dice 2 - {{ timesRun2 }}</button>
@@ -94,7 +94,7 @@
 
 		<div v-html="dataDumps"></div>
 		<div v-html="dataOutput"></div>
-	</b-container>
+	</div>
 </template>
 
 <script lang="ts">

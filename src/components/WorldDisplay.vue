@@ -1,45 +1,45 @@
 <template>
-	<b-container>
-		<b-row>
-			<b-col>
+	<div class="container">
+		<div class="row">
+			<div class="col">
 				<h2>World</h2>
-			</b-col>
-		</b-row>
-		<b-row>
-			<b-col>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
 				<button v-on:click="startNewWorld">Start new world</button>
-			</b-col>
-			<b-col>
+			</div>
+			<div class="col">
 				<button v-on:click="populateTestWorld">Populate test world</button>
-			</b-col>
-			<b-col>
+			</div>
+			<div class="col">
 				<button v-on:click="loadWorld">Load world (test-only)</button>
-			</b-col>
-		</b-row>
-		<b-row v-if="world && world.parties.length > 0">
-			<b-col>
+			</div>
+		</div>
+		<div class="row" v-if="world && world.parties.length > 0">
+			<div class="col">
 				<button v-if="world && world.parties.length > 0" v-on:click="saveWorld">Save world</button>
-			</b-col>
-			<b-col>
+			</div>
+			<div class="col">
 				<button v-on:click="cleanParties">Remove empty parties</button>
-			</b-col>
-			<b-col>
+			</div>
+			<div class="col">
 				Sorting options:<br />
 				<button v-on:click="displaySortByHealth">Sort by health</button>
 				<button v-on:click="displaySortByDodge">Sort by dodge</button>
 				<button v-on:click="displaySortByArmor">Sort by armor</button>
 				<button v-on:click="displaySortBySpeed">Sort by speed</button>
-			</b-col>
-		</b-row>
-		<b-row>
-			<b-col>
-			</b-col>
-			<b-col>
-			</b-col>
-			<b-col>
-			</b-col>
-		</b-row>
-		<b-row>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+			</div>
+			<div class="col">
+			</div>
+			<div class="col">
+			</div>
+		</div>
+		<div class="row">
 			<div style="text-align:left;">
 				<div>
 					<br /><br />
@@ -57,8 +57,8 @@
 				<button v-on:click="refreshDisplay">Refresh display</button>
 				<br />
 			</div>
-		</b-row>
-	</b-container>
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
